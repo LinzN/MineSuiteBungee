@@ -21,6 +21,5 @@ public class PlayerHashDB {
 	public static HashMap<UUID, Boolean> isafk = new HashMap<UUID, Boolean>();
 	public static HashMap<UUID, Boolean> socialspy = new HashMap<UUID, Boolean>();
 	public static HashMap<UUID, Boolean> session = new HashMap<UUID, Boolean>();
-	public static HashMap<UUID, CookieInventory> inventory = new HashMap<UUID, CookieInventory>();
 
 }
