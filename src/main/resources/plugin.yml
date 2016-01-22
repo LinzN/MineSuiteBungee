@@ -1,0 +1,4 @@
+name: cookieApiBungee
+main : de.kekshaus.cookieApi.bungee.CookieApiBungee
+version: ${project.version}
+author: Kekshaus

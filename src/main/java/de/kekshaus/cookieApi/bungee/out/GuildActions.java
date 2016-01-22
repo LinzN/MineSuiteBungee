@@ -1,0 +1,31 @@
+package de.kekshaus.cookieApi.bungee.out;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+import de.kekshaus.cookieApi.bungee.CookieApiBungee;
+import de.kekshaus.cookieApi.bungee.out.tasks.SendServerOtherMessage;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+
+public class GuildActions {
+
+	public static void addToGuild(ProxiedPlayer invitedPlayer, String guild)
+
+	{
+
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		DataOutputStream out = new DataOutputStream(bytes);
+
+		try {
+			out.writeUTF("AddToGuild");
+			out.writeUTF(invitedPlayer.getName());
+			out.writeUTF(guild);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		CookieApiBungee.proxy.getScheduler().runAsync(CookieApiBungee.instance, new SendServerOtherMessage(bytes));
+	}
+}

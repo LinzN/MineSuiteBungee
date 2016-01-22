@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.cookieapi</groupId>
+    <artifactId>cookieApiBungee</artifactId>
+    <version>0.8.0</version>
+    <packaging>jar</packaging>
+    <name>cookieApiBungee</name>
+
+
+    <repositories>
+        <repository>
+            <id>sonatype-oss-public</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+	<repository>
+	    <id>maven-central</id>
+	    <url>http://repo1.maven.org/maven2/</url>
+	</repository>
+	      <repository>
+           <id>sk89q-repo</id>
+           <url>http://maven.sk89q.com/artifactory/repo/</url>
+      </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-api</artifactId>
+            <version>1.8-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/BungeeCord.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/gson.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <finalName>${project.name}</finalName>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <archive>
+            <addMavenDescriptor>false</addMavenDescriptor>
+          </archive>
+          <finalName>${project.name}</finalName>
+        </configuration>
+      </plugin>
+        </plugins>
+    </build>
+</project>
