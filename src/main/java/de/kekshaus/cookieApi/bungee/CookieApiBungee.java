@@ -73,6 +73,7 @@ public class CookieApiBungee extends Plugin {
 	}
 
 	public void onDisable() {
+		Starter.stop();
 	}
 
 	private boolean autoSystem() {
