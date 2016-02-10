@@ -5,20 +5,16 @@ import java.util.concurrent.TimeUnit;
 import de.kekshaus.cookieApi.bungee.dbase.DataBaseManager;
 import de.kekshaus.cookieApi.bungee.listeners.ProxyServerListener;
 import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeStreamChatListener;
-import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeStreamDataListener;
-import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeStreamOtherListener;
 import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeStreamTeleportListener;
 import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.PipeLiveStreamListener;
+import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.SocketGuildListener;
 import de.kekshaus.cookieApi.bungee.out.tasks.PipeStreamScheduler;
 import de.kekshaus.cookieApi.bungee.socketEvents.BungeeStreamChatEvent;
-import de.kekshaus.cookieApi.bungee.socketEvents.BungeeStreamDataEvent;
-import de.kekshaus.cookieApi.bungee.socketEvents.BungeeStreamOtherEvent;
 import de.kekshaus.cookieApi.bungee.socketEvents.BungeeStreamTeleportEvent;
 import de.kekshaus.cookieApi.bungee.socketEvents.PipeLiveStreamEvent;
 import de.kekshaus.cookieApi.bungee.socketEvents.ServerStreamChatEvent;
-import de.kekshaus.cookieApi.bungee.socketEvents.ServerStreamDataEvent;
-import de.kekshaus.cookieApi.bungee.socketEvents.ServerStreamOtherEvent;
 import de.kekshaus.cookieApi.bungee.socketEvents.ServerStreamTeleportEvent;
+import de.kekshaus.cookieApi.bungee.socketEvents.SocketGuildEvent;
 import de.kekshaus.cookieApi.bungee.utils.AutoUnbanChecker;
 import de.kekshaus.cookieApi.bungee.utils.AutoUnmuteChecker;
 import de.kekshaus.cookieApi.bungee.utils.Config;
@@ -48,19 +44,15 @@ public class CookieApiBungee extends Plugin {
 			}
 
 			PacketManager.registerPacket(BungeeStreamTeleportEvent.class);
-			PacketManager.registerPacket(BungeeStreamDataEvent.class);
-			PacketManager.registerPacket(BungeeStreamOtherEvent.class);
+			PacketManager.registerPacket(SocketGuildEvent.class);
 			PacketManager.registerPacket(BungeeStreamChatEvent.class);
 			PacketManager.registerPacket(ServerStreamTeleportEvent.class);
-			PacketManager.registerPacket(ServerStreamDataEvent.class);
-			PacketManager.registerPacket(ServerStreamOtherEvent.class);
 			PacketManager.registerPacket(ServerStreamChatEvent.class);
 			PacketManager.registerPacket(PipeLiveStreamEvent.class);
 
 			PacketManager.registerListener(new PipeLiveStreamListener());
 			PacketManager.registerListener(new BungeeStreamTeleportListener());
-			PacketManager.registerListener(new BungeeStreamDataListener());
-			PacketManager.registerListener(new BungeeStreamOtherListener());
+			PacketManager.registerListener(new SocketGuildListener());
 			PacketManager.registerListener(new BungeeStreamChatListener());
 			Starter.start();
 			new PipeStreamScheduler();
