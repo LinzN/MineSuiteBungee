@@ -49,6 +49,11 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+        	<groupId>de.kekshaus</groupId>
+        	<artifactId>CookieSocket-Official</artifactId>
+        	<version>0.5.0</version>
+        </dependency>
     </dependencies>
 
     <build>

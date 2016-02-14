@@ -5,9 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import de.kekshaus.cookieApi.bungee.CookieApiBungee;
+import de.keks.socket.bungee.BungeePlugin;
+import de.keks.socket.core.Channel;
 import de.kekshaus.cookieApi.bungee.dbase.PlayerHashDB;
-import de.kekshaus.cookieApi.bungee.out.tasks.SendServerChatMessage;
 import de.kekshaus.cookieApi.bungee.utils.ChatFormate;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -19,7 +19,7 @@ public class ChatActions {
 		ProxyServer.getInstance().getServers();
 		String formatedText = ChatFormate.toGuildFormate(sender, text);
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = new DataOutputStream(bytes);
+		DataOutputStream out = Channel.chatChannel(bytes);
 		try {
 			out.writeUTF("ALL");
 			out.writeUTF("GuildChat");
@@ -30,7 +30,7 @@ public class ChatActions {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		CookieApiBungee.proxy.getScheduler().runAsync(CookieApiBungee.instance, new SendServerChatMessage(bytes));
+		BungeePlugin.instance().sendSocketMSG(bytes);
 		ProxyServer.getInstance().getLogger().info(guild + "-> " + formatedText);
 		for (UUID uuid : PlayerHashDB.socialspy.keySet()) {
 			ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
@@ -84,7 +84,7 @@ public class ChatActions {
 		ProxyServer.getInstance().getServers();
 		String formatedText = ChatFormate.toChannelStaffFormate(sender, text, prefix);
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = new DataOutputStream(bytes);
+		DataOutputStream out = Channel.chatChannel(bytes);
 		try {
 			out.writeUTF("ALL");
 			out.writeUTF("StaffChat");
@@ -93,7 +93,7 @@ public class ChatActions {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		CookieApiBungee.proxy.getScheduler().runAsync(CookieApiBungee.instance, new SendServerChatMessage(bytes));
+		BungeePlugin.instance().sendSocketMSG(bytes);
 		ProxyServer.getInstance().getLogger().info("STAFF" + "-> " + formatedText);
 	}
 

@@ -1,32 +1,27 @@
 package de.kekshaus.cookieApi.bungee.listeners.bungeeChannel;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import de.kekshaus.cookieApi.bungee.CookieApiBungee;
+import de.keks.socket.bungee.BungeePlugin;
+import de.keks.socket.bungee.events.plugin.BungeeSockGuildEvent;
+import de.keks.socket.core.Channel;
 import de.kekshaus.cookieApi.bungee.dbase.PlayerHashDB;
-import de.kekshaus.cookieApi.bungee.out.tasks.SendSocketGuildMessage;
-import de.kekshaus.cookieApi.bungee.socketEvents.SocketGuildEvent;
-import de.xHyveSoftware.socket.bungee.api.annotation.Channel;
-import de.xHyveSoftware.socket.bungee.api.annotation.PacketHandler;
-import de.xHyveSoftware.socket.bungee.api.listener.AbstractPacketListener;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.event.EventHandler;
 
-@Channel("SocketGuild")
-public class SocketGuildListener extends AbstractPacketListener {
+public class BungeeSockGuildListener implements Listener {
 	@SuppressWarnings("deprecation")
-	@PacketHandler
-	public void onCookieApiMessageEvent(final SocketGuildEvent event) {
-
-		DataInputStream in = new DataInputStream(new ByteArrayInputStream(event.getData()));
+	@EventHandler
+	public void onSocketMessage(BungeeSockGuildEvent e) {
+		DataInputStream in = e.read();
 		String task = null;
 		try {
-
 			task = in.readUTF();
 
 			if (task.equals("SendGuildInvite")) {
@@ -56,11 +51,9 @@ public class SocketGuildListener extends AbstractPacketListener {
 
 			}
 
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
-
 	}
 
 	public static void addToGuild(ProxiedPlayer invitedPlayer, UUID guildUUID)
@@ -68,7 +61,7 @@ public class SocketGuildListener extends AbstractPacketListener {
 	{
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = new DataOutputStream(bytes);
+		DataOutputStream out = Channel.guildChannel(bytes);
 
 		try {
 			out.writeUTF("FinishGuildInvite");
@@ -79,7 +72,7 @@ public class SocketGuildListener extends AbstractPacketListener {
 			e.printStackTrace();
 		}
 
-		CookieApiBungee.proxy.getScheduler().runAsync(CookieApiBungee.instance, new SendSocketGuildMessage(bytes));
+		BungeePlugin.instance().sendSocketMSG(bytes);
 	}
 
 }
