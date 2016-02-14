@@ -24,7 +24,6 @@ public class ChatActions {
 			out.writeUTF("ALL");
 			out.writeUTF("GuildChat");
 			out.writeUTF(guild);
-			out.writeUTF(sender);
 			out.writeUTF(formatedText);
 
 		} catch (IOException e) {
