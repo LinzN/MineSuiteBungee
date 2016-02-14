@@ -4,6 +4,12 @@ import java.util.concurrent.TimeUnit;
 
 import de.kekshaus.cookieApi.bungee.dbase.DataBaseManager;
 import de.kekshaus.cookieApi.bungee.listeners.ProxyServerListener;
+import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeSockBanListener;
+import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeSockChatListener;
+import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeSockGuildListener;
+import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeSockHomeListener;
+import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeSockTeleportListener;
+import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeSockWarpListener;
 import de.kekshaus.cookieApi.bungee.utils.AutoUnbanChecker;
 import de.kekshaus.cookieApi.bungee.utils.AutoUnmuteChecker;
 import de.kekshaus.cookieApi.bungee.utils.Config;
@@ -35,6 +41,12 @@ public class CookieApiBungee extends Plugin {
 
 	private void registerListeners() {
 		proxy.getPluginManager().registerListener(this, new ProxyServerListener());
+		proxy.getPluginManager().registerListener(this, new BungeeSockBanListener());
+		proxy.getPluginManager().registerListener(this, new BungeeSockChatListener());
+		proxy.getPluginManager().registerListener(this, new BungeeSockGuildListener());
+		proxy.getPluginManager().registerListener(this, new BungeeSockHomeListener());
+		proxy.getPluginManager().registerListener(this, new BungeeSockTeleportListener());
+		proxy.getPluginManager().registerListener(this, new BungeeSockWarpListener());
 	}
 
 	public void onDisable() {
