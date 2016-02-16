@@ -49,6 +49,6 @@ public class TeleportToWarp {
 			e.printStackTrace();
 		}
 
-		BungeePlugin.instance().sendSocketMSG(bytes);
+		BungeePlugin.instance().sendBytesOut(bytes);
 	}
 }

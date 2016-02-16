@@ -23,6 +23,6 @@ public class TPAFinalise {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		BungeePlugin.instance().sendSocketMSG(bytes);
+		BungeePlugin.instance().sendBytesOut(bytes);
 	}
 }

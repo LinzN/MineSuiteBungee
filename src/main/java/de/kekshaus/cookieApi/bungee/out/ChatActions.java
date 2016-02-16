@@ -29,7 +29,7 @@ public class ChatActions {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		BungeePlugin.instance().sendSocketMSG(bytes);
+		BungeePlugin.instance().sendBytesOut(bytes);
 		ProxyServer.getInstance().getLogger().info(guild + "-> " + formatedText);
 		for (UUID uuid : PlayerHashDB.socialspy.keySet()) {
 			ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
@@ -92,7 +92,7 @@ public class ChatActions {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		BungeePlugin.instance().sendSocketMSG(bytes);
+		BungeePlugin.instance().sendBytesOut(bytes);
 		ProxyServer.getInstance().getLogger().info("STAFF" + "-> " + formatedText);
 	}
 

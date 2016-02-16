@@ -29,7 +29,7 @@ public class SendMsg {
 			e.printStackTrace();
 		}
 
-		BungeePlugin.instance().sendSocketMSG(bytes);
+		BungeePlugin.instance().sendBytesOut(bytes);
 
 	}
 
@@ -52,7 +52,7 @@ public class SendMsg {
 			e.printStackTrace();
 		}
 
-		BungeePlugin.instance().sendSocketMSG(bytes);
+		BungeePlugin.instance().sendBytesOut(bytes);
 
 	}
 
@@ -75,7 +75,7 @@ public class SendMsg {
 			e.printStackTrace();
 		}
 
-		BungeePlugin.instance().sendSocketMSG(bytes);
+		BungeePlugin.instance().sendBytesOut(bytes);
 
 	}
 
@@ -98,7 +98,7 @@ public class SendMsg {
 			e.printStackTrace();
 		}
 
-		BungeePlugin.instance().sendSocketMSG(bytes);
+		BungeePlugin.instance().sendBytesOut(bytes);
 
 	}
 
@@ -117,7 +117,7 @@ public class SendMsg {
 			e.printStackTrace();
 		}
 
-		BungeePlugin.instance().sendSocketMSG(bytes);
+		BungeePlugin.instance().sendBytesOut(bytes);
 
 	}
 
@@ -135,7 +135,7 @@ public class SendMsg {
 			e.printStackTrace();
 		}
 
-		BungeePlugin.instance().sendSocketMSG(bytes);
+		BungeePlugin.instance().sendBytesOut(bytes);
 
 	}
 
@@ -153,7 +153,7 @@ public class SendMsg {
 			e.printStackTrace();
 		}
 
-		BungeePlugin.instance().sendSocketMSG(bytes);
+		BungeePlugin.instance().sendBytesOut(bytes);
 
 	}
 }

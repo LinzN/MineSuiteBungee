@@ -27,6 +27,6 @@ public class TeleportToPlayer {
 			e.printStackTrace();
 		}
 
-		BungeePlugin.instance().sendSocketMSG(bytes);
+		BungeePlugin.instance().sendBytesOut(bytes);
 	}
 }
