@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import de.keks.socket.bungee.BungeePlugin;
 import de.keks.socket.bungee.events.plugin.BungeeSockGuildEvent;
+import de.keks.socket.core.ByteStreamConverter;
 import de.keks.socket.core.Channel;
 import de.kekshaus.cookieApi.bungee.dbase.PlayerHashDB;
 import net.md_5.bungee.api.ProxyServer;
@@ -19,7 +20,7 @@ public class BungeeSockGuildListener implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onSocketMessage(BungeeSockGuildEvent e) {
-		DataInputStream in = e.read();
+		DataInputStream in = ByteStreamConverter.toDataInputStream(e.readBytes());
 		String task = null;
 		try {
 			task = in.readUTF();

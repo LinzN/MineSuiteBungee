@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 import de.keks.socket.bungee.events.plugin.BungeeSockWarpEvent;
+import de.keks.socket.core.ByteStreamConverter;
 import de.kekshaus.cookieApi.bungee.managers.PlayerManager;
 import de.kekshaus.cookieApi.bungee.out.TeleportToWarp;
 import de.kekshaus.cookieApi.bungee.utils.Location;
@@ -15,7 +16,7 @@ import net.md_5.bungee.event.EventHandler;
 public class BungeeSockWarpListener implements Listener {
 	@EventHandler
 	public void onSocketMessage(BungeeSockWarpEvent e) {
-		DataInputStream in = e.read();
+		DataInputStream in = ByteStreamConverter.toDataInputStream(e.readBytes());
 		String task = null;
 		try {
 			task = in.readUTF();
