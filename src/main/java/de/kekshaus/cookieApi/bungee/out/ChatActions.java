@@ -21,7 +21,6 @@ public class ChatActions {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		DataOutputStream out = Channel.chatChannel(bytes);
 		try {
-			out.writeUTF("ALL");
 			out.writeUTF("GuildChat");
 			out.writeUTF(guild);
 			out.writeUTF(formatedText);
@@ -85,7 +84,6 @@ public class ChatActions {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		DataOutputStream out = Channel.chatChannel(bytes);
 		try {
-			out.writeUTF("ALL");
 			out.writeUTF("StaffChat");
 			out.writeUTF(formatedText);
 
