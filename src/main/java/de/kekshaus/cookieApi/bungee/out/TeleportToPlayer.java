@@ -6,8 +6,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import de.kekshaus.cookieApi.bungee.CookieApiBungee;
-import de.kekshaus.cookieApi.bungee.out.tasks.SendServerTeleportMessage;
+import de.keks.socket.bungee.BungeePlugin;
+import de.keks.socket.core.Channel;
 
 public class TeleportToPlayer {
 
@@ -16,7 +16,7 @@ public class TeleportToPlayer {
 			player.connect(target.getServer().getInfo());
 		}
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = new DataOutputStream(bytes);
+		DataOutputStream out = Channel.teleportChannel(bytes);
 
 		try {
 			out.writeUTF(target.getServer().getInfo().getName());
@@ -27,6 +27,6 @@ public class TeleportToPlayer {
 			e.printStackTrace();
 		}
 
-		CookieApiBungee.proxy.getScheduler().runAsync(CookieApiBungee.instance, new SendServerTeleportMessage(bytes));
+		BungeePlugin.instance().sendBytesOut(bytes);
 	}
 }

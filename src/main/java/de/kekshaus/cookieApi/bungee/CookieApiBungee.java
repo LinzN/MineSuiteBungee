@@ -4,22 +4,15 @@ import java.util.concurrent.TimeUnit;
 
 import de.kekshaus.cookieApi.bungee.dbase.DataBaseManager;
 import de.kekshaus.cookieApi.bungee.listeners.ProxyServerListener;
-import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeStreamChatListener;
-import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeStreamTeleportListener;
-import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.PipeLiveStreamListener;
-import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.SocketGuildListener;
-import de.kekshaus.cookieApi.bungee.out.tasks.PipeStreamScheduler;
-import de.kekshaus.cookieApi.bungee.socketEvents.BungeeStreamChatEvent;
-import de.kekshaus.cookieApi.bungee.socketEvents.BungeeStreamTeleportEvent;
-import de.kekshaus.cookieApi.bungee.socketEvents.PipeLiveStreamEvent;
-import de.kekshaus.cookieApi.bungee.socketEvents.ServerStreamChatEvent;
-import de.kekshaus.cookieApi.bungee.socketEvents.ServerStreamTeleportEvent;
-import de.kekshaus.cookieApi.bungee.socketEvents.SocketGuildEvent;
+import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeSockBanListener;
+import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeSockChatListener;
+import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeSockGuildListener;
+import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeSockHomeListener;
+import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeSockTeleportListener;
+import de.kekshaus.cookieApi.bungee.listeners.bungeeChannel.BungeeSockWarpListener;
 import de.kekshaus.cookieApi.bungee.utils.AutoUnbanChecker;
 import de.kekshaus.cookieApi.bungee.utils.AutoUnmuteChecker;
 import de.kekshaus.cookieApi.bungee.utils.Config;
-import de.xHyveSoftware.socket.bungee.Starter;
-import de.xHyveSoftware.socket.bungee.api.PacketManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -43,29 +36,20 @@ public class CookieApiBungee extends Plugin {
 				ProxyServer.getInstance().getConsole().sendMessage(ChatColor.BLUE + "AutoSystem aktiviert!");
 			}
 
-			PacketManager.registerPacket(BungeeStreamTeleportEvent.class);
-			PacketManager.registerPacket(SocketGuildEvent.class);
-			PacketManager.registerPacket(BungeeStreamChatEvent.class);
-			PacketManager.registerPacket(ServerStreamTeleportEvent.class);
-			PacketManager.registerPacket(ServerStreamChatEvent.class);
-			PacketManager.registerPacket(PipeLiveStreamEvent.class);
-
-			PacketManager.registerListener(new PipeLiveStreamListener());
-			PacketManager.registerListener(new BungeeStreamTeleportListener());
-			PacketManager.registerListener(new SocketGuildListener());
-			PacketManager.registerListener(new BungeeStreamChatListener());
-			Starter.start();
-			new PipeStreamScheduler();
-
 		}
 	}
 
 	private void registerListeners() {
 		proxy.getPluginManager().registerListener(this, new ProxyServerListener());
+		proxy.getPluginManager().registerListener(this, new BungeeSockBanListener());
+		proxy.getPluginManager().registerListener(this, new BungeeSockChatListener());
+		proxy.getPluginManager().registerListener(this, new BungeeSockGuildListener());
+		proxy.getPluginManager().registerListener(this, new BungeeSockHomeListener());
+		proxy.getPluginManager().registerListener(this, new BungeeSockTeleportListener());
+		proxy.getPluginManager().registerListener(this, new BungeeSockWarpListener());
 	}
 
 	public void onDisable() {
-		Starter.stop();
 	}
 
 	private boolean autoSystem() {
