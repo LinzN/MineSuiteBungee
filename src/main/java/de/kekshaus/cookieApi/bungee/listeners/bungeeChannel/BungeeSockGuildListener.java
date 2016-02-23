@@ -85,6 +85,12 @@ public class BungeeSockGuildListener implements Listener {
 				PlayerHashDB.guildInvites.remove(invitedPlayer.getUniqueId());
 
 			}
+			if (task.equals("GuildInfo")) {
+				String guild = in.readUTF();
+				String text = in.readUTF();
+				sendGuildInfo(guild, text);
+				return;
+			}
 
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -203,6 +209,24 @@ public class BungeeSockGuildListener implements Listener {
 		}
 
 		BungeePlugin.instance().sendBytesOut(bytes);
+	}
+
+	public static void sendGuildInfo(String guild, String text) {
+		ProxyServer.getInstance().getServers();
+		String formatedText = "§6[§aGilde§6] INFO: §a" + text;
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		DataOutputStream out = Channel.guildChannel(bytes);
+		try {
+			out.writeUTF("GuildInfo");
+			out.writeUTF(guild);
+			out.writeUTF(formatedText);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		BungeePlugin.instance().sendBytesOut(bytes);
+		ProxyServer.getInstance().getLogger().info(guild + "-> " + formatedText);
+
 	}
 
 }

@@ -26,7 +26,8 @@ public class BungeeSockChatListener implements Listener {
 				String prefix = in.readUTF();
 				String suffix = in.readUTF();
 				String channel = in.readUTF();
-				ChatActions.channelSend(sender, text, prefix, suffix, channel);
+				String guild = in.readUTF();
+				ChatActions.channelSend(sender, text, prefix, suffix, channel, guild);
 				return;
 			}
 

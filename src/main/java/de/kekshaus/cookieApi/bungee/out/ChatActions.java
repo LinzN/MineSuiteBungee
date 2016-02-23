@@ -36,7 +36,8 @@ public class ChatActions {
 		}
 	}
 
-	public static void channelSend(String sender, String text, String prefix, String suffix, String channel) {
+	public static void channelSend(String sender, String text, String prefix, String suffix, String channel,
+			String guild) {
 		ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
 		if (player == null) {
 			return;
@@ -45,6 +46,9 @@ public class ChatActions {
 			globalChat(sender, text, prefix, suffix);
 		} else if (channel.equalsIgnoreCase("STAFF")) {
 			staffChat(sender, text, prefix);
+
+		} else if (channel.equalsIgnoreCase("GUILD")) {
+			sendGuildChat(guild, sender, text);
 
 		} else if (channel.equalsIgnoreCase("NONE")) {
 			String ch = PlayerHashDB.channel.get(player.getUniqueId());
