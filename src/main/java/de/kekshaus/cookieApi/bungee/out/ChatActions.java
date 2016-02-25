@@ -60,6 +60,10 @@ public class ChatActions {
 				globalChat(sender, text, prefix, suffix);
 			} else if (ch.equalsIgnoreCase("STAFF")) {
 				staffChat(sender, text, prefix);
+
+			} else if (channel.equalsIgnoreCase("GUILD")) {
+				sendGuildChat(guild, sender, text);
+
 			}
 		} else {
 			globalChat(player.getDisplayName(), text, prefix, suffix);
