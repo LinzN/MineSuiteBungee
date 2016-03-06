@@ -36,6 +36,7 @@ public class ChatActions {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void channelSend(String sender, String text, String prefix, String suffix, String channel,
 			String guild) {
 		ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
@@ -62,8 +63,12 @@ public class ChatActions {
 				staffChat(sender, text, prefix);
 
 			} else if (channel.equalsIgnoreCase("GUILD")) {
-				sendGuildChat(guild, sender, text);
-
+				if (guild.equalsIgnoreCase("NONE")) {
+					player.sendMessage("Du bist in keiner Gilde!");
+					PlayerHashDB.channel.put(player.getUniqueId(), "GLOBAL");
+				} else {
+					sendGuildChat(guild, sender, text);
+				}
 			}
 		} else {
 			globalChat(player.getDisplayName(), text, prefix, suffix);
