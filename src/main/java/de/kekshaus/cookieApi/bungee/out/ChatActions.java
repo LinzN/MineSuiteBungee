@@ -62,7 +62,7 @@ public class ChatActions {
 			} else if (ch.equalsIgnoreCase("STAFF")) {
 				staffChat(sender, text, prefix);
 
-			} else if (channel.equalsIgnoreCase("GUILD")) {
+			} else if (ch.equalsIgnoreCase("GUILD")) {
 				if (guild.equalsIgnoreCase("NONE")) {
 					player.sendMessage("Du bist in keiner Gilde!");
 					PlayerHashDB.channel.put(player.getUniqueId(), "GLOBAL");
