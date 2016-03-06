@@ -27,8 +27,6 @@ public class BungeeSockChatListener implements Listener {
 				String suffix = in.readUTF();
 				String channel = in.readUTF();
 				String guild = in.readUTF();
-				ProxyServer.getInstance().getLogger()
-						.info(sender + ": " + text + ": " + prefix + ": " + suffix + ": " + channel + ": " + guild);
 				ChatActions.channelSend(sender, text, prefix, suffix, channel, guild);
 				return;
 			}
