@@ -1,6 +1,8 @@
 
 package de.kekshaus.cookieApi.bungee.managers;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -154,13 +156,16 @@ public class BanManager {
 		String reason = list.get(0);
 		String bannedby = list.get(1);
 		long milisec = Long.parseLong(list.get(2));
+		long bannedAt = Long.parseLong(list.get(3));
+		String formated = new SimpleDateFormat("dd.MM.yyyy 'um' HH:mm").format(new Date(bannedAt));
 		String time = getRemainingTime(milisec);
 		String BanMsg;
 		if (time.equalsIgnoreCase("Permanent")) {
-			BanMsg = "§6Du bist §aPermanent §6von §a" + bannedby + " §6vom Server gesperrt. \n§6Grund: §a" + reason;
+			BanMsg = "§6Du wurdest §aPermanent §6von §a" + bannedby + " §6 am " + formated
+					+ " vom Server gesperrt. \n§6Grund: §a" + reason;
 		} else {
-			BanMsg = "§6Du bist für §a" + time + " §6von §a" + bannedby + " §6vom Server gesperrt. \n§6Grund: §a"
-					+ reason;
+			BanMsg = "§6Du wurdest für §a" + time + " §6von §a" + bannedby + " §6am " + formated
+					+ " vom Server gesperrt. \n§6Grund: §a" + reason;
 		}
 
 		return BanMsg;
