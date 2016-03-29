@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -91,11 +92,13 @@ public class DataBaseActions {
 
 	public static void newBannedPlayer(UUID uuid, String reason, String bannedby, long extime) {
 		ConnectionManager manager = ConnectionManager.DEFAULT;
+		Date date = new Date();
 		try {
 			Connection conn = manager.getConnection("bungeeapi");
 			PreparedStatement sql = conn.prepareStatement(
-					"INSERT INTO bans (UUID, Banned, Reason, BannedBy, ExpireTime) VALUES ('" + uuid.toString() + "', '"
-							+ 1 + "', '" + reason.replace("'", "") + "', '" + bannedby + "', '" + extime + "');");
+					"INSERT INTO bans (UUID, Banned, Reason, BannedBy, ExpireTime, BannedAt) VALUES ('"
+							+ uuid.toString() + "', '" + 1 + "', '" + reason.replace("'", "") + "', '" + bannedby
+							+ "', '" + extime + "', '" + date.getTime() + "');");
 			sql.executeUpdate();
 			sql.close();
 			manager.release("bungeeapi", conn);
@@ -106,11 +109,13 @@ public class DataBaseActions {
 
 	public static void newMutedPlayer(UUID uuid, String reason, String mutedby, long extime) {
 		ConnectionManager manager = ConnectionManager.DEFAULT;
+		Date date = new Date();
 		try {
 			Connection conn = manager.getConnection("bungeeapi");
-			PreparedStatement sql = conn.prepareStatement(
-					"INSERT INTO mutes (UUID, Muted, Reason, MutedBy, ExpireTime) VALUES ('" + uuid.toString() + "', '"
-							+ 1 + "', '" + reason.replace("'", "") + "', '" + mutedby + "', '" + extime + "');");
+			PreparedStatement sql = conn
+					.prepareStatement("INSERT INTO mutes (UUID, Muted, Reason, MutedBy, ExpireTime, MutedAt) VALUES ('"
+							+ uuid.toString() + "', '" + 1 + "', '" + reason.replace("'", "") + "', '" + mutedby
+							+ "', '" + extime + "', '" + date.getTime() + "');");
 			sql.executeUpdate();
 			sql.close();
 			manager.release("bungeeapi", conn);
@@ -121,12 +126,14 @@ public class DataBaseActions {
 
 	public static void updateBannedPlayer(UUID uuid, String reason, String bannedby, long extime) {
 		ConnectionManager manager = ConnectionManager.DEFAULT;
+		Date date = new Date();
 
 		try {
 			Connection conn = manager.getConnection("bungeeapi");
-			PreparedStatement sql = conn.prepareStatement("UPDATE bans SET Banned = '" + 1 + "', Reason =  '"
-					+ reason.replace("'", "") + "', BannedBy =  '" + bannedby + "', ExpireTime =  '" + extime
-					+ "' WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
+			PreparedStatement sql = conn
+					.prepareStatement("UPDATE bans SET Banned = '" + 1 + "', Reason =  '" + reason.replace("'", "")
+							+ "', BannedBy =  '" + bannedby + "', ExpireTime =  '" + extime + "', BannedAt =  '"
+							+ date.getTime() + "' WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
 			sql.executeUpdate();
 			sql.close();
 			manager.release("bungeeapi", conn);
@@ -138,11 +145,13 @@ public class DataBaseActions {
 
 	public static void updateMutedPlayer(UUID uuid, String reason, String mutedby, long extime) {
 		ConnectionManager manager = ConnectionManager.DEFAULT;
+		Date date = new Date();
 		try {
 			Connection conn = manager.getConnection("bungeeapi");
-			PreparedStatement sql = conn.prepareStatement("UPDATE mutes SET Muted = '" + 1 + "', Reason =  '"
-					+ reason.replace("'", "") + "', MutedBy =  '" + mutedby + "', ExpireTime =  '" + extime
-					+ "' WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
+			PreparedStatement sql = conn
+					.prepareStatement("UPDATE mutes SET Muted = '" + 1 + "', Reason =  '" + reason.replace("'", "")
+							+ "', MutedBy =  '" + mutedby + "', ExpireTime =  '" + extime + "', MutedAt =  '"
+							+ date.getTime() + "' WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
 			sql.executeUpdate();
 			sql.close();
 			manager.release("bungeeapi", conn);
@@ -315,6 +324,7 @@ public class DataBaseActions {
 						list.add(0, result.getString("Reason"));
 						list.add(1, result.getString("BannedBy"));
 						list.add(2, result.getString("ExpireTime"));
+						list.add(3, result.getString("BannedAt"));
 					}
 				}
 				result.close();
@@ -348,6 +358,7 @@ public class DataBaseActions {
 						list.add(0, result.getString("Reason"));
 						list.add(1, result.getString("MutedBy"));
 						list.add(2, result.getString("ExpireTime"));
+						list.add(3, result.getString("BannedAt"));
 					}
 				}
 				result.close();
