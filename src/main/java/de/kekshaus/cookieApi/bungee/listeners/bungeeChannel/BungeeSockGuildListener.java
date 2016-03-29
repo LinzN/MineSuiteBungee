@@ -87,6 +87,20 @@ public class BungeeSockGuildListener implements Listener {
 
 			}
 
+			if (task.equals("UpdateGuildSpawn")) {
+				UUID guildUUID = UUID.fromString(in.readUTF());
+				String server = in.readUTF();
+				String world = in.readUTF();
+				double x = in.readDouble();
+				double y = in.readDouble();
+				double z = in.readDouble();
+				float yaw = in.readFloat();
+				float pitch = in.readFloat();
+
+				updateGuildSpawn(guildUUID, server, world, x, y, z, yaw, pitch);
+
+			}
+
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -199,6 +213,32 @@ public class BungeeSockGuildListener implements Listener {
 			out.writeUTF("FinishGuildInvite");
 			out.writeUTF(invitedPlayer.getName());
 			out.writeUTF(guildUUID.toString());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		BungeePlugin.instance().sendBytesOut(bytes);
+	}
+
+	public static void updateGuildSpawn(UUID guildUUID, String server, String world, double x, double y, double z,
+			float yaw, float pitch)
+
+	{
+
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		DataOutputStream out = Channel.guildChannel(bytes);
+
+		try {
+			out.writeUTF("UpdateGuildSpawn");
+			out.writeUTF(guildUUID.toString());
+			out.writeUTF(server);
+			out.writeUTF(world);
+			out.writeDouble(x);
+			out.writeDouble(y);
+			out.writeDouble(z);
+			out.writeFloat(yaw);
+			out.writeFloat(pitch);
 
 		} catch (IOException e) {
 			e.printStackTrace();
