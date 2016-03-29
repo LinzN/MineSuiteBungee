@@ -11,6 +11,9 @@ import de.keks.socket.bungee.events.plugin.BungeeSockGuildEvent;
 import de.keks.socket.core.ByteStreamConverter;
 import de.keks.socket.core.Channel;
 import de.kekshaus.cookieApi.bungee.dbase.PlayerHashDB;
+import de.kekshaus.cookieApi.bungee.managers.PlayerManager;
+import de.kekshaus.cookieApi.bungee.out.TeleportToGuild;
+import de.kekshaus.cookieApi.bungee.utils.Location;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -99,6 +102,14 @@ public class BungeeSockGuildListener implements Listener {
 
 				updateGuildSpawn(guildUUID, server, world, x, y, z, yaw, pitch);
 
+			}
+
+			if (task.equals("TeleportToGuildSpawn")) {
+				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
+				TeleportToGuild.execute(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
+						in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
+				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to guild!");
+				return;
 			}
 
 		} catch (IOException e1) {
