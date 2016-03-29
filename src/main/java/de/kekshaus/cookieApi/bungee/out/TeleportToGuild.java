@@ -35,7 +35,7 @@ public class TeleportToGuild {
 		}
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = Channel.homeChannel(bytes);
+		DataOutputStream out = Channel.guildChannel(bytes);
 
 		try {
 			out.writeUTF("TeleportToGuildSpawn");
