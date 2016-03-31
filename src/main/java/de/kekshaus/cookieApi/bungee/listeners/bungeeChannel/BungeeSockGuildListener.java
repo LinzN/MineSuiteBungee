@@ -112,6 +112,14 @@ public class BungeeSockGuildListener implements Listener {
 				return;
 			}
 
+			if (task.equals("SendExpUpdate")) {
+				String server = in.readUTF();
+				UUID guildUUID = UUID.fromString(in.readUTF());
+				double exp = in.readDouble();
+				sendExpUpdate(server, guildUUID, exp);
+
+			}
+
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -250,6 +258,25 @@ public class BungeeSockGuildListener implements Listener {
 			out.writeDouble(z);
 			out.writeFloat(yaw);
 			out.writeFloat(pitch);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		BungeePlugin.instance().sendBytesOut(bytes);
+	}
+
+	public static void sendExpUpdate(String server, UUID guildUUID, double exp)
+
+	{
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		DataOutputStream out = Channel.guildChannel(bytes);
+
+		try {
+			out.writeUTF("SendExpUpdate");
+			out.writeUTF(server);
+			out.writeUTF(guildUUID.toString());
+			out.writeDouble(exp);
 
 		} catch (IOException e) {
 			e.printStackTrace();
