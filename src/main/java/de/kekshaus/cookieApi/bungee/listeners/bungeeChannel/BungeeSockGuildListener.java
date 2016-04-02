@@ -120,6 +120,13 @@ public class BungeeSockGuildListener implements Listener {
 
 			}
 
+			if (task.equals("UpdateGuildName")) {
+				UUID guildUUID = UUID.fromString(in.readUTF());
+				String guildName = in.readUTF();
+				updateGuildName(guildUUID, guildName);
+
+			}
+
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -277,6 +284,25 @@ public class BungeeSockGuildListener implements Listener {
 			out.writeUTF(server);
 			out.writeUTF(guildUUID.toString());
 			out.writeDouble(exp);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		BungeePlugin.instance().sendBytesOut(bytes);
+	}
+
+	public static void updateGuildName(UUID guildUUID, String guildName)
+
+	{
+
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		DataOutputStream out = Channel.guildChannel(bytes);
+
+		try {
+			out.writeUTF("UpdateGuildName");
+			out.writeUTF(guildUUID.toString());
+			out.writeUTF(guildName);
 
 		} catch (IOException e) {
 			e.printStackTrace();
