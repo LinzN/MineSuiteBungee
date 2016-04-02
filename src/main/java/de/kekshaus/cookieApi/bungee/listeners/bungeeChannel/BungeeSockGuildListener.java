@@ -32,8 +32,8 @@ public class BungeeSockGuildListener implements Listener {
 			if (task.equalsIgnoreCase("createGuild")) {
 				UUID guildUUID = UUID.fromString(in.readUTF());
 				String guildName = in.readUTF();
-				String guildOwner = in.readUTF();
-				createGuild(guildUUID, guildName, guildOwner);
+				String guildMaster = in.readUTF();
+				createGuild(guildUUID, guildName, guildMaster);
 				return;
 			}
 
@@ -42,10 +42,10 @@ public class BungeeSockGuildListener implements Listener {
 				deleteGuild(guildUUID);
 				return;
 			}
-			if (task.equalsIgnoreCase("UpdateGuildOwner")) {
+			if (task.equalsIgnoreCase("UpdateGuildMaster")) {
 				UUID guildUUID = UUID.fromString(in.readUTF());
-				String owner = in.readUTF();
-				updateGuildOwner(guildUUID, owner);
+				String guildMaster = in.readUTF();
+				updateGuildMaster(guildUUID, guildMaster);
 				return;
 			}
 			if (task.equalsIgnoreCase("AddGuildToPlayer")) {
@@ -164,7 +164,7 @@ public class BungeeSockGuildListener implements Listener {
 		BungeePlugin.instance().sendBytesOut(bytes);
 	}
 
-	public static void updateGuildOwner(UUID guildUUID, String owner)
+	public static void updateGuildMaster(UUID guildUUID, String master)
 
 	{
 
@@ -172,9 +172,9 @@ public class BungeeSockGuildListener implements Listener {
 		DataOutputStream out = Channel.guildChannel(bytes);
 
 		try {
-			out.writeUTF("UpdateGuildOwner");
+			out.writeUTF("UpdateGuildMaster");
 			out.writeUTF(guildUUID.toString());
-			out.writeUTF(owner);
+			out.writeUTF(master);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -201,7 +201,7 @@ public class BungeeSockGuildListener implements Listener {
 		BungeePlugin.instance().sendBytesOut(bytes);
 	}
 
-	public static void createGuild(UUID guildUUID, String guildName, String guildOwner)
+	public static void createGuild(UUID guildUUID, String guildName, String guildMaster)
 
 	{
 
@@ -212,7 +212,7 @@ public class BungeeSockGuildListener implements Listener {
 			out.writeUTF("createGuild");
 			out.writeUTF(guildUUID.toString());
 			out.writeUTF(guildName);
-			out.writeUTF(guildOwner);
+			out.writeUTF(guildMaster);
 
 		} catch (IOException e) {
 			e.printStackTrace();
