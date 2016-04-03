@@ -25,12 +25,20 @@ public class BungeeSockTeleportListener implements Listener {
 
 			if (task.equals("TeleportToServer")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
+				if (player == null) {
+					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+					return;
+				}
 				TeleportToOther.portalOtherServer(player, in.readUTF());
 				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to server!");
 				return;
 			}
 			if (task.equals("TeleportToLocation")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
+				if (player == null) {
+					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+					return;
+				}
 				TeleportToLocation.execute(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
 						in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
 				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to spawntype!");
@@ -39,6 +47,10 @@ public class BungeeSockTeleportListener implements Listener {
 
 			if (task.equals("PlayersDeathBackLocation")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
+				if (player == null) {
+					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+					return;
+				}
 				TeleportManager.setPlayersDeathBackLocation(PlayerManager.getPlayer(player.getName()),
 						new Location(player.getServer().getInfo().getName(), in.readUTF(), in.readDouble(),
 								in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
@@ -62,11 +74,21 @@ public class BungeeSockTeleportListener implements Listener {
 				return;
 			}
 			if (task.equals("TpAccept")) {
-				TeleportManager.acceptTeleportRequest(PlayerManager.getPlayer(in.readUTF()));
+				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
+				if (player == null) {
+					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+					return;
+				}
+				TeleportManager.acceptTeleportRequest(player);
 				return;
 			}
 			if (task.equals("TpDeny")) {
-				TeleportManager.denyTeleportRequest(PlayerManager.getPlayer(in.readUTF()));
+				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
+				if (player == null) {
+					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+					return;
+				}
+				TeleportManager.denyTeleportRequest(player);
 				return;
 			}
 
@@ -77,6 +99,10 @@ public class BungeeSockTeleportListener implements Listener {
 
 			if (task.equals("SendPlayerBack")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
+				if (player == null) {
+					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+					return;
+				}
 				TeleportManager.sendPlayerToLastBack(player);
 				return;
 			}

@@ -23,6 +23,10 @@ public class BungeeSockWarpListener implements Listener {
 
 			if (task.equals("TeleportToWarp")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
+				if (player == null) {
+					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+					return;
+				}
 				TeleportToWarp.execute(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
 						in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
 				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to warp!");
