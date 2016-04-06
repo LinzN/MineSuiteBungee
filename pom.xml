@@ -4,7 +4,7 @@
 
     <groupId>de.cookieapi</groupId>
     <artifactId>cookieApiBungee</artifactId>
-    <version>0.8.0</version>
+    <version>1.1.2</version>
     <packaging>jar</packaging>
     <name>cookieApiBungee</name>
 
@@ -90,4 +90,8 @@
       </plugin>
         </plugins>
     </build>
+    
+    <properties>
+    <build.number>SNAPSHOT</build.number>
+</properties>
 </project>
