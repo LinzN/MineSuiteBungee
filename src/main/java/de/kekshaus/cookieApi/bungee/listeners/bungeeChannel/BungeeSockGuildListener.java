@@ -44,8 +44,9 @@ public class BungeeSockGuildListener implements Listener {
 			}
 			if (task.equalsIgnoreCase("UpdateGuildMaster")) {
 				UUID guildUUID = UUID.fromString(in.readUTF());
-				String guildMaster = in.readUTF();
-				updateGuildMaster(guildUUID, guildMaster);
+				String oldMaster = in.readUTF();
+				String newMaster = in.readUTF();
+				updateGuildMaster(guildUUID, oldMaster, newMaster);
 				return;
 			}
 			if (task.equalsIgnoreCase("AddGuildToPlayer")) {
@@ -128,6 +129,14 @@ public class BungeeSockGuildListener implements Listener {
 
 			}
 
+			if (task.equals("UpdateGuildPlayer")) {
+				UUID guildUUID = UUID.fromString(in.readUTF());
+				String player = in.readUTF();
+				String rang = in.readUTF();
+				updateGuildPlayer(guildUUID, player, rang);
+
+			}
+
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -172,7 +181,7 @@ public class BungeeSockGuildListener implements Listener {
 		BungeePlugin.instance().sendBytesOut(bytes);
 	}
 
-	public static void updateGuildMaster(UUID guildUUID, String master)
+	public static void updateGuildMaster(UUID guildUUID, String oldMaster, String newMaster)
 
 	{
 
@@ -182,7 +191,28 @@ public class BungeeSockGuildListener implements Listener {
 		try {
 			out.writeUTF("UpdateGuildMaster");
 			out.writeUTF(guildUUID.toString());
-			out.writeUTF(master);
+			out.writeUTF(oldMaster);
+			out.writeUTF(newMaster);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		BungeePlugin.instance().sendBytesOut(bytes);
+	}
+
+	public static void updateGuildPlayer(UUID guildUUID, String player, String rang)
+
+	{
+
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		DataOutputStream out = Channel.guildChannel(bytes);
+
+		try {
+			out.writeUTF("UpdateGuildPlayer");
+			out.writeUTF(guildUUID.toString());
+			out.writeUTF(player);
+			out.writeUTF(rang);
 
 		} catch (IOException e) {
 			e.printStackTrace();
