@@ -24,7 +24,7 @@ public class DataBaseManager {
 			Connection connection = handler.getConnection();
 			String sql = "CREATE TABLE IF NOT EXISTS mutes (Id int NOT NULL AUTO_INCREMENT, UUID text, Muted text, Reason text, MutedBy text, MutedAt bigint, ExpireTime bigint, UnMutedBy text, UnMutedReason text, PRIMARY KEY (Id));";
 			String sql2 = "CREATE TABLE IF NOT EXISTS bans (Id int NOT NULL AUTO_INCREMENT, UUID text, Banned text, Reason text, BannedBy text, BannedAt bigint, ExpireTime bigint, UnBannedBy text, UnBannedReason text, PRIMARY KEY (Id));";
-			String sql3 = "CREATE TABLE IF NOT EXISTS uuidcache (Id int NOT NULL AUTO_INCREMENT, UUID text, NAME text, PRIMARY KEY (id));";
+			String sql3 = "CREATE TABLE IF NOT EXISTS uuidcache (Id int NOT NULL AUTO_INCREMENT, UUID text, NAME text, TIMESTAMP bigint, PRIMARY KEY (id));";
 			Statement action = connection.createStatement();
 			action.executeUpdate(sql);
 			action.executeUpdate(sql2);

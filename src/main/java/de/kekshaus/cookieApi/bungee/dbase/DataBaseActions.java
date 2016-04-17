@@ -278,7 +278,7 @@ public class DataBaseActions {
 		return uuid;
 	}
 
-	public static boolean setORUpdateName(UUID uuid, String player) {
+	public static boolean updateProfile(UUID uuid, String player, long time) {
 		ConnectionManager manager = ConnectionManager.DEFAULT;
 		try {
 			Connection conn = manager.getConnection("bungeeapi");
@@ -286,13 +286,13 @@ public class DataBaseActions {
 			ResultSet result = sql.executeQuery();
 			if (result.next()) {
 
-				PreparedStatement sql2 = conn.prepareStatement(
-						"UPDATE uuidcache SET NAME = '" + player + "' WHERE UUID = '" + uuid.toString() + "';");
+				PreparedStatement sql2 = conn.prepareStatement("UPDATE uuidcache SET NAME = '" + player
+						+ "', TIMESTAMP = '" + time + "' WHERE UUID = '" + uuid.toString() + "';");
 				sql2.executeUpdate();
 				sql2.close();
 			} else {
-				PreparedStatement sql2 = conn.prepareStatement(
-						"INSERT INTO uuidcache (UUID, NAME) VALUES ('" + uuid.toString() + "', '" + player + "');");
+				PreparedStatement sql2 = conn.prepareStatement("INSERT INTO uuidcache (UUID, NAME, TIMESTAMP) VALUES ('"
+						+ uuid.toString() + "', '" + player + "', '" + time + "');");
 				sql2.executeUpdate();
 				sql2.close();
 			}

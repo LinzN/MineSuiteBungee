@@ -1,5 +1,6 @@
 package de.kekshaus.cookieApi.bungee.listeners;
 
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -59,14 +60,6 @@ public class ProxyServerListener implements Listener {
 
 	@EventHandler(priority = 64)
 	public void onLogin(final LoginEvent e) {
-
-		if (DataBaseActions.setORUpdateName(e.getConnection().getUniqueId(), e.getConnection().getName())) {
-			CookieApiBungee.instance.getLogger()
-					.info("UUID-cache updated for incoming connection " + e.getConnection().getName());
-		} else {
-			CookieApiBungee.instance.getLogger().info(
-					"FAIL! UUID-cache update for incoming connection " + e.getConnection().getName() + " failed!");
-		}
 		if (BanManager.isBanned(e.getConnection().getUniqueId())) {
 			final Long current = System.currentTimeMillis();
 			final Long end = BanManager.getEnd(e.getConnection().getUniqueId());
@@ -77,6 +70,15 @@ public class ProxyServerListener implements Listener {
 				e.setCancelled(true);
 				e.setCancelReason(BanManager.getBannedMessage(e.getConnection().getUniqueId()));
 			}
+		}
+
+		long timeStamp = new Date().getTime();
+		if (DataBaseActions.updateProfile(e.getConnection().getUniqueId(), e.getConnection().getName(), timeStamp)) {
+			CookieApiBungee.instance.getLogger()
+					.info("UUID-cache updated for incoming connection " + e.getConnection().getName());
+		} else {
+			CookieApiBungee.instance.getLogger().info(
+					"FAIL! UUID-cache update for incoming connection " + e.getConnection().getName() + " failed!");
 		}
 
 	}
