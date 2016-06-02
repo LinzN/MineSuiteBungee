@@ -2,11 +2,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.cookieapi</groupId>
-    <artifactId>cookieApiBungee</artifactId>
+    <groupId>de.nlinz.xeonSuite</groupId>
+    <artifactId>XeonSuiteBungee</artifactId>
     <version>1</version>
     <packaging>jar</packaging>
-    <name>cookieApiBungee</name>
+    <name>XeonSuiteBungee</name>
 
 
     <repositories>
