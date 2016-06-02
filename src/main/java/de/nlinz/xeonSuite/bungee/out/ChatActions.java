@@ -5,9 +5,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import de.keks.socket.bungee.BungeePlugin;
-import de.keks.socket.core.Channel;
+import de.nlinz.javaSocket.server.JavaSocketServer;
+import de.nlinz.xeonSocketBungee.mask.XeonSocketBungeeMask;
 import de.nlinz.xeonSuite.bungee.dbase.PlayerHashDB;
+import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonChat;
 import de.nlinz.xeonSuite.bungee.utils.ChatFormate;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -19,7 +20,8 @@ public class ChatActions {
 		ProxyServer.getInstance().getServers();
 		String formatedText = ChatFormate.toGuildFormate(sender, text);
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = Channel.chatChannel(bytes);
+		DataOutputStream out = JavaSocketServer.createChannel(bytes, XeonChat.channelName);
+
 		try {
 			out.writeUTF("GuildChat");
 			out.writeUTF(guild);
@@ -28,7 +30,7 @@ public class ChatActions {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		BungeePlugin.instance().sendBytesOut(bytes);
+		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
 		ProxyServer.getInstance().getLogger().info(guild + "-> " + formatedText);
 		for (UUID uuid : PlayerHashDB.socialspy.keySet()) {
 			ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
@@ -95,7 +97,7 @@ public class ChatActions {
 		ProxyServer.getInstance().getServers();
 		String formatedText = ChatFormate.toChannelStaffFormate(sender, text, prefix);
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = Channel.chatChannel(bytes);
+		DataOutputStream out = JavaSocketServer.createChannel(bytes, XeonChat.channelName);
 		try {
 			out.writeUTF("StaffChat");
 			out.writeUTF(formatedText);
@@ -103,7 +105,7 @@ public class ChatActions {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		BungeePlugin.instance().sendBytesOut(bytes);
+		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
 		ProxyServer.getInstance().getLogger().info("STAFF" + "-> " + formatedText);
 	}
 

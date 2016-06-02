@@ -1,13 +1,13 @@
 package de.nlinz.xeonSuite.bungee.out;
 
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import de.keks.socket.bungee.BungeePlugin;
-import de.keks.socket.core.Channel;
+import de.nlinz.javaSocket.server.JavaSocketServer;
+import de.nlinz.xeonSocketBungee.mask.XeonSocketBungeeMask;
+import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonTeleport;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class TeleportToPlayer {
 
@@ -16,7 +16,7 @@ public class TeleportToPlayer {
 			player.connect(target.getServer().getInfo());
 		}
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = Channel.teleportChannel(bytes);
+		DataOutputStream out = JavaSocketServer.createChannel(bytes, XeonTeleport.channelName);
 
 		try {
 			out.writeUTF(target.getServer().getInfo().getName());
@@ -27,6 +27,6 @@ public class TeleportToPlayer {
 			e.printStackTrace();
 		}
 
-		BungeePlugin.instance().sendBytesOut(bytes);
+		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
 	}
 }

@@ -2,14 +2,15 @@ package de.nlinz.xeonSuite.bungee;
 
 import java.util.concurrent.TimeUnit;
 
+import de.nlinz.javaSocket.server.JavaSocketServer;
 import de.nlinz.xeonSuite.bungee.dbase.DataBaseManager;
 import de.nlinz.xeonSuite.bungee.listeners.ProxyServerListener;
-import de.nlinz.xeonSuite.bungee.listeners.bungeeChannel.BungeeSockBanListener;
-import de.nlinz.xeonSuite.bungee.listeners.bungeeChannel.BungeeSockChatListener;
-import de.nlinz.xeonSuite.bungee.listeners.bungeeChannel.BungeeSockGuildListener;
-import de.nlinz.xeonSuite.bungee.listeners.bungeeChannel.BungeeSockHomeListener;
-import de.nlinz.xeonSuite.bungee.listeners.bungeeChannel.BungeeSockTeleportListener;
-import de.nlinz.xeonSuite.bungee.listeners.bungeeChannel.BungeeSockWarpListener;
+import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonBan;
+import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonChat;
+import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonGuild;
+import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonHome;
+import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonTeleport;
+import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonWarp;
 import de.nlinz.xeonSuite.bungee.utils.AutoUnbanChecker;
 import de.nlinz.xeonSuite.bungee.utils.AutoUnmuteChecker;
 import de.nlinz.xeonSuite.bungee.utils.Config;
@@ -22,6 +23,7 @@ public class XeonSuiteBungee extends Plugin {
 	public static XeonSuiteBungee instance;
 	public static ProxyServer proxy;
 
+	@Override
 	@SuppressWarnings({ "deprecation" })
 	public void onEnable() {
 		instance = this;
@@ -41,14 +43,16 @@ public class XeonSuiteBungee extends Plugin {
 
 	private void registerListeners() {
 		proxy.getPluginManager().registerListener(this, new ProxyServerListener());
-		proxy.getPluginManager().registerListener(this, new BungeeSockBanListener());
-		proxy.getPluginManager().registerListener(this, new BungeeSockChatListener());
-		proxy.getPluginManager().registerListener(this, new BungeeSockGuildListener());
-		proxy.getPluginManager().registerListener(this, new BungeeSockHomeListener());
-		proxy.getPluginManager().registerListener(this, new BungeeSockTeleportListener());
-		proxy.getPluginManager().registerListener(this, new BungeeSockWarpListener());
+
+		JavaSocketServer.registerDataListener(new XeonBan());
+		JavaSocketServer.registerDataListener(new XeonChat());
+		JavaSocketServer.registerDataListener(new XeonGuild());
+		JavaSocketServer.registerDataListener(new XeonHome());
+		JavaSocketServer.registerDataListener(new XeonTeleport());
+		JavaSocketServer.registerDataListener(new XeonWarp());
 	}
 
+	@Override
 	public void onDisable() {
 	}
 

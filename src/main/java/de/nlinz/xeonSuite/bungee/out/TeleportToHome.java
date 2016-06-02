@@ -4,9 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import de.keks.socket.bungee.BungeePlugin;
-import de.keks.socket.core.Channel;
+import de.nlinz.javaSocket.server.JavaSocketServer;
+import de.nlinz.xeonSocketBungee.mask.XeonSocketBungeeMask;
 import de.nlinz.xeonSuite.bungee.XeonSuiteBungee;
+import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonHome;
 import de.nlinz.xeonSuite.bungee.utils.Location;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -35,7 +36,7 @@ public class TeleportToHome {
 		}
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = Channel.homeChannel(bytes);
+		DataOutputStream out = JavaSocketServer.createChannel(bytes, XeonHome.channelName);
 
 		try {
 			out.writeUTF(servernew.getName());
@@ -51,6 +52,6 @@ public class TeleportToHome {
 			e.printStackTrace();
 		}
 
-		BungeePlugin.instance().sendBytesOut(bytes);
+		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
 	}
 }

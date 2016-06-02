@@ -37,11 +37,11 @@
     	<artifactId>bungeecord-api</artifactId>
     	<version>1.9-SNAPSHOT</version>
     </dependency>
-        <dependency>
-        	<groupId>de.kekshaus</groupId>
-        	<artifactId>CookieSocket</artifactId>
-        	<version>1</version>
-        </dependency>
+    <dependency>
+    	<groupId>de.nlinz</groupId>
+    	<artifactId>XeonSocketServer</artifactId>
+    	<version>1.0</version>
+    </dependency>
     </dependencies>
 
     <build>
