@@ -6,10 +6,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import de.nlinz.javaSocket.server.JavaSocketServer;
+import de.nlinz.javaSocket.server.api.XeonSocketServerManager;
 import de.nlinz.javaSocket.server.events.SocketDataEvent;
 import de.nlinz.javaSocket.server.interfaces.IDataListener;
-import de.nlinz.xeonSocketBungee.mask.XeonSocketBungeeMask;
 import de.nlinz.xeonSuite.bungee.dbase.PlayerHashDB;
 import de.nlinz.xeonSuite.bungee.managers.PlayerManager;
 import de.nlinz.xeonSuite.bungee.out.TeleportToGuild;
@@ -31,7 +30,7 @@ public class XeonGuild implements IDataListener {
 	@Override
 	public void onDataRecieve(SocketDataEvent event) {
 		// TODO Auto-generated method stub
-		DataInputStream in = JavaSocketServer.createInputStream(event.getStreamBytes());
+		DataInputStream in = XeonSocketServerManager.readDataInput(event.getStreamBytes());
 		String task = null;
 		try {
 			task = in.readUTF();
@@ -154,7 +153,7 @@ public class XeonGuild implements IDataListener {
 	{
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = JavaSocketServer.createChannel(bytes, channelName);
+		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
 
 		try {
 			out.writeUTF("DeleteGuildFromPlayer");
@@ -165,7 +164,7 @@ public class XeonGuild implements IDataListener {
 			e.printStackTrace();
 		}
 
-		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
+		XeonSocketServerManager.sendData(bytes);
 	}
 
 	public static void addPlayerToGuild(String pname, UUID guildUUID, String gRang)
@@ -173,7 +172,7 @@ public class XeonGuild implements IDataListener {
 	{
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = JavaSocketServer.createChannel(bytes, channelName);
+		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
 
 		try {
 			out.writeUTF("AddGuildToPlayer");
@@ -185,7 +184,7 @@ public class XeonGuild implements IDataListener {
 			e.printStackTrace();
 		}
 
-		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
+		XeonSocketServerManager.sendData(bytes);
 	}
 
 	public static void updateGuildMaster(UUID guildUUID, String oldMaster, String newMaster)
@@ -193,7 +192,7 @@ public class XeonGuild implements IDataListener {
 	{
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = JavaSocketServer.createChannel(bytes, channelName);
+		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
 
 		try {
 			out.writeUTF("UpdateGuildMaster");
@@ -205,7 +204,7 @@ public class XeonGuild implements IDataListener {
 			e.printStackTrace();
 		}
 
-		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
+		XeonSocketServerManager.sendData(bytes);
 	}
 
 	public static void updateGuildPlayer(UUID guildUUID, String player, String rang)
@@ -213,7 +212,7 @@ public class XeonGuild implements IDataListener {
 	{
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = JavaSocketServer.createChannel(bytes, channelName);
+		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
 
 		try {
 			out.writeUTF("UpdateGuildPlayer");
@@ -225,7 +224,7 @@ public class XeonGuild implements IDataListener {
 			e.printStackTrace();
 		}
 
-		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
+		XeonSocketServerManager.sendData(bytes);
 	}
 
 	public static void deleteGuild(UUID guildUUID)
@@ -233,7 +232,7 @@ public class XeonGuild implements IDataListener {
 	{
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = JavaSocketServer.createChannel(bytes, channelName);
+		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
 
 		try {
 			out.writeUTF("deleteGuild");
@@ -243,7 +242,7 @@ public class XeonGuild implements IDataListener {
 			e.printStackTrace();
 		}
 
-		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
+		XeonSocketServerManager.sendData(bytes);
 	}
 
 	public static void createGuild(UUID guildUUID, String guildName, String guildMaster)
@@ -251,7 +250,7 @@ public class XeonGuild implements IDataListener {
 	{
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = JavaSocketServer.createChannel(bytes, channelName);
+		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
 
 		try {
 			out.writeUTF("createGuild");
@@ -263,7 +262,7 @@ public class XeonGuild implements IDataListener {
 			e.printStackTrace();
 		}
 
-		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
+		XeonSocketServerManager.sendData(bytes);
 	}
 
 	public static void finishInvite(ProxiedPlayer invitedPlayer, UUID guildUUID)
@@ -271,7 +270,7 @@ public class XeonGuild implements IDataListener {
 	{
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = JavaSocketServer.createChannel(bytes, channelName);
+		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
 
 		try {
 			out.writeUTF("FinishGuildInvite");
@@ -282,7 +281,7 @@ public class XeonGuild implements IDataListener {
 			e.printStackTrace();
 		}
 
-		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
+		XeonSocketServerManager.sendData(bytes);
 	}
 
 	public static void updateGuildSpawn(UUID guildUUID, String server, String world, double x, double y, double z,
@@ -291,7 +290,7 @@ public class XeonGuild implements IDataListener {
 	{
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = JavaSocketServer.createChannel(bytes, channelName);
+		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
 
 		try {
 			out.writeUTF("UpdateGuildSpawn");
@@ -308,14 +307,14 @@ public class XeonGuild implements IDataListener {
 			e.printStackTrace();
 		}
 
-		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
+		XeonSocketServerManager.sendData(bytes);
 	}
 
 	public static void sendExpUpdate(String server, UUID guildUUID, long exp, long totalXP)
 
 	{
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = JavaSocketServer.createChannel(bytes, channelName);
+		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
 
 		try {
 			out.writeUTF("SendExpUpdate");
@@ -328,7 +327,7 @@ public class XeonGuild implements IDataListener {
 			e.printStackTrace();
 		}
 
-		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
+		XeonSocketServerManager.sendData(bytes);
 	}
 
 	public static void updateGuildName(UUID guildUUID, String guildName)
@@ -336,7 +335,7 @@ public class XeonGuild implements IDataListener {
 	{
 
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = JavaSocketServer.createChannel(bytes, channelName);
+		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
 
 		try {
 			out.writeUTF("UpdateGuildName");
@@ -347,7 +346,7 @@ public class XeonGuild implements IDataListener {
 			e.printStackTrace();
 		}
 
-		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
+		XeonSocketServerManager.sendData(bytes);
 	}
 
 }

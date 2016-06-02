@@ -3,7 +3,7 @@ package de.nlinz.xeonSuite.bungee.listeners.xeonSocket;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import de.nlinz.javaSocket.server.JavaSocketServer;
+import de.nlinz.javaSocket.server.api.XeonSocketServerManager;
 import de.nlinz.javaSocket.server.events.SocketDataEvent;
 import de.nlinz.javaSocket.server.interfaces.IDataListener;
 import de.nlinz.xeonSuite.bungee.dbase.PlayerHashDB;
@@ -24,7 +24,7 @@ public class XeonChat implements IDataListener {
 	@Override
 	public void onDataRecieve(SocketDataEvent event) {
 		// TODO Auto-generated method stub
-		DataInputStream in = JavaSocketServer.createInputStream(event.getStreamBytes());
+		DataInputStream in = XeonSocketServerManager.readDataInput(event.getStreamBytes());
 		String task = null;
 		try {
 			task = in.readUTF();

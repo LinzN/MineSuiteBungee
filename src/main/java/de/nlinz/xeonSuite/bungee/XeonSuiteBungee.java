@@ -2,7 +2,7 @@ package de.nlinz.xeonSuite.bungee;
 
 import java.util.concurrent.TimeUnit;
 
-import de.nlinz.javaSocket.server.JavaSocketServer;
+import de.nlinz.javaSocket.server.api.XeonSocketServerManager;
 import de.nlinz.xeonSuite.bungee.dbase.DataBaseManager;
 import de.nlinz.xeonSuite.bungee.listeners.ProxyServerListener;
 import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonBan;
@@ -44,12 +44,12 @@ public class XeonSuiteBungee extends Plugin {
 	private void registerListeners() {
 		proxy.getPluginManager().registerListener(this, new ProxyServerListener());
 
-		JavaSocketServer.registerDataListener(new XeonBan());
-		JavaSocketServer.registerDataListener(new XeonChat());
-		JavaSocketServer.registerDataListener(new XeonGuild());
-		JavaSocketServer.registerDataListener(new XeonHome());
-		JavaSocketServer.registerDataListener(new XeonTeleport());
-		JavaSocketServer.registerDataListener(new XeonWarp());
+		XeonSocketServerManager.registerDataListener(new XeonBan());
+		XeonSocketServerManager.registerDataListener(new XeonChat());
+		XeonSocketServerManager.registerDataListener(new XeonGuild());
+		XeonSocketServerManager.registerDataListener(new XeonHome());
+		XeonSocketServerManager.registerDataListener(new XeonTeleport());
+		XeonSocketServerManager.registerDataListener(new XeonWarp());
 	}
 
 	@Override

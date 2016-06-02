@@ -4,8 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import de.nlinz.javaSocket.server.JavaSocketServer;
-import de.nlinz.xeonSocketBungee.mask.XeonSocketBungeeMask;
+import de.nlinz.javaSocket.server.api.XeonSocketServerManager;
 import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonTeleport;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -13,7 +12,7 @@ public class TPAFinalise {
 
 	public static void execute(ProxiedPlayer player, ProxiedPlayer target) {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = JavaSocketServer.createChannel(bytes, XeonTeleport.channelName);
+		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, XeonTeleport.channelName);
 
 		try {
 			out.writeUTF(player.getServer().getInfo().getName());
@@ -23,6 +22,6 @@ public class TPAFinalise {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		XeonSocketBungeeMask.inst().getSocketServer().sendBytesOut(bytes);
+		XeonSocketServerManager.sendData(bytes);
 	}
 }
