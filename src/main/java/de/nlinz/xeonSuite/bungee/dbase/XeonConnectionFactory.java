@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConnectionFactory {
+public class XeonConnectionFactory {
 
 	private final String url;
 	private final String user;
@@ -14,7 +14,7 @@ public class ConnectionFactory {
 		return DriverManager.getConnection(url, user, pass);
 	}
 
-	public ConnectionFactory(String url, String user, String pass) {
+	public XeonConnectionFactory(String url, String user, String pass) {
 		this.url = url;
 		this.user = user;
 		this.pass = pass;

@@ -14,9 +14,9 @@ import net.md_5.bungee.api.ProxyServer;
 public class DataBaseActions {
 
 	public static void banPlayer(UUID uuid, String reason, String bannedby, long extime) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn.prepareStatement(
 					"SELECT Banned FROM bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
 			ResultSet result = sql.executeQuery();
@@ -27,16 +27,16 @@ public class DataBaseActions {
 			}
 			result.close();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void mutePlayer(UUID uuid, String reason, String bannedby, long extime) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn.prepareStatement(
 					"SELECT Muted FROM mutes WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
 			ResultSet result = sql.executeQuery();
@@ -47,16 +47,16 @@ public class DataBaseActions {
 			}
 			result.close();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void unbanPlayer(UUID uuid, String reason, String unbannedby) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn.prepareStatement(
 					"SELECT Banned FROM bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
 			ResultSet result = sql.executeQuery();
@@ -65,17 +65,17 @@ public class DataBaseActions {
 			}
 			result.close();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void unmutePlayer(UUID uuid, String reason, String unmutedby) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn.prepareStatement(
 					"SELECT Muted FROM mutes WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
 			ResultSet result = sql.executeQuery();
@@ -84,59 +84,59 @@ public class DataBaseActions {
 			}
 			result.close();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void newBannedPlayer(UUID uuid, String reason, String bannedby, long extime) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		Date date = new Date();
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn.prepareStatement(
 					"INSERT INTO bans (UUID, Banned, Reason, BannedBy, ExpireTime, BannedAt) VALUES ('"
 							+ uuid.toString() + "', '" + 1 + "', '" + reason.replace("'", "") + "', '" + bannedby
 							+ "', '" + extime + "', '" + date.getTime() + "');");
 			sql.executeUpdate();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void newMutedPlayer(UUID uuid, String reason, String mutedby, long extime) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		Date date = new Date();
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn
 					.prepareStatement("INSERT INTO mutes (UUID, Muted, Reason, MutedBy, ExpireTime, MutedAt) VALUES ('"
 							+ uuid.toString() + "', '" + 1 + "', '" + reason.replace("'", "") + "', '" + mutedby
 							+ "', '" + extime + "', '" + date.getTime() + "');");
 			sql.executeUpdate();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void updateBannedPlayer(UUID uuid, String reason, String bannedby, long extime) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		Date date = new Date();
 
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn
 					.prepareStatement("UPDATE bans SET Banned = '" + 1 + "', Reason =  '" + reason.replace("'", "")
 							+ "', BannedBy =  '" + bannedby + "', ExpireTime =  '" + extime + "', BannedAt =  '"
 							+ date.getTime() + "' WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
 			sql.executeUpdate();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -144,57 +144,57 @@ public class DataBaseActions {
 	}
 
 	public static void updateMutedPlayer(UUID uuid, String reason, String mutedby, long extime) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		Date date = new Date();
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn
 					.prepareStatement("UPDATE mutes SET Muted = '" + 1 + "', Reason =  '" + reason.replace("'", "")
 							+ "', MutedBy =  '" + mutedby + "', ExpireTime =  '" + extime + "', MutedAt =  '"
 							+ date.getTime() + "' WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
 			sql.executeUpdate();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void updateUnbannedPlayer(UUID uuid, String reason, String unbannedby) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn.prepareStatement("UPDATE bans SET Banned = '" + 0 + "', UnBannedBy = '"
 					+ unbannedby + "', UnBannedReason = '" + reason.replace("'", "") + "' WHERE UUID = '"
 					+ uuid.toString() + "' AND Banned = '" + 1 + "';");
 			sql.executeUpdate();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void updateUnmutedPlayer(UUID uuid, String reason, String unmutedby) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn.prepareStatement("UPDATE mutes SET Muted = '" + 0 + "', UnMutedBy = '"
 					+ unmutedby + "', UnMutedReason = '" + reason.replace("'", "") + "' WHERE UUID = '"
 					+ uuid.toString() + "' AND Muted = '" + 1 + "';");
 			sql.executeUpdate();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static boolean isBanned(UUID uuid) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		Boolean banned = false;
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn.prepareStatement(
 					"SELECT Banned FROM bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
 			ResultSet result = sql.executeQuery();
@@ -205,7 +205,7 @@ public class DataBaseActions {
 			}
 			result.close();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -214,10 +214,10 @@ public class DataBaseActions {
 	}
 
 	public static boolean isMuted(UUID uuid) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		Boolean muted = false;
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn.prepareStatement(
 					"SELECT Muted FROM mutes WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
 			ResultSet result = sql.executeQuery();
@@ -228,7 +228,7 @@ public class DataBaseActions {
 			}
 			result.close();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -237,10 +237,10 @@ public class DataBaseActions {
 	}
 
 	public static long getBanExpired(UUID uuid) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		long banned = 0;
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn.prepareStatement(
 					"SELECT ExpireTime FROM bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
 			ResultSet result = sql.executeQuery();
@@ -249,7 +249,7 @@ public class DataBaseActions {
 			}
 			result.close();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -258,11 +258,11 @@ public class DataBaseActions {
 	}
 
 	public static UUID getUUID(String player) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		UUID uuid = null;
 
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn.prepareStatement("SELECT UUID FROM uuidcache WHERE NAME = '" + player + "';");
 			ResultSet result = sql.executeQuery();
 			if (result.next()) {
@@ -270,7 +270,7 @@ public class DataBaseActions {
 			}
 			result.close();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -279,9 +279,9 @@ public class DataBaseActions {
 	}
 
 	public static boolean updateProfile(UUID uuid, String player, long time) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		try {
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sql = conn.prepareStatement("SELECT NAME FROM uuidcache WHERE UUID = '" + uuid + "';");
 			ResultSet result = sql.executeQuery();
 			if (result.next()) {
@@ -298,7 +298,7 @@ public class DataBaseActions {
 			}
 			result.close();
 			sql.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 			return true;
 
 		} catch (SQLException e) {
@@ -308,32 +308,29 @@ public class DataBaseActions {
 	}
 
 	public static List<String> getBanInfos(UUID uuid) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		try {
 
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sel = conn.prepareStatement(
 					"SELECT * FROM bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
 			List<String> list = new ArrayList<String>();
-			try {
-				ResultSet result = sel.executeQuery();
-				if (result != null) {
-					@SuppressWarnings("unused")
-					int i = 0;
-					if (result.next()) {
-						list.add(0, result.getString("Reason"));
-						list.add(1, result.getString("BannedBy"));
-						list.add(2, result.getString("ExpireTime"));
-						list.add(3, result.getString("BannedAt"));
-					}
+
+			ResultSet result = sel.executeQuery();
+			if (result != null) {
+				@SuppressWarnings("unused")
+				int i = 0;
+				if (result.next()) {
+					list.add(0, result.getString("Reason"));
+					list.add(1, result.getString("BannedBy"));
+					list.add(2, result.getString("ExpireTime"));
+					list.add(3, result.getString("BannedAt"));
 				}
-				result.close();
-				sel.close();
-				manager.release("bungeeapi", conn);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
 			}
+			result.close();
+			sel.close();
+			manager.release("XeonSuite", conn);
+
 			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -342,10 +339,10 @@ public class DataBaseActions {
 	}
 
 	public static List<String> getMuteInfos(UUID uuid) {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		try {
 
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sel = conn.prepareStatement(
 					"SELECT * FROM mutes WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
 			List<String> list = new ArrayList<String>();
@@ -363,7 +360,7 @@ public class DataBaseActions {
 				}
 				result.close();
 				sel.close();
-				manager.release("bungeeapi", conn);
+				manager.release("XeonSuite", conn);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return null;
@@ -377,10 +374,10 @@ public class DataBaseActions {
 
 	@SuppressWarnings("deprecation")
 	public static boolean clearOldBans() {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		try {
 
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sel = conn
 					.prepareStatement("SELECT * FROM bans WHERE Banned = '" + 1 + "' AND ExpireTime > '" + -1 + "';");
 			ResultSet result = sel.executeQuery();
@@ -400,7 +397,7 @@ public class DataBaseActions {
 			}
 			result.close();
 			sel.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 
 			return true;
 		} catch (SQLException e) {
@@ -411,10 +408,10 @@ public class DataBaseActions {
 
 	@SuppressWarnings("deprecation")
 	public static boolean clearOldMuted() {
-		ConnectionManager manager = ConnectionManager.DEFAULT;
+		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
 		try {
 
-			Connection conn = manager.getConnection("bungeeapi");
+			Connection conn = manager.getConnection("XeonSuite");
 			PreparedStatement sel = conn
 					.prepareStatement("SELECT * FROM mutes WHERE Muted = '" + 1 + "' AND ExpireTime > '" + -1 + "';");
 			ResultSet result = sel.executeQuery();
@@ -434,7 +431,7 @@ public class DataBaseActions {
 			}
 			result.close();
 			sel.close();
-			manager.release("bungeeapi", conn);
+			manager.release("XeonSuite", conn);
 
 			return true;
 		} catch (SQLException e) {

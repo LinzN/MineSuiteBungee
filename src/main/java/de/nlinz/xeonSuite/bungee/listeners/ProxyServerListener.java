@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.nlinz.xeonSuite.bungee.XeonSuiteBungee;
 import de.nlinz.xeonSuite.bungee.dbase.DataBaseActions;
-import de.nlinz.xeonSuite.bungee.dbase.PlayerHashDB;
+import de.nlinz.xeonSuite.bungee.dbase.BungeeDataTable;
 import de.nlinz.xeonSuite.bungee.managers.BanManager;
 import de.nlinz.xeonSuite.bungee.managers.MuteManager;
 import de.nlinz.xeonSuite.bungee.managers.PlayerManager;
@@ -27,7 +27,7 @@ public class ProxyServerListener implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.LOW)
 	public void playerLogin(PostLoginEvent event) {
-		if (!PlayerHashDB.session.containsKey(event.getPlayer().getUniqueId())) {
+		if (!BungeeDataTable.session.containsKey(event.getPlayer().getUniqueId())) {
 			ProxyServer.getInstance()
 					.broadcast(ChatColor.GOLD + event.getPlayer().getName() + " ist " + ChatColor.GREEN + "online");
 		}

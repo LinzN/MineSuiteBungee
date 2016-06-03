@@ -7,7 +7,7 @@ import java.util.List;
 
 import de.nlinz.xeonSuite.bungee.XeonSuiteBungee;
 import de.nlinz.xeonSuite.bungee.dbase.DataBaseActions;
-import de.nlinz.xeonSuite.bungee.dbase.PlayerHashDB;
+import de.nlinz.xeonSuite.bungee.dbase.BungeeDataTable;
 import de.nlinz.xeonSuite.bungee.utils.Location;
 
 public class PlayerManager {
@@ -35,13 +35,13 @@ public class PlayerManager {
 					String reason = list.get(0);
 					String mutedby = list.get(1);
 					long time = Long.parseLong(list.get(2));
-					PlayerHashDB.muteReason.put(player.getUniqueId(), reason);
-					PlayerHashDB.mutedBy.put(player.getUniqueId(), mutedby);
-					PlayerHashDB.muteTime.put(player.getUniqueId(), time);
+					BungeeDataTable.muteReason.put(player.getUniqueId(), reason);
+					BungeeDataTable.mutedBy.put(player.getUniqueId(), mutedby);
+					BungeeDataTable.muteTime.put(player.getUniqueId(), time);
 
 				}
-				PlayerHashDB.channel.put(player.getUniqueId(), "GLOBAL");
-				PlayerHashDB.session.put(player.getUniqueId(), true);
+				BungeeDataTable.channel.put(player.getUniqueId(), "GLOBAL");
+				BungeeDataTable.session.put(player.getUniqueId(), true);
 
 			}
 		});
@@ -51,47 +51,47 @@ public class PlayerManager {
 		ProxyServer.getInstance().getScheduler().runAsync(XeonSuiteBungee.instance, new Runnable() {
 			@Override
 			public void run() {
-				PlayerHashDB.isMuted.remove(player.getUniqueId());
-				PlayerHashDB.muteTime.remove(player.getUniqueId());
-				PlayerHashDB.muteReason.remove(player.getUniqueId());
-				PlayerHashDB.mutedBy.remove(player.getUniqueId());
-				PlayerHashDB.guildInvites.remove(player.getUniqueId());
-				PlayerHashDB.msgreply.remove(player.getUniqueId());
-				PlayerHashDB.channel.remove(player.getUniqueId());
-				PlayerHashDB.isafk.remove(player.getUniqueId());
-				PlayerHashDB.socialspy.remove(player.getUniqueId());
-				PlayerHashDB.session.remove(player.getUniqueId());
+				BungeeDataTable.isMuted.remove(player.getUniqueId());
+				BungeeDataTable.muteTime.remove(player.getUniqueId());
+				BungeeDataTable.muteReason.remove(player.getUniqueId());
+				BungeeDataTable.mutedBy.remove(player.getUniqueId());
+				BungeeDataTable.guildInvites.remove(player.getUniqueId());
+				BungeeDataTable.msgreply.remove(player.getUniqueId());
+				BungeeDataTable.channel.remove(player.getUniqueId());
+				BungeeDataTable.isafk.remove(player.getUniqueId());
+				BungeeDataTable.socialspy.remove(player.getUniqueId());
+				BungeeDataTable.session.remove(player.getUniqueId());
 				removeDeathBackLocation(player);
 			}
 		});
 	}
 
 	public static void setDeathBackLocation(Location loc, ProxiedPlayer player) {
-		if (PlayerHashDB.deathBackLocation.containsKey(player.getUniqueId())) {
-			PlayerHashDB.deathBackLocation.remove(player.getUniqueId());
-			PlayerHashDB.lastBack.remove(player.getUniqueId());
+		if (BungeeDataTable.deathBackLocation.containsKey(player.getUniqueId())) {
+			BungeeDataTable.deathBackLocation.remove(player.getUniqueId());
+			BungeeDataTable.lastBack.remove(player.getUniqueId());
 		}
-		PlayerHashDB.deathBackLocation.put(player.getUniqueId(), loc);
-		PlayerHashDB.lastBack.put(player.getUniqueId(), true);
+		BungeeDataTable.deathBackLocation.put(player.getUniqueId(), loc);
+		BungeeDataTable.lastBack.put(player.getUniqueId(), true);
 	}
 
 	public static void removeDeathBackLocation(ProxiedPlayer player) {
-		if (PlayerHashDB.deathBackLocation.containsKey(player.getUniqueId())) {
-			PlayerHashDB.deathBackLocation.remove(player.getUniqueId());
-			PlayerHashDB.lastBack.remove(player.getUniqueId());
+		if (BungeeDataTable.deathBackLocation.containsKey(player.getUniqueId())) {
+			BungeeDataTable.deathBackLocation.remove(player.getUniqueId());
+			BungeeDataTable.lastBack.remove(player.getUniqueId());
 		}
 	}
 
 	public static boolean hasDeathBackLocation(ProxiedPlayer player) {
-		return PlayerHashDB.deathBackLocation.containsKey(player.getUniqueId());
+		return BungeeDataTable.deathBackLocation.containsKey(player.getUniqueId());
 	}
 
 	public static Location getLastBackLocation(ProxiedPlayer player) {
-		return PlayerHashDB.deathBackLocation.get(player.getUniqueId());
+		return BungeeDataTable.deathBackLocation.get(player.getUniqueId());
 	}
 
 	public static Location getDeathBackLocation(ProxiedPlayer player) {
-		return PlayerHashDB.deathBackLocation.get(player.getUniqueId());
+		return BungeeDataTable.deathBackLocation.get(player.getUniqueId());
 	}
 
 }

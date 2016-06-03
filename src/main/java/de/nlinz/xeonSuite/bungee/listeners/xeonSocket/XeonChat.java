@@ -6,7 +6,7 @@ import java.io.IOException;
 import de.nlinz.javaSocket.server.api.XeonSocketServerManager;
 import de.nlinz.javaSocket.server.events.SocketDataEvent;
 import de.nlinz.javaSocket.server.interfaces.IDataListener;
-import de.nlinz.xeonSuite.bungee.dbase.PlayerHashDB;
+import de.nlinz.xeonSuite.bungee.dbase.BungeeDataTable;
 import de.nlinz.xeonSuite.bungee.out.ChatActions;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -46,7 +46,7 @@ public class XeonChat implements IDataListener {
 				if (player == null) {
 					return;
 				}
-				PlayerHashDB.channel.put(player.getUniqueId(), channel);
+				BungeeDataTable.channel.put(player.getUniqueId(), channel);
 				return;
 			}
 
@@ -58,9 +58,9 @@ public class XeonChat implements IDataListener {
 					return;
 				}
 				if (value) {
-					PlayerHashDB.isafk.put(player.getUniqueId(), value);
+					BungeeDataTable.isafk.put(player.getUniqueId(), value);
 				} else {
-					PlayerHashDB.isafk.remove(player.getUniqueId());
+					BungeeDataTable.isafk.remove(player.getUniqueId());
 				}
 				return;
 			}
@@ -71,12 +71,12 @@ public class XeonChat implements IDataListener {
 				if (player == null) {
 					return;
 				}
-				if (!PlayerHashDB.socialspy.containsKey(player.getUniqueId())) {
-					PlayerHashDB.socialspy.put(player.getUniqueId(), true);
+				if (!BungeeDataTable.socialspy.containsKey(player.getUniqueId())) {
+					BungeeDataTable.socialspy.put(player.getUniqueId(), true);
 					player.sendMessage("§aChannel: ALLE (SocialSpy on)");
 
 				} else {
-					PlayerHashDB.socialspy.remove(player.getUniqueId());
+					BungeeDataTable.socialspy.remove(player.getUniqueId());
 					player.sendMessage("§aChannel: EIGENE (SocialSpy off)");
 				}
 				return;

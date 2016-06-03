@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import de.nlinz.javaSocket.server.api.XeonSocketServerManager;
-import de.nlinz.xeonSuite.bungee.dbase.PlayerHashDB;
+import de.nlinz.xeonSuite.bungee.dbase.BungeeDataTable;
 import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonChat;
 import de.nlinz.xeonSuite.bungee.utils.ChatFormate;
 import net.md_5.bungee.api.ProxyServer;
@@ -31,7 +31,7 @@ public class ChatActions {
 		}
 		XeonSocketServerManager.sendData(bytes);
 		ProxyServer.getInstance().getLogger().info(guild + "-> " + formatedText);
-		for (UUID uuid : PlayerHashDB.socialspy.keySet()) {
+		for (UUID uuid : BungeeDataTable.socialspy.keySet()) {
 			ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
 			p.sendMessage("§4[SPY]§r" + guild + "-> " + formatedText);
 		}
@@ -53,7 +53,7 @@ public class ChatActions {
 			sendGuildChat(guild, sender, text);
 
 		} else if (channel.equalsIgnoreCase("NONE")) {
-			String ch = PlayerHashDB.channel.get(player.getUniqueId());
+			String ch = BungeeDataTable.channel.get(player.getUniqueId());
 			if (ch == null) {
 				ProxyServer.getInstance().getLogger().info("Channel for player " + sender + " == null ????");
 				return;
@@ -66,7 +66,7 @@ public class ChatActions {
 			} else if (ch.equalsIgnoreCase("GUILD")) {
 				if (guild.equalsIgnoreCase("NONE")) {
 					player.sendMessage("Du bist in keiner Gilde!");
-					PlayerHashDB.channel.put(player.getUniqueId(), "GLOBAL");
+					BungeeDataTable.channel.put(player.getUniqueId(), "GLOBAL");
 				} else {
 					sendGuildChat(guild, sender, text);
 				}
@@ -121,10 +121,10 @@ public class ChatActions {
 			player.sendMessage("Dieser Spieler ist nicht online!");
 			return;
 		}
-		if (PlayerHashDB.isafk.containsKey(recievedPlayer.getUniqueId())) {
+		if (BungeeDataTable.isafk.containsKey(recievedPlayer.getUniqueId())) {
 			player.sendMessage("§eDer Spieler ist als abwesend makiert!");
 		}
-		PlayerHashDB.msgreply.put(recievedPlayer.getUniqueId(), player.getUniqueId());
+		BungeeDataTable.msgreply.put(recievedPlayer.getUniqueId(), player.getUniqueId());
 
 		String formatedTextSender = ChatFormate.toPrivateMsgSenderFormate(sender, reciever, text, prefix);
 		String formatedTextReciever = ChatFormate.toPrivateMsgRecieverFormate(sender, reciever, text, prefix);
@@ -135,7 +135,7 @@ public class ChatActions {
 
 		ProxyServer.getInstance().getLogger().info("[PM]" + formatedText);
 
-		for (UUID uuid : PlayerHashDB.socialspy.keySet()) {
+		for (UUID uuid : BungeeDataTable.socialspy.keySet()) {
 			ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
 			p.sendMessage("§4[SPY]§r" + formatedText);
 		}
@@ -145,7 +145,7 @@ public class ChatActions {
 	@SuppressWarnings("deprecation")
 	public static void privateReplyChat(String sender, String text, String prefix) {
 		ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
-		UUID uuidreciever = PlayerHashDB.msgreply.get(player.getUniqueId());
+		UUID uuidreciever = BungeeDataTable.msgreply.get(player.getUniqueId());
 		if (uuidreciever == null) {
 			player.sendMessage("Du hast niemand zum Antworten!");
 			return;
@@ -155,10 +155,10 @@ public class ChatActions {
 			player.sendMessage("Dieser Spieler ist offline!");
 			return;
 		}
-		if (PlayerHashDB.isafk.containsKey(recievedPlayer.getUniqueId())) {
+		if (BungeeDataTable.isafk.containsKey(recievedPlayer.getUniqueId())) {
 			player.sendMessage("§eDer Spieler ist als abwesend makiert!");
 		}
-		PlayerHashDB.msgreply.put(recievedPlayer.getUniqueId(), player.getUniqueId());
+		BungeeDataTable.msgreply.put(recievedPlayer.getUniqueId(), player.getUniqueId());
 
 		String formatedTextSender = ChatFormate.toPrivateMsgSenderFormate(sender, recievedPlayer.getName(), text,
 				prefix);
@@ -170,7 +170,7 @@ public class ChatActions {
 		recievedPlayer.sendMessage(formatedTextReciever);
 
 		ProxyServer.getInstance().getLogger().info("[Reply]" + formatedText);
-		for (UUID uuid : PlayerHashDB.socialspy.keySet()) {
+		for (UUID uuid : BungeeDataTable.socialspy.keySet()) {
 			ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
 			p.sendMessage("§4[SPY]§r" + formatedText);
 		}

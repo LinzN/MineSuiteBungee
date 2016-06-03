@@ -4,13 +4,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class ConnectionHandler {
+public class XeonConnectionHandler {
 
 	private final String name;
-	private final ConnectionFactory factory;
+	private final XeonConnectionFactory factory;
 	private final LinkedBlockingQueue<Connection> queue;
 
-	protected ConnectionHandler(String name, ConnectionFactory factory) {
+	protected XeonConnectionHandler(String name, XeonConnectionFactory factory) {
 		this.name = name;
 		this.factory = factory;
 		this.queue = new LinkedBlockingQueue<>();

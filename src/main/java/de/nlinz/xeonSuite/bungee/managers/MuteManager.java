@@ -4,7 +4,7 @@ package de.nlinz.xeonSuite.bungee.managers;
 import java.util.UUID;
 
 import de.nlinz.xeonSuite.bungee.dbase.DataBaseActions;
-import de.nlinz.xeonSuite.bungee.dbase.PlayerHashDB;
+import de.nlinz.xeonSuite.bungee.dbase.BungeeDataTable;
 import de.nlinz.xeonSuite.bungee.out.SendMsg;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -12,23 +12,23 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 public class MuteManager {
 
 	public static boolean isMuted(final UUID uuid) {
-		if (!PlayerHashDB.isMuted.containsKey(uuid)) {
+		if (!BungeeDataTable.isMuted.containsKey(uuid)) {
 			if (DataBaseActions.isMuted(uuid)) {
-				PlayerHashDB.isMuted.put(uuid, true);
+				BungeeDataTable.isMuted.put(uuid, true);
 			} else {
-				PlayerHashDB.isMuted.put(uuid, false);
+				BungeeDataTable.isMuted.put(uuid, false);
 			}
 		}
-		return PlayerHashDB.isMuted.get(uuid);
+		return BungeeDataTable.isMuted.get(uuid);
 
 	}
 
 	public static long getMuteTime(final UUID uuid) {
-		if (PlayerHashDB.muteTime.containsKey(uuid)) {
-			if (PlayerHashDB.muteTime.get(uuid) != -1L) {
-				return (PlayerHashDB.muteTime.get(uuid) + 1000);
+		if (BungeeDataTable.muteTime.containsKey(uuid)) {
+			if (BungeeDataTable.muteTime.get(uuid) != -1L) {
+				return (BungeeDataTable.muteTime.get(uuid) + 1000);
 			} else {
-				return PlayerHashDB.muteTime.get(uuid);
+				return BungeeDataTable.muteTime.get(uuid);
 			}
 		}
 		return -1L;
@@ -36,16 +36,16 @@ public class MuteManager {
 	}
 
 	public static String getMuteReason(final UUID uuid) {
-		if (PlayerHashDB.muteReason.containsKey(uuid)) {
-			return PlayerHashDB.muteReason.get(uuid);
+		if (BungeeDataTable.muteReason.containsKey(uuid)) {
+			return BungeeDataTable.muteReason.get(uuid);
 		}
 		return "";
 
 	}
 
 	public static String getMutedBy(final UUID uuid) {
-		if (PlayerHashDB.mutedBy.containsKey(uuid)) {
-			return PlayerHashDB.mutedBy.get(uuid);
+		if (BungeeDataTable.mutedBy.containsKey(uuid)) {
+			return BungeeDataTable.mutedBy.get(uuid);
 		}
 		return "";
 
@@ -61,12 +61,12 @@ public class MuteManager {
 		}
 		DataBaseActions.mutePlayer(uuid, reason, mutedby, end);
 		if (!isMuted(uuid)) {
-			PlayerHashDB.isMuted.put(uuid, true);
+			BungeeDataTable.isMuted.put(uuid, true);
 		}
 
-		PlayerHashDB.muteTime.put(uuid, end);
-		PlayerHashDB.muteReason.put(uuid, reason);
-		PlayerHashDB.mutedBy.put(uuid, mutedby);
+		BungeeDataTable.muteTime.put(uuid, end);
+		BungeeDataTable.muteReason.put(uuid, reason);
+		BungeeDataTable.mutedBy.put(uuid, mutedby);
 
 		final ProxiedPlayer target = ProxyServer.getInstance().getPlayer(uuid);
 		String mtime = MuteManager.getRemainingTime(uuid);
@@ -87,15 +87,15 @@ public class MuteManager {
 		UUID uuid = DataBaseActions.getUUID(player);
 		if (isMuted(uuid)) {
 			DataBaseActions.unmutePlayer(uuid, reason, unmutedby);
-			PlayerHashDB.isMuted.remove(uuid);
-			if (PlayerHashDB.muteTime.containsKey(uuid)) {
-				PlayerHashDB.muteTime.remove(uuid);
+			BungeeDataTable.isMuted.remove(uuid);
+			if (BungeeDataTable.muteTime.containsKey(uuid)) {
+				BungeeDataTable.muteTime.remove(uuid);
 			}
-			if (PlayerHashDB.muteReason.containsKey(uuid)) {
-				PlayerHashDB.muteReason.remove(uuid);
+			if (BungeeDataTable.muteReason.containsKey(uuid)) {
+				BungeeDataTable.muteReason.remove(uuid);
 			}
-			if (PlayerHashDB.mutedBy.containsKey(uuid)) {
-				PlayerHashDB.mutedBy.remove(uuid);
+			if (BungeeDataTable.mutedBy.containsKey(uuid)) {
+				BungeeDataTable.mutedBy.remove(uuid);
 			}
 			SendMsg.unMute(player, reason, unmutedby);
 
@@ -105,15 +105,15 @@ public class MuteManager {
 	public static void unMute(final UUID uuid, final String reason, final String unmutedby, final String pname) {
 		if (isMuted(uuid)) {
 			DataBaseActions.unmutePlayer(uuid, reason, unmutedby);
-			PlayerHashDB.isMuted.remove(uuid);
-			if (PlayerHashDB.muteTime.containsKey(uuid)) {
-				PlayerHashDB.muteTime.remove(uuid);
+			BungeeDataTable.isMuted.remove(uuid);
+			if (BungeeDataTable.muteTime.containsKey(uuid)) {
+				BungeeDataTable.muteTime.remove(uuid);
 			}
-			if (PlayerHashDB.muteReason.containsKey(uuid)) {
-				PlayerHashDB.muteReason.remove(uuid);
+			if (BungeeDataTable.muteReason.containsKey(uuid)) {
+				BungeeDataTable.muteReason.remove(uuid);
 			}
-			if (PlayerHashDB.mutedBy.containsKey(uuid)) {
-				PlayerHashDB.mutedBy.remove(uuid);
+			if (BungeeDataTable.mutedBy.containsKey(uuid)) {
+				BungeeDataTable.mutedBy.remove(uuid);
 			}
 			SendMsg.unMute(pname, reason, unmutedby);
 
@@ -123,15 +123,15 @@ public class MuteManager {
 	public static void unMuteSystem(final UUID uuid) {
 		if (isMuted(uuid)) {
 			DataBaseActions.unmutePlayer(uuid, "Abgelaufen", "SYSTEM");
-			PlayerHashDB.isMuted.remove(uuid);
-			if (PlayerHashDB.muteTime.containsKey(uuid)) {
-				PlayerHashDB.muteTime.remove(uuid);
+			BungeeDataTable.isMuted.remove(uuid);
+			if (BungeeDataTable.muteTime.containsKey(uuid)) {
+				BungeeDataTable.muteTime.remove(uuid);
 			}
-			if (PlayerHashDB.muteReason.containsKey(uuid)) {
-				PlayerHashDB.muteReason.remove(uuid);
+			if (BungeeDataTable.muteReason.containsKey(uuid)) {
+				BungeeDataTable.muteReason.remove(uuid);
 			}
-			if (PlayerHashDB.mutedBy.containsKey(uuid)) {
-				PlayerHashDB.mutedBy.remove(uuid);
+			if (BungeeDataTable.mutedBy.containsKey(uuid)) {
+				BungeeDataTable.mutedBy.remove(uuid);
 			}
 
 		}

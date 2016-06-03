@@ -9,7 +9,7 @@ import java.util.UUID;
 import de.nlinz.javaSocket.server.api.XeonSocketServerManager;
 import de.nlinz.javaSocket.server.events.SocketDataEvent;
 import de.nlinz.javaSocket.server.interfaces.IDataListener;
-import de.nlinz.xeonSuite.bungee.dbase.PlayerHashDB;
+import de.nlinz.xeonSuite.bungee.dbase.BungeeDataTable;
 import de.nlinz.xeonSuite.bungee.managers.PlayerManager;
 import de.nlinz.xeonSuite.bungee.out.TeleportToGuild;
 import de.nlinz.xeonSuite.bungee.utils.Location;
@@ -82,18 +82,18 @@ public class XeonGuild implements IDataListener {
 				invitedPlayer.sendMessage(ChatColor.YELLOW + player.getName() + ChatColor.GREEN
 						+ " hat dir eine Einladung in die Gilde " + ChatColor.YELLOW + guildName + ChatColor.GREEN
 						+ " gesendet. " + ChatColor.YELLOW + "/guild accept " + ChatColor.GREEN + "um anzunehmen!");
-				PlayerHashDB.guildInvites.put(invitedPlayer.getUniqueId(), guildUUID);
+				BungeeDataTable.guildInvites.put(invitedPlayer.getUniqueId(), guildUUID);
 				return;
 			}
 			if (task.equals("AcceptGuildInvite")) {
 				ProxiedPlayer invitedPlayer = ProxyServer.getInstance().getPlayer(in.readUTF());
-				if (PlayerHashDB.guildInvites.containsKey(invitedPlayer.getUniqueId())) {
-					UUID guildUUID = PlayerHashDB.guildInvites.get(invitedPlayer.getUniqueId());
+				if (BungeeDataTable.guildInvites.containsKey(invitedPlayer.getUniqueId())) {
+					UUID guildUUID = BungeeDataTable.guildInvites.get(invitedPlayer.getUniqueId());
 					finishInvite(invitedPlayer, guildUUID);
 				} else {
 					invitedPlayer.sendMessage(ChatColor.RED + "Du hast keine offenen Einladungen!");
 				}
-				PlayerHashDB.guildInvites.remove(invitedPlayer.getUniqueId());
+				BungeeDataTable.guildInvites.remove(invitedPlayer.getUniqueId());
 
 			}
 

@@ -3,7 +3,7 @@ package de.nlinz.xeonSuite.bungee;
 import java.util.concurrent.TimeUnit;
 
 import de.nlinz.javaSocket.server.api.XeonSocketServerManager;
-import de.nlinz.xeonSuite.bungee.dbase.DataBaseManager;
+import de.nlinz.xeonSuite.bungee.dbase.XeonConnectionSetup;
 import de.nlinz.xeonSuite.bungee.listeners.ProxyServerListener;
 import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonBan;
 import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonChat;
@@ -30,7 +30,7 @@ public class XeonSuiteBungee extends Plugin {
 		proxy = ProxyServer.getInstance();
 		final Config Filemanager = new Config(this);
 		Filemanager.setDefaultConfig();
-		if (DataBaseManager.setupDatabase()) {
+		if (XeonConnectionSetup.create()) {
 			ProxyServer.getInstance().getConsole().sendMessage(ChatColor.BLUE + "Loading CookieApi...");
 			registerListeners();
 			ProxyServer.getInstance().getConsole().sendMessage(ChatColor.BLUE + "Finish!");

@@ -6,14 +6,14 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ConnectionManager {
+public class XeonConnectionManager {
 
-	public final static ConnectionManager DEFAULT = new ConnectionManager();
+	public final static XeonConnectionManager DEFAULT = new XeonConnectionManager();
 
-	private final Map<String, ConnectionHandler> map;
+	private final Map<String, XeonConnectionHandler> map;
 
-	public ConnectionHandler getHandler(String key, ConnectionFactory f) {
-		ConnectionHandler handler = new ConnectionHandler(key, f);
+	public XeonConnectionHandler getHandler(String key, XeonConnectionFactory f) {
+		XeonConnectionHandler handler = new XeonConnectionHandler(key, f);
 		map.put(key, handler);
 		return handler;
 	}
@@ -26,20 +26,20 @@ public class ConnectionManager {
 		map.get(handle).release(c);
 	}
 
-	public ConnectionHandler getHandler(String key) {
-		ConnectionHandler handler = map.get(key);
+	public XeonConnectionHandler getHandler(String key) {
+		XeonConnectionHandler handler = map.get(key);
 		if (handler == null) {
 			throw new NoSuchElementException();
 		}
 		return handler;
 	}
 
-	public ConnectionManager() {
+	public XeonConnectionManager() {
 		this.map = new ConcurrentHashMap<>();
 	}
 
 	public void shutdown() {
-		for (ConnectionHandler handler : map.values()) {
+		for (XeonConnectionHandler handler : map.values()) {
 			handler.shutdown();
 		}
 		map.clear();

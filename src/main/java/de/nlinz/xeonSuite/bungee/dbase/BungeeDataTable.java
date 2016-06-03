@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import de.nlinz.xeonSuite.bungee.utils.Location;
 
-public class PlayerHashDB {
+public class BungeeDataTable {
 
 	public static HashMap<UUID, Boolean> acceptingTeleports = new HashMap<>();
 	public static HashMap<UUID, Location> deathBackLocation = new HashMap<>();
