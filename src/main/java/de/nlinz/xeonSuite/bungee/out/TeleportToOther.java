@@ -10,7 +10,8 @@ public class TeleportToOther {
 	public static void portalOtherServer(ProxiedPlayer player, String server) {
 		ServerInfo servernew = ProxyServer.getInstance().getServerInfo(server);
 		if (servernew == null) {
-			XeonSuiteBungee.instance.getLogger().severe("Location has no Server, this should never happen. Please check");
+			XeonSuiteBungee.instance.getLogger()
+					.severe("Location has no Server, this should never happen. Please check");
 			new Exception("").printStackTrace();
 			return;
 		}
