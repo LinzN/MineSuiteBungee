@@ -31,7 +31,7 @@ public class XeonSuiteBungee extends Plugin {
 		final Config Filemanager = new Config(this);
 		Filemanager.setDefaultConfig();
 		if (XeonConnectionSetup.create()) {
-			ProxyServer.getInstance().getConsole().sendMessage(ChatColor.BLUE + "Loading CookieApi...");
+			ProxyServer.getInstance().getConsole().sendMessage(ChatColor.BLUE + "Loading XeonSuite...");
 			registerListeners();
 			ProxyServer.getInstance().getConsole().sendMessage(ChatColor.BLUE + "Finish!");
 			if (autoSystem()) {
