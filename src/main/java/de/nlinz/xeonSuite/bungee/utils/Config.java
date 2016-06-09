@@ -1,16 +1,16 @@
 
 package de.nlinz.xeonSuite.bungee.utils;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.config.ConfigurationProvider;
-import net.md_5.bungee.config.YamlConfiguration;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.nlinz.xeonSuite.bungee.XeonSuiteBungee;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.config.Configuration;
-import java.io.File;
+import net.md_5.bungee.config.ConfigurationProvider;
+import net.md_5.bungee.config.YamlConfiguration;
 
 public class Config {
 	public static File ConfigFile;
@@ -21,7 +21,6 @@ public class Config {
 		this.instance = instance;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void setDefaultConfig() {
 		if (!this.instance.getDataFolder().exists()) {
 			this.instance.getDataFolder().mkdir();
@@ -35,7 +34,7 @@ public class Config {
 			}
 		}
 		try {
-			Config.ConfigConfiguration = ConfigurationProvider.getProvider((Class) YamlConfiguration.class)
+			Config.ConfigConfiguration = ConfigurationProvider.getProvider(YamlConfiguration.class)
 					.load(Config.ConfigFile);
 		} catch (IOException e2) {
 			e2.printStackTrace();
@@ -43,32 +42,26 @@ public class Config {
 
 		final Configuration config = Config.ConfigConfiguration;
 		if (config.get("sql.host") == null) {
-			config.set("sql.host", (Object) "localhost");
-			config.set("sql.port", (Object) 3306);
-			config.set("sql.username", (Object) "BungeeBan");
-			config.set("sql.password", (Object) "SafePassword");
-			config.set("sql.database", (Object) "BungeeBan");
+			config.set("sql.host", "localhost");
+			config.set("sql.port", 3306);
+			config.set("sql.username", "BungeeBan");
+			config.set("sql.password", "SafePassword");
+			config.set("sql.database", "BungeeBan");
 
 			final List<String> ForbittenCMD = new ArrayList<String>();
 			ForbittenCMD.add("g");
 			ForbittenCMD.add("s");
 			ForbittenCMD.add("global");
 			ForbittenCMD.add("Global");
-			config.set("cmd.forbidden", (Object) ForbittenCMD);
-
-			config.set("p2p.ip", (Object) "127.0.0.1");
-			config.set("p2p.port", (Object) 2222);
-			config.set("p2p.castport", (Object) 6789);
-			config.set("p2p.castip", (Object) "224.0.0.1");
+			config.set("cmd.forbidden", ForbittenCMD);
 
 			saveConfig(config, Config.ConfigFile);
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void saveConfig(final Configuration config, final File file) {
 		try {
-			ConfigurationProvider.getProvider((Class) YamlConfiguration.class).save(config, file);
+			ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, file);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
