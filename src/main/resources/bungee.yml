@@ -2,3 +2,4 @@ name: XeonSuiteBungee
 main : de.nlinz.xeonSuite.bungee.XeonSuiteBungee
 version: ${project.version}.b${build.number}
 author: Kekshaus
+depend: [XeonSocketServerBungee]
