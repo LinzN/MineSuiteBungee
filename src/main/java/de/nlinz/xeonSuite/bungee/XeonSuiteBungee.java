@@ -9,6 +9,7 @@ import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonBan;
 import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonChat;
 import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonGuild;
 import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonHome;
+import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonPortal;
 import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonTeleport;
 import de.nlinz.xeonSuite.bungee.listeners.xeonSocket.XeonWarp;
 import de.nlinz.xeonSuite.bungee.utils.AutoUnbanChecker;
@@ -50,6 +51,7 @@ public class XeonSuiteBungee extends Plugin {
 		XeonSocketServerManager.registerDataListener(new XeonHome());
 		XeonSocketServerManager.registerDataListener(new XeonTeleport());
 		XeonSocketServerManager.registerDataListener(new XeonWarp());
+		XeonSocketServerManager.registerDataListener(new XeonPortal());
 	}
 
 	@Override

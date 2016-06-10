@@ -9,7 +9,6 @@ import de.nlinz.javaSocket.server.interfaces.IDataListener;
 import de.nlinz.xeonSuite.bungee.managers.PlayerManager;
 import de.nlinz.xeonSuite.bungee.managers.TeleportManager;
 import de.nlinz.xeonSuite.bungee.out.TeleportToLocation;
-import de.nlinz.xeonSuite.bungee.out.TeleportToOther;
 import de.nlinz.xeonSuite.bungee.utils.Location;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -32,16 +31,6 @@ public class XeonTeleport implements IDataListener {
 		try {
 			task = in.readUTF();
 
-			if (task.equals("TeleportToServer")) {
-				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
-				if (player == null) {
-					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
-					return;
-				}
-				TeleportToOther.portalOtherServer(player, in.readUTF());
-				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to server!");
-				return;
-			}
 			if (task.equals("TeleportToLocation")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
