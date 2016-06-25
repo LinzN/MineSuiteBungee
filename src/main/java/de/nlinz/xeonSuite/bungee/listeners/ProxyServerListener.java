@@ -5,8 +5,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import de.nlinz.xeonSuite.bungee.XeonSuiteBungee;
-import de.nlinz.xeonSuite.bungee.dbase.DataBaseActions;
 import de.nlinz.xeonSuite.bungee.dbase.BungeeDataTable;
+import de.nlinz.xeonSuite.bungee.dbase.DataBaseActions;
 import de.nlinz.xeonSuite.bungee.managers.BanManager;
 import de.nlinz.xeonSuite.bungee.managers.MuteManager;
 import de.nlinz.xeonSuite.bungee.managers.PlayerManager;
@@ -18,6 +18,7 @@ import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
+import net.md_5.bungee.api.event.TabCompleteEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
@@ -43,6 +44,7 @@ public class ProxyServerListener implements Listener {
 	public void playerLogout(final PlayerDisconnectEvent event) {
 		final UUID uuid = event.getPlayer().getUniqueId();
 		ProxyServer.getInstance().getScheduler().schedule(XeonSuiteBungee.instance, new Runnable() {
+			@Override
 			@SuppressWarnings("deprecation")
 			public void run() {
 				ProxiedPlayer player = ProxyServer.getInstance().getPlayer(uuid);
@@ -116,6 +118,22 @@ public class ProxyServerListener implements Listener {
 		p.sendMessage(MuteManager.getMutedMessage(p.getUniqueId()));
 		return;
 
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onTabComplete(TabCompleteEvent ev) {
+		String partialPlayerName = ev.getCursor().toLowerCase();
+
+		int lastSpaceIndex = partialPlayerName.lastIndexOf(' ');
+		if (lastSpaceIndex >= 0) {
+			partialPlayerName = partialPlayerName.substring(lastSpaceIndex + 1);
+		}
+
+		for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
+			if (p.getName().toLowerCase().startsWith(partialPlayerName)) {
+				ev.getSuggestions().add(p.getName());
+			}
+		}
 	}
 
 }
