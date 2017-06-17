@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>de.nlinz.xeonSuite</groupId>
-	<artifactId>XeonSuiteBungee</artifactId>
-	<version>1</version>
+	<groupId>de.linzn</groupId>
+	<artifactId>xeonSuiteBungee</artifactId>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
 	<name>XeonSuiteBungee</name>
 
@@ -37,14 +37,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>net.md-5</groupId>
-			<artifactId>bungeecord-api</artifactId>
-			<version>1.10-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>de.nlinz</groupId>
-			<artifactId>XeonSocketServer</artifactId>
-			<version>1.0</version>
+			<groupId>de.linzn</groupId>
+			<artifactId>xeonSocketServer</artifactId>
+			<version>1.0.2</version>
 		</dependency>
 	</dependencies>
 
