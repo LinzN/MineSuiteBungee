@@ -2,6 +2,8 @@ package de.nlinz.xeonSuite.bungee;
 
 import java.util.concurrent.TimeUnit;
 
+import org.bstats.Metrics;
+
 import de.nlinz.javaSocket.server.api.XeonSocketServerManager;
 import de.nlinz.xeonSuite.bungee.dbase.XeonConnectionSetup;
 import de.nlinz.xeonSuite.bungee.listeners.ProxyServerListener;
@@ -40,6 +42,7 @@ public class XeonSuiteBungee extends Plugin {
 			}
 
 		}
+		new Metrics(this);
 	}
 
 	private void registerListeners() {
