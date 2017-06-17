@@ -1,5 +1,5 @@
 name: XeonSuiteBungee
 main : de.nlinz.xeonSuite.bungee.XeonSuiteBungee
-version: ${project.version}.b${build.number}
+version: ${project.version}
 author: Kekshaus
 depend: [XeonSocketServer]

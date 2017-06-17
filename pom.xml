@@ -2,9 +2,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>de.linzn</groupId>
-	<artifactId>xeonSuiteBungee</artifactId>
-	<version>1.0.1</version>
 	<packaging>jar</packaging>
 	<name>XeonSuiteBungee</name>
 
@@ -28,10 +25,6 @@
 		<repository>
 			<id>BungeeCord-repo</id>
 			<url>https://oss.sonatype.org/content/groups/public</url>
-		</repository>
-		<repository>
-			<id>Bytearray-repo</id>
-			<url>https://repo.bytearray.de/</url>
 		</repository>
 	</repositories>
 
@@ -62,6 +55,7 @@
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -78,6 +72,13 @@
 		</plugins>
 	</build>
 
+	<version>1.0.1-${build.number}</version>
+	<groupId>de.linzn</groupId>
+	<artifactId>xeonSuiteBungee</artifactId>
+	<dependencyManagement>
+		<dependencies>
+		</dependencies>
+	</dependencyManagement>
 	<properties>
 		<build.number>SNAPSHOT</build.number>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
