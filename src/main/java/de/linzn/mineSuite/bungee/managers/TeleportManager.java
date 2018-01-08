@@ -45,23 +45,20 @@ public class TeleportManager {
 		pendingTeleportsTPA.put(bt, bp);
 		bp.sendMessage(MessageDB.TELEPORT_REQUEST_SENT.replace("{player}", bt.getName()));
 		bt.sendMessage(MessageDB.PLAYER_REQUESTS_TO_TELEPORT_TO_YOU.replace("{player}", bp.getName()));
-        ProxyServer.getInstance().getScheduler().schedule(MineSuiteBungeePlugin.instance, new Runnable() {
-			@Override
-			public void run() {
-				if (pendingTeleportsTPA.containsKey(bt)) {
-					if (!pendingTeleportsTPA.get(bt).equals(bp)) {
-						return;
-					}
-					if (bp != null) {
-						bp.sendMessage(MessageDB.TPA_REQUEST_TIMED_OUT.replace("{player}", bt.getName()));
-					}
-					pendingTeleportsTPA.remove(bt);
-					if (bt != null) {
-						bt.sendMessage(MessageDB.TP_REQUEST_OTHER_TIMED_OUT.replace("{player}", bp.getName()));
-					}
-				}
-			}
-		}, expireTime, TimeUnit.SECONDS);
+        ProxyServer.getInstance().getScheduler().schedule(MineSuiteBungeePlugin.getInstance(), () -> {
+            if (pendingTeleportsTPA.containsKey(bt)) {
+                if (!pendingTeleportsTPA.get(bt).equals(bp)) {
+                    return;
+                }
+                if (bp != null) {
+                    bp.sendMessage(MessageDB.TPA_REQUEST_TIMED_OUT.replace("{player}", bt.getName()));
+                }
+                pendingTeleportsTPA.remove(bt);
+                if (bt != null) {
+                    bt.sendMessage(MessageDB.TP_REQUEST_OTHER_TIMED_OUT.replace("{player}", bp.getName()));
+                }
+            }
+        }, expireTime, TimeUnit.SECONDS);
 	}
 
 	public static void requestPlayerTeleportToYou(String player, String target) {
@@ -83,23 +80,20 @@ public class TeleportManager {
 		bp.sendMessage(MessageDB.TELEPORT_REQUEST_SENT.replace("{player}", bp.getName()));
 		bt.sendMessage(MessageDB.PLAYER_REQUESTS_YOU_TELEPORT_TO_THEM.replace("{player}", bp.getName()));
 
-        ProxyServer.getInstance().getScheduler().schedule(MineSuiteBungeePlugin.instance, new Runnable() {
-			@Override
-			public void run() {
-				if (pendingTeleportsTPAHere.containsKey(bt)) {
-					if (!pendingTeleportsTPAHere.get(bt).equals(bp)) {
-						return;
-					}
-					if (bp != null) {
-						bp.sendMessage(MessageDB.TPAHERE_REQUEST_TIMED_OUT.replace("{player}", bt.getName()));
-					}
-					pendingTeleportsTPAHere.remove(bt);
-					if (bt != null) {
-						bt.sendMessage(MessageDB.TP_REQUEST_OTHER_TIMED_OUT.replace("{player}", bp.getName()));
-					}
-				}
-			}
-		}, expireTime, TimeUnit.SECONDS);
+        ProxyServer.getInstance().getScheduler().schedule(MineSuiteBungeePlugin.getInstance(), () -> {
+            if (pendingTeleportsTPAHere.containsKey(bt)) {
+                if (!pendingTeleportsTPAHere.get(bt).equals(bp)) {
+                    return;
+                }
+                if (bp != null) {
+                    bp.sendMessage(MessageDB.TPAHERE_REQUEST_TIMED_OUT.replace("{player}", bt.getName()));
+                }
+                pendingTeleportsTPAHere.remove(bt);
+                if (bt != null) {
+                    bt.sendMessage(MessageDB.TP_REQUEST_OTHER_TIMED_OUT.replace("{player}", bp.getName()));
+                }
+            }
+        }, expireTime, TimeUnit.SECONDS);
 	}
 
 	public static void acceptTeleportRequest(ProxiedPlayer player) {

@@ -1,9 +1,8 @@
 package de.linzn.mineSuite.bungee.out;
 
+import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.dbase.BungeeDataTable;
-import de.linzn.mineSuite.bungee.listeners.xeonSocket.XeonChat;
 import de.linzn.mineSuite.bungee.utils.ChatFormate;
-import de.nlinz.javaSocket.server.api.XeonSocketServerManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -18,18 +17,18 @@ public class ChatActions {
 	public static void sendGuildChat(String guild, String sender, String text) {
 		ProxyServer.getInstance().getServers();
 		String formatedText = ChatFormate.toGuildFormate(sender, text);
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, XeonChat.channelName);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 
 		try {
-			out.writeUTF("GuildChat");
-			out.writeUTF(guild);
-			out.writeUTF(formatedText);
+            dataOutputStream.writeUTF("GuildChat");
+            dataOutputStream.writeUTF(guild);
+            dataOutputStream.writeUTF(formatedText);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		XeonSocketServerManager.sendData(bytes);
+        MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteChat", byteArrayOutputStream.toByteArray());
 		ProxyServer.getInstance().getLogger().info(guild + "-> " + formatedText);
 		for (UUID uuid : BungeeDataTable.socialspy.keySet()) {
 			ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
@@ -77,7 +76,7 @@ public class ChatActions {
 
 	}
 
-	@SuppressWarnings("deprecation")
+
 	public static void globalChat(String sender, String text, String prefix, String suffix) {
 		ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
 
@@ -95,21 +94,21 @@ public class ChatActions {
 	public static void staffChat(String sender, String text, String prefix) {
 		ProxyServer.getInstance().getServers();
 		String formatedText = ChatFormate.toChannelStaffFormate(sender, text, prefix);
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, XeonChat.channelName);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 		try {
-			out.writeUTF("StaffChat");
-			out.writeUTF(formatedText);
+            dataOutputStream.writeUTF("StaffChat");
+            dataOutputStream.writeUTF(formatedText);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		XeonSocketServerManager.sendData(bytes);
+        MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteChat", byteArrayOutputStream.toByteArray());
 		ProxyServer.getInstance().getLogger().info("STAFF" + "-> " + formatedText);
 	}
 
-	@SuppressWarnings("deprecation")
-	public static void privateMsgChat(String sender, String reciever, String text, String prefix) {
+
+    public static void privateMsgChat(String sender, String reciever, String text, String prefix) {
 		ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
 		ProxiedPlayer recievedPlayer = ProxyServer.getInstance().getPlayer(reciever);
 
@@ -142,8 +141,8 @@ public class ChatActions {
 
 	}
 
-	@SuppressWarnings("deprecation")
-	public static void privateReplyChat(String sender, String text, String prefix) {
+
+    public static void privateReplyChat(String sender, String text, String prefix) {
 		ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
 		UUID uuidreciever = BungeeDataTable.msgreply.get(player.getUniqueId());
 		if (uuidreciever == null) {

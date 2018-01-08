@@ -10,6 +10,7 @@ public class AutoUnbanChecker implements Runnable {
 
 	public void run() {
 		DataBaseActions.clearOldBans();
+        DataBaseActions.clearOldMuted();
 	}
 
 }

@@ -1,41 +1,229 @@
 package de.linzn.mineSuite.bungee.listeners.xeonSocket;
 
+import de.linzn.jSocket.core.IncomingDataListener;
+import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.dbase.BungeeDataTable;
 import de.linzn.mineSuite.bungee.managers.PlayerManager;
 import de.linzn.mineSuite.bungee.out.TeleportToGuild;
 import de.linzn.mineSuite.bungee.utils.Location;
-import de.nlinz.javaSocket.server.api.XeonSocketServerManager;
-import de.nlinz.javaSocket.server.events.SocketDataEvent;
-import de.nlinz.javaSocket.server.interfaces.IDataListener;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.UUID;
 
-public class XeonGuild implements IDataListener {
+public class XeonGuild implements IncomingDataListener {
 
-	@Override
-	public String getChannel() {
-		// TODO Auto-generated method stub
-		return channelName;
+	public static void deletePlayerFromGuild(String pname, String uuid)
+
+	{
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+		try {
+			dataOutputStream.writeUTF("DeleteGuildFromPlayer");
+			dataOutputStream.writeUTF(pname);
+			dataOutputStream.writeUTF(uuid);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
 	}
 
-	public static String channelName = "xeonGuild";
+	public static void addPlayerToGuild(String pname, UUID guildUUID, String gRang)
+
+	{
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+		try {
+			dataOutputStream.writeUTF("AddGuildToPlayer");
+			dataOutputStream.writeUTF(pname);
+			dataOutputStream.writeUTF(guildUUID.toString());
+			dataOutputStream.writeUTF(gRang);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
+	}
+
+	public static void updateGuildMaster(UUID guildUUID, String oldMaster, String newMaster)
+
+	{
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+		try {
+			dataOutputStream.writeUTF("UpdateGuildMaster");
+			dataOutputStream.writeUTF(guildUUID.toString());
+			dataOutputStream.writeUTF(oldMaster);
+			dataOutputStream.writeUTF(newMaster);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
+	}
+
+	public static void updateGuildPlayer(UUID guildUUID, String player, String rang)
+
+	{
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+		try {
+			dataOutputStream.writeUTF("UpdateGuildPlayer");
+			dataOutputStream.writeUTF(guildUUID.toString());
+			dataOutputStream.writeUTF(player);
+			dataOutputStream.writeUTF(rang);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
+	}
+
+	public static void deleteGuild(UUID guildUUID)
+
+	{
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+		try {
+			dataOutputStream.writeUTF("deleteGuild");
+			dataOutputStream.writeUTF(guildUUID.toString());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
+	}
+
+	public static void createGuild(UUID guildUUID, String guildName, String guildMaster)
+
+	{
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+		try {
+			dataOutputStream.writeUTF("createGuild");
+			dataOutputStream.writeUTF(guildUUID.toString());
+			dataOutputStream.writeUTF(guildName);
+			dataOutputStream.writeUTF(guildMaster);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
+	}
+
+	public static void finishInvite(ProxiedPlayer invitedPlayer, UUID guildUUID)
+
+	{
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+		try {
+			dataOutputStream.writeUTF("FinishGuildInvite");
+			dataOutputStream.writeUTF(invitedPlayer.getName());
+			dataOutputStream.writeUTF(guildUUID.toString());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
+	}
+
+	public static void updateGuildSpawn(UUID guildUUID, String server, String world, double x, double y, double z,
+										float yaw, float pitch)
+
+	{
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+		try {
+			dataOutputStream.writeUTF("UpdateGuildSpawn");
+			dataOutputStream.writeUTF(guildUUID.toString());
+			dataOutputStream.writeUTF(server);
+			dataOutputStream.writeUTF(world);
+			dataOutputStream.writeDouble(x);
+			dataOutputStream.writeDouble(y);
+			dataOutputStream.writeDouble(z);
+			dataOutputStream.writeFloat(yaw);
+			dataOutputStream.writeFloat(pitch);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
+	}
+
+	public static void sendExpUpdate(String server, UUID guildUUID, long exp, long totalXP)
+
+	{
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+		try {
+			dataOutputStream.writeUTF("SendExpUpdate");
+			dataOutputStream.writeUTF(server);
+			dataOutputStream.writeUTF(guildUUID.toString());
+			dataOutputStream.writeLong(exp);
+			dataOutputStream.writeLong(totalXP);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
+	}
+
+	public static void updateGuildName(UUID guildUUID, String guildName)
+
+	{
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+		try {
+			dataOutputStream.writeUTF("UpdateGuildName");
+			dataOutputStream.writeUTF(guildUUID.toString());
+			dataOutputStream.writeUTF(guildName);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
+	}
 
 	@Override
-	public void onDataRecieve(SocketDataEvent event) {
-		// TODO Auto-generated method stub
-		DataInputStream in = XeonSocketServerManager.readDataInput(event.getStreamBytes());
-		String task = null;
+	public void onEvent(String channel, UUID clientUUID, byte[] dataInBytes) {
+		DataInputStream in = new DataInputStream(new ByteArrayInputStream(dataInBytes));
+		String subChannel = null;
 		try {
-			task = in.readUTF();
+			subChannel = in.readUTF();
 
-			if (task.equalsIgnoreCase("createGuild")) {
+			if (subChannel.equalsIgnoreCase("createGuild")) {
 				UUID guildUUID = UUID.fromString(in.readUTF());
 				String guildName = in.readUTF();
 				String guildMaster = in.readUTF();
@@ -43,33 +231,33 @@ public class XeonGuild implements IDataListener {
 				return;
 			}
 
-			if (task.equalsIgnoreCase("deleteGuild")) {
+			if (subChannel.equalsIgnoreCase("deleteGuild")) {
 				UUID guildUUID = UUID.fromString(in.readUTF());
 				deleteGuild(guildUUID);
 				return;
 			}
-			if (task.equalsIgnoreCase("UpdateGuildMaster")) {
+			if (subChannel.equalsIgnoreCase("UpdateGuildMaster")) {
 				UUID guildUUID = UUID.fromString(in.readUTF());
 				String oldMaster = in.readUTF();
 				String newMaster = in.readUTF();
 				updateGuildMaster(guildUUID, oldMaster, newMaster);
 				return;
 			}
-			if (task.equalsIgnoreCase("AddGuildToPlayer")) {
+			if (subChannel.equalsIgnoreCase("AddGuildToPlayer")) {
 				String pname = in.readUTF();
 				UUID guildUUID = UUID.fromString(in.readUTF());
 				String gRang = in.readUTF();
 				addPlayerToGuild(pname, guildUUID, gRang);
 				return;
 			}
-			if (task.equalsIgnoreCase("DeleteGuildFromPlayer")) {
+			if (subChannel.equalsIgnoreCase("DeleteGuildFromPlayer")) {
 				String pname = in.readUTF();
 				String uuid = in.readUTF();
 				deletePlayerFromGuild(pname, uuid);
 				return;
 			}
 
-			if (task.equals("SendGuildInvite")) {
+			if (subChannel.equals("SendGuildInvite")) {
 				ProxiedPlayer player = ProxyServer.getInstance().getPlayer(in.readUTF());
 				ProxiedPlayer invitedPlayer = ProxyServer.getInstance().getPlayer(in.readUTF());
 				String guildName = in.readUTF();
@@ -85,7 +273,7 @@ public class XeonGuild implements IDataListener {
 				BungeeDataTable.guildInvites.put(invitedPlayer.getUniqueId(), guildUUID);
 				return;
 			}
-			if (task.equals("AcceptGuildInvite")) {
+			if (subChannel.equals("AcceptGuildInvite")) {
 				ProxiedPlayer invitedPlayer = ProxyServer.getInstance().getPlayer(in.readUTF());
 				if (BungeeDataTable.guildInvites.containsKey(invitedPlayer.getUniqueId())) {
 					UUID guildUUID = BungeeDataTable.guildInvites.get(invitedPlayer.getUniqueId());
@@ -97,7 +285,7 @@ public class XeonGuild implements IDataListener {
 
 			}
 
-			if (task.equals("UpdateGuildSpawn")) {
+			if (subChannel.equals("UpdateGuildSpawn")) {
 				UUID guildUUID = UUID.fromString(in.readUTF());
 				String server = in.readUTF();
 				String world = in.readUTF();
@@ -111,7 +299,7 @@ public class XeonGuild implements IDataListener {
 
 			}
 
-			if (task.equals("TeleportToGuildSpawn")) {
+			if (subChannel.equals("TeleportToGuildSpawn")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				TeleportToGuild.execute(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
 						in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
@@ -119,7 +307,7 @@ public class XeonGuild implements IDataListener {
 				return;
 			}
 
-			if (task.equals("SendExpUpdate")) {
+			if (subChannel.equals("SendExpUpdate")) {
 				String server = in.readUTF();
 				UUID guildUUID = UUID.fromString(in.readUTF());
 				long exp = in.readLong();
@@ -128,14 +316,14 @@ public class XeonGuild implements IDataListener {
 
 			}
 
-			if (task.equals("UpdateGuildName")) {
+			if (subChannel.equals("UpdateGuildName")) {
 				UUID guildUUID = UUID.fromString(in.readUTF());
 				String guildName = in.readUTF();
 				updateGuildName(guildUUID, guildName);
 
 			}
 
-			if (task.equals("UpdateGuildPlayer")) {
+			if (subChannel.equals("UpdateGuildPlayer")) {
 				UUID guildUUID = UUID.fromString(in.readUTF());
 				String player = in.readUTF();
 				String rang = in.readUTF();
@@ -146,207 +334,6 @@ public class XeonGuild implements IDataListener {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-	}
-
-	public static void deletePlayerFromGuild(String pname, String uuid)
-
-	{
-
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
-
-		try {
-			out.writeUTF("DeleteGuildFromPlayer");
-			out.writeUTF(pname);
-			out.writeUTF(uuid);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		XeonSocketServerManager.sendData(bytes);
-	}
-
-	public static void addPlayerToGuild(String pname, UUID guildUUID, String gRang)
-
-	{
-
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
-
-		try {
-			out.writeUTF("AddGuildToPlayer");
-			out.writeUTF(pname);
-			out.writeUTF(guildUUID.toString());
-			out.writeUTF(gRang);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		XeonSocketServerManager.sendData(bytes);
-	}
-
-	public static void updateGuildMaster(UUID guildUUID, String oldMaster, String newMaster)
-
-	{
-
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
-
-		try {
-			out.writeUTF("UpdateGuildMaster");
-			out.writeUTF(guildUUID.toString());
-			out.writeUTF(oldMaster);
-			out.writeUTF(newMaster);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		XeonSocketServerManager.sendData(bytes);
-	}
-
-	public static void updateGuildPlayer(UUID guildUUID, String player, String rang)
-
-	{
-
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
-
-		try {
-			out.writeUTF("UpdateGuildPlayer");
-			out.writeUTF(guildUUID.toString());
-			out.writeUTF(player);
-			out.writeUTF(rang);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		XeonSocketServerManager.sendData(bytes);
-	}
-
-	public static void deleteGuild(UUID guildUUID)
-
-	{
-
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
-
-		try {
-			out.writeUTF("deleteGuild");
-			out.writeUTF(guildUUID.toString());
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		XeonSocketServerManager.sendData(bytes);
-	}
-
-	public static void createGuild(UUID guildUUID, String guildName, String guildMaster)
-
-	{
-
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
-
-		try {
-			out.writeUTF("createGuild");
-			out.writeUTF(guildUUID.toString());
-			out.writeUTF(guildName);
-			out.writeUTF(guildMaster);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		XeonSocketServerManager.sendData(bytes);
-	}
-
-	public static void finishInvite(ProxiedPlayer invitedPlayer, UUID guildUUID)
-
-	{
-
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
-
-		try {
-			out.writeUTF("FinishGuildInvite");
-			out.writeUTF(invitedPlayer.getName());
-			out.writeUTF(guildUUID.toString());
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		XeonSocketServerManager.sendData(bytes);
-	}
-
-	public static void updateGuildSpawn(UUID guildUUID, String server, String world, double x, double y, double z,
-			float yaw, float pitch)
-
-	{
-
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
-
-		try {
-			out.writeUTF("UpdateGuildSpawn");
-			out.writeUTF(guildUUID.toString());
-			out.writeUTF(server);
-			out.writeUTF(world);
-			out.writeDouble(x);
-			out.writeDouble(y);
-			out.writeDouble(z);
-			out.writeFloat(yaw);
-			out.writeFloat(pitch);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		XeonSocketServerManager.sendData(bytes);
-	}
-
-	public static void sendExpUpdate(String server, UUID guildUUID, long exp, long totalXP)
-
-	{
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
-
-		try {
-			out.writeUTF("SendExpUpdate");
-			out.writeUTF(server);
-			out.writeUTF(guildUUID.toString());
-			out.writeLong(exp);
-			out.writeLong(totalXP);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		XeonSocketServerManager.sendData(bytes);
-	}
-
-	public static void updateGuildName(UUID guildUUID, String guildName)
-
-	{
-
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, channelName);
-
-		try {
-			out.writeUTF("UpdateGuildName");
-			out.writeUTF(guildUUID.toString());
-			out.writeUTF(guildName);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		XeonSocketServerManager.sendData(bytes);
 	}
 
 }

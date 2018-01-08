@@ -1,7 +1,6 @@
 package de.linzn.mineSuite.bungee.out;
 
-import de.linzn.mineSuite.bungee.listeners.xeonSocket.XeonTeleport;
-import de.nlinz.javaSocket.server.api.XeonSocketServerManager;
+import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.io.ByteArrayOutputStream;
@@ -14,18 +13,17 @@ public class TeleportToPlayer {
 		if (player.getServer().getInfo() != target.getServer().getInfo()) {
 			player.connect(target.getServer().getInfo());
 		}
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		DataOutputStream out = XeonSocketServerManager.createChannel(bytes, XeonTeleport.channelName);
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 
 		try {
-			out.writeUTF(target.getServer().getInfo().getName());
-			out.writeUTF("TeleportToPlayer");
-			out.writeUTF(player.getName());
-			out.writeUTF(target.getName());
+			dataOutputStream.writeUTF(target.getServer().getInfo().getName());
+			dataOutputStream.writeUTF("TeleportToPlayer");
+			dataOutputStream.writeUTF(player.getName());
+			dataOutputStream.writeUTF(target.getName());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		XeonSocketServerManager.sendData(bytes);
+		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteTeleport", byteArrayOutputStream.toByteArray());
 	}
 }

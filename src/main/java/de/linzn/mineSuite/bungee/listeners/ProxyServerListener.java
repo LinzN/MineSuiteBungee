@@ -31,7 +31,7 @@ public class ProxyServerListener implements Listener {
 		PlayerManager.initPlayer(event.getPlayer());
 		event.getPlayer()
 				.sendMessage(ChatColor.GOLD + "*** Willkommen auf MineGaming! Wir wünschen dir viel Spaß! ***");
-		event.getPlayer().sendMessage(ChatColor.GREEN + "Webseite: " + ChatColor.GRAY + " www.MineGaming.de   -   "
+		event.getPlayer().sendMessage(ChatColor.GREEN + "Unser Forum: " + ChatColor.GRAY + " www.MineGaming.de   -   "
 				+ ChatColor.GREEN + "Votes:  " + ChatColor.GRAY + "vote.minegaming.de");
 		event.getPlayer().sendMessage(ChatColor.GOLD + "*********************************************************");
 	}
@@ -39,19 +39,15 @@ public class ProxyServerListener implements Listener {
 	@EventHandler(priority = EventPriority.LOW)
 	public void playerLogout(final PlayerDisconnectEvent event) {
 		final UUID uuid = event.getPlayer().getUniqueId();
-        ProxyServer.getInstance().getScheduler().schedule(MineSuiteBungeePlugin.instance, new Runnable() {
-			@Override
-			@SuppressWarnings("deprecation")
-			public void run() {
-				ProxiedPlayer player = ProxyServer.getInstance().getPlayer(uuid);
-				if (player == null) {
-					PlayerManager.deinitPlayer(event.getPlayer());
-					ProxyServer.getInstance().broadcast(
-							ChatColor.GOLD + event.getPlayer().getName() + " ist " + ChatColor.DARK_RED + "offline");
-				} else {
-					ProxyServer.getInstance().getLogger().warning(ChatColor.YELLOW
-							+ "Player not log out correctly? Cant deinitialize player, because player is not offline!");
-				}
+		ProxyServer.getInstance().getScheduler().schedule(MineSuiteBungeePlugin.getInstance(), () -> {
+			ProxiedPlayer player = ProxyServer.getInstance().getPlayer(uuid);
+			if (player == null) {
+				PlayerManager.deinitPlayer(event.getPlayer());
+				ProxyServer.getInstance().broadcast(
+						ChatColor.GOLD + event.getPlayer().getName() + " ist " + ChatColor.DARK_RED + "offline");
+			} else {
+				ProxyServer.getInstance().getLogger().warning(ChatColor.YELLOW
+						+ "Player not log out correctly? Cant deinitialize player, because player is not offline!");
 			}
 		}, 1, TimeUnit.SECONDS);
 	}
@@ -72,10 +68,10 @@ public class ProxyServerListener implements Listener {
 
 		long timeStamp = new Date().getTime();
 		if (DataBaseActions.updateProfile(e.getConnection().getUniqueId(), e.getConnection().getName(), timeStamp)) {
-            MineSuiteBungeePlugin.instance.getLogger()
+			MineSuiteBungeePlugin.getInstance().getLogger()
 					.info("UUID-cache updated for incoming connection " + e.getConnection().getName());
 		} else {
-            MineSuiteBungeePlugin.instance.getLogger().info(
+			MineSuiteBungeePlugin.getInstance().getLogger().info(
 					"FAIL! UUID-cache update for incoming connection " + e.getConnection().getName() + " failed!");
 		}
 

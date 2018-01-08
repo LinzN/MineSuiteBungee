@@ -79,4 +79,8 @@ public class JServer implements Runnable {
     public JServerConnection getClient(UUID uuid) {
         return this.jServerConnections.get(uuid);
     }
+
+    public HashMap<UUID, JServerConnection> getClients() {
+        return this.jServerConnections;
+    }
 }

@@ -1,56 +1,49 @@
 package de.linzn.mineSuite.bungee.listeners.xeonSocket;
 
+import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.dbase.BungeeDataTable;
 import de.linzn.mineSuite.bungee.out.ChatActions;
-import de.nlinz.javaSocket.server.api.XeonSocketServerManager;
-import de.nlinz.javaSocket.server.events.SocketDataEvent;
-import de.nlinz.javaSocket.server.interfaces.IDataListener;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.UUID;
 
-public class XeonChat implements IDataListener {
+public class XeonChat implements IncomingDataListener {
 
-	@Override
-	public String getChannel() {
-		// TODO Auto-generated method stub
-		return channelName;
-	}
-
-	public static String channelName = "xeonChat";
 
 	@Override
-	public void onDataRecieve(SocketDataEvent event) {
+    public void onEvent(String channel, UUID clientUUID, byte[] dataInBytes) {
 		// TODO Auto-generated method stub
-		DataInputStream in = XeonSocketServerManager.readDataInput(event.getStreamBytes());
-		String task = null;
+        DataInputStream in = new DataInputStream(new ByteArrayInputStream(dataInBytes));
+        String subChannel = null;
 		try {
-			task = in.readUTF();
-			if (task.equals("ChannelChat")) {
+            subChannel = in.readUTF();
+            if (subChannel.equals("ChannelChat")) {
 				String sender = in.readUTF();
 				String text = in.readUTF();
 				String prefix = in.readUTF();
 				String suffix = in.readUTF();
-				String channel = in.readUTF();
+                String chatChannel = in.readUTF();
 				String guild = in.readUTF();
-				ChatActions.channelSend(sender, text, prefix, suffix, channel, guild);
+                ChatActions.channelSend(sender, text, prefix, suffix, chatChannel, guild);
 				return;
 			}
 
-			if (task.equals("ChannelSwitch")) {
+            if (subChannel.equals("ChannelSwitch")) {
 				String sender = in.readUTF();
-				String channel = in.readUTF();
+                String chatChannel = in.readUTF();
 				ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
 				if (player == null) {
 					return;
 				}
-				BungeeDataTable.channel.put(player.getUniqueId(), channel);
+                BungeeDataTable.channel.put(player.getUniqueId(), chatChannel);
 				return;
 			}
 
-			if (task.equals("SetAfk")) {
+            if (subChannel.equals("SetAfk")) {
 				String sender = in.readUTF();
 				boolean value = in.readBoolean();
 				ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
@@ -65,7 +58,7 @@ public class XeonChat implements IDataListener {
 				return;
 			}
 
-			if (task.equals("SocialSpy")) {
+            if (subChannel.equals("SocialSpy")) {
 				String sender = in.readUTF();
 				ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
 				if (player == null) {
@@ -82,7 +75,7 @@ public class XeonChat implements IDataListener {
 				return;
 			}
 
-			if (task.equals("GuildChat")) {
+            if (subChannel.equals("GuildChat")) {
 				String guild = in.readUTF();
 				String sender = in.readUTF();
 				String text = in.readUTF();
@@ -90,7 +83,7 @@ public class XeonChat implements IDataListener {
 				return;
 			}
 
-			if (task.equals("PrivateMsg")) {
+            if (subChannel.equals("PrivateMsg")) {
 				String sender = in.readUTF();
 				String reciever = in.readUTF();
 				String text = in.readUTF();
@@ -99,7 +92,7 @@ public class XeonChat implements IDataListener {
 				return;
 			}
 
-			if (task.equals("PrivateReply")) {
+            if (subChannel.equals("PrivateReply")) {
 				String sender = in.readUTF();
 				String text = in.readUTF();
 				String prefix = in.readUTF();

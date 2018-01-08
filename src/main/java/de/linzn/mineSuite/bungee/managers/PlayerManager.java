@@ -27,42 +27,36 @@ public class PlayerManager {
 	}
 
 	public static void initPlayer(final ProxiedPlayer player) {
-        ProxyServer.getInstance().getScheduler().runAsync(MineSuiteBungeePlugin.instance, new Runnable() {
-			@Override
-			public void run() {
-				if (MuteManager.isMuted(player.getUniqueId())) {
-					List<String> list = DataBaseActions.getMuteInfos(player.getUniqueId());
-					String reason = list.get(0);
-					String mutedby = list.get(1);
-					long time = Long.parseLong(list.get(2));
-					BungeeDataTable.muteReason.put(player.getUniqueId(), reason);
-					BungeeDataTable.mutedBy.put(player.getUniqueId(), mutedby);
-					BungeeDataTable.muteTime.put(player.getUniqueId(), time);
-
-				}
-				BungeeDataTable.channel.put(player.getUniqueId(), "GLOBAL");
-				BungeeDataTable.session.put(player.getUniqueId(), true);
+		ProxyServer.getInstance().getScheduler().runAsync(MineSuiteBungeePlugin.getInstance(), () -> {
+			if (MuteManager.isMuted(player.getUniqueId())) {
+				List<String> list = DataBaseActions.getMuteInfos(player.getUniqueId());
+				String reason = list.get(0);
+				String mutedby = list.get(1);
+				long time = Long.parseLong(list.get(2));
+				BungeeDataTable.muteReason.put(player.getUniqueId(), reason);
+				BungeeDataTable.mutedBy.put(player.getUniqueId(), mutedby);
+				BungeeDataTable.muteTime.put(player.getUniqueId(), time);
 
 			}
+			BungeeDataTable.channel.put(player.getUniqueId(), "GLOBAL");
+			BungeeDataTable.session.put(player.getUniqueId(), true);
+
 		});
 	}
 
 	public static void deinitPlayer(final ProxiedPlayer player) {
-        ProxyServer.getInstance().getScheduler().runAsync(MineSuiteBungeePlugin.instance, new Runnable() {
-			@Override
-			public void run() {
-				BungeeDataTable.isMuted.remove(player.getUniqueId());
-				BungeeDataTable.muteTime.remove(player.getUniqueId());
-				BungeeDataTable.muteReason.remove(player.getUniqueId());
-				BungeeDataTable.mutedBy.remove(player.getUniqueId());
-				BungeeDataTable.guildInvites.remove(player.getUniqueId());
-				BungeeDataTable.msgreply.remove(player.getUniqueId());
-				BungeeDataTable.channel.remove(player.getUniqueId());
-				BungeeDataTable.isafk.remove(player.getUniqueId());
-				BungeeDataTable.socialspy.remove(player.getUniqueId());
-				BungeeDataTable.session.remove(player.getUniqueId());
-				removeDeathBackLocation(player);
-			}
+		ProxyServer.getInstance().getScheduler().runAsync(MineSuiteBungeePlugin.getInstance(), () -> {
+			BungeeDataTable.isMuted.remove(player.getUniqueId());
+			BungeeDataTable.muteTime.remove(player.getUniqueId());
+			BungeeDataTable.muteReason.remove(player.getUniqueId());
+			BungeeDataTable.mutedBy.remove(player.getUniqueId());
+			BungeeDataTable.guildInvites.remove(player.getUniqueId());
+			BungeeDataTable.msgreply.remove(player.getUniqueId());
+			BungeeDataTable.channel.remove(player.getUniqueId());
+			BungeeDataTable.isafk.remove(player.getUniqueId());
+			BungeeDataTable.socialspy.remove(player.getUniqueId());
+			BungeeDataTable.session.remove(player.getUniqueId());
+			removeDeathBackLocation(player);
 		});
 	}
 

@@ -41,16 +41,22 @@ public class Config {
 		}
 
 		final Configuration config = Config.ConfigConfiguration;
-		if (config.get("sql.host") == null) {
-			config.set("sql.host", "localhost");
-			config.set("sql.port", 3306);
-			config.set("sql.username", "BungeeBan");
-			config.set("sql.password", "SafePassword");
-			config.set("sql.database", "BungeeBan");
+        if (config.get("mysql.host") == null) {
+            config.set("mysql.host", "localhost");
+            config.set("mysql.port", 3306);
+            config.set("mysql.username", "BungeeBan");
+            config.set("mysql.password", "SafePassword");
+            config.set("mysql.database", "BungeeBan");
+
+
+            config.set("jSocket.hostname", "localhost");
+            config.set("jSocket.port", 9090);
 
 			final List<String> ForbittenCMD = new ArrayList<String>();
 			ForbittenCMD.add("g");
 			ForbittenCMD.add("s");
+            ForbittenCMD.add("l");
+            ForbittenCMD.add("gc");
 			ForbittenCMD.add("global");
 			ForbittenCMD.add("Global");
 			config.set("cmd.forbidden", ForbittenCMD);
