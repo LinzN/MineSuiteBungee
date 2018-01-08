@@ -1,5 +1,4 @@
-name: XeonSuiteBungee
-main : de.nlinz.xeonSuite.bungee.XeonSuiteBungee
+name: MineSuiteBungee
+main : de.linzn.mineSuite.bungee.MineSuiteBungeePlugin
 version: ${project.version}
 author: Kekshaus
-depend: [XeonSocketServer]
