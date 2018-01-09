@@ -2,7 +2,7 @@ package de.linzn.mineSuite.bungee.socket;
 
 import de.linzn.jSocket.server.JServer;
 import de.linzn.jSocket.server.JServerConnection;
-import de.linzn.mineSuite.bungee.listeners.xeonSocket.*;
+import de.linzn.mineSuite.bungee.socket.listener.*;
 import de.linzn.mineSuite.bungee.utils.Config;
 
 public class MineJSocketServer {
@@ -16,13 +16,13 @@ public class MineJSocketServer {
     }
 
     private void setupListener() {
-        jServer.registerIncomingDataListener("mineSuiteBan", new XeonBan());
-        jServer.registerIncomingDataListener("mineSuiteChat", new XeonChat());
-        jServer.registerIncomingDataListener("mineSuiteGuild", new XeonGuild());
-        jServer.registerIncomingDataListener("mineSuiteHome", new XeonHome());
-        jServer.registerIncomingDataListener("mineSuitePortal", new XeonPortal());
-        jServer.registerIncomingDataListener("mineSuiteTeleport", new XeonTeleport());
-        jServer.registerIncomingDataListener("mineSuiteWarp", new XeonWarp());
+        jServer.registerIncomingDataListener("mineSuiteBan", new JServerBanListener());
+        jServer.registerIncomingDataListener("mineSuiteChat", new JServerChatListener());
+        jServer.registerIncomingDataListener("mineSuiteGuild", new JServerGuildListener());
+        jServer.registerIncomingDataListener("mineSuiteHome", new JServerHomeListener());
+        jServer.registerIncomingDataListener("mineSuitePortal", new JServerPortalListener());
+        jServer.registerIncomingDataListener("mineSuiteTeleport", new JServerTeleportListener());
+        jServer.registerIncomingDataListener("mineSuiteWarp", new JServerWarpListener());
     }
 
     public void openServer() {

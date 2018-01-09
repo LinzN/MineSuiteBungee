@@ -1,4 +1,4 @@
-package de.linzn.mineSuite.bungee.out;
+package de.linzn.mineSuite.bungee.socket.output;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.utils.Location;
@@ -10,9 +10,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class TeleportToWarp {
+public class JServerGuildOutput {
 
-	public static void execute(ProxiedPlayer player, Location loc) {
+	public static void execute(ProxiedPlayer player, Location loc)
+
+	{
 		ServerInfo servernew = ProxyServer.getInstance().getServerInfo(loc.getServer());
 		if (servernew == null) {
 			MineSuiteBungeePlugin.getInstance().getLogger()
@@ -34,8 +36,8 @@ public class TeleportToWarp {
 		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 
 		try {
+			dataOutputStream.writeUTF("TeleportToGuildSpawn");
 			dataOutputStream.writeUTF(servernew.getName());
-			dataOutputStream.writeUTF("TeleportToWarp");
 			dataOutputStream.writeUTF(player.getName());
 			dataOutputStream.writeUTF(loc.getWorld());
 			dataOutputStream.writeDouble(loc.getX());
@@ -47,6 +49,6 @@ public class TeleportToWarp {
 			e.printStackTrace();
 		}
 
-		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteWarp", byteArrayOutputStream.toByteArray());
+		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
 	}
 }

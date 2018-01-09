@@ -1,10 +1,10 @@
-package de.linzn.mineSuite.bungee.listeners.xeonSocket;
+package de.linzn.mineSuite.bungee.socket.listener;
 
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.dbase.BungeeDataTable;
 import de.linzn.mineSuite.bungee.managers.PlayerManager;
-import de.linzn.mineSuite.bungee.out.TeleportToGuild;
+import de.linzn.mineSuite.bungee.socket.output.JServerGuildOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
@@ -13,7 +13,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.io.*;
 import java.util.UUID;
 
-public class XeonGuild implements IncomingDataListener {
+public class JServerGuildListener implements IncomingDataListener {
 
 	public static void deletePlayerFromGuild(String pname, String uuid)
 
@@ -301,7 +301,7 @@ public class XeonGuild implements IncomingDataListener {
 
 			if (subChannel.equals("TeleportToGuildSpawn")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
-				TeleportToGuild.execute(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
+				JServerGuildOutput.execute(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
 						in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
 				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to guild!");
 				return;

@@ -14,11 +14,11 @@ public class XeonConnectionSetup {
 	}
 
 	public static boolean mysql() {
-		String dbHost = Config.ConfigConfiguration.getString("sql.host");
-		int dbPort = Config.ConfigConfiguration.getInt("sql.port");
-		String database = Config.ConfigConfiguration.getString("sql.database");
-		String dbUser = Config.ConfigConfiguration.getString("sql.username");
-		String dbPassword = Config.ConfigConfiguration.getString("sql.password");
+        String dbHost = Config.ConfigConfiguration.getString("mysql.host");
+        int dbPort = Config.ConfigConfiguration.getInt("mysql.port");
+        String database = Config.ConfigConfiguration.getString("mysql.database");
+        String dbUser = Config.ConfigConfiguration.getString("mysql.username");
+        String dbPassword = Config.ConfigConfiguration.getString("mysql.password");
 		String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + database;
 		XeonConnectionFactory factory = new XeonConnectionFactory(url, dbUser, dbPassword);
 		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;

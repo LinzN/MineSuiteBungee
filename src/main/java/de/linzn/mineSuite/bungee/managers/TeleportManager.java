@@ -1,9 +1,9 @@
 package de.linzn.mineSuite.bungee.managers;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
-import de.linzn.mineSuite.bungee.out.TPAFinalise;
-import de.linzn.mineSuite.bungee.out.TeleportToLocation;
-import de.linzn.mineSuite.bungee.out.TeleportToPlayer;
+import de.linzn.mineSuite.bungee.socket.output.TPAFinalise;
+import de.linzn.mineSuite.bungee.socket.output.TeleportToLocation;
+import de.linzn.mineSuite.bungee.socket.output.TeleportToPlayer;
 import de.linzn.mineSuite.bungee.utils.Location;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;

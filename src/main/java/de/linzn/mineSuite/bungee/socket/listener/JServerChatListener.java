@@ -1,4 +1,4 @@
-package de.linzn.mineSuite.bungee.listeners.xeonSocket;
+package de.linzn.mineSuite.bungee.socket.listener;
 
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.dbase.BungeeDataTable;
@@ -11,7 +11,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-public class XeonChat implements IncomingDataListener {
+public class JServerChatListener implements IncomingDataListener {
 
 
 	@Override
@@ -21,7 +21,7 @@ public class XeonChat implements IncomingDataListener {
         String subChannel = null;
 		try {
             subChannel = in.readUTF();
-            if (subChannel.equals("ChannelChat")) {
+			if (subChannel.equals("chat_channel-chat")) {
 				String sender = in.readUTF();
 				String text = in.readUTF();
 				String prefix = in.readUTF();
@@ -32,7 +32,7 @@ public class XeonChat implements IncomingDataListener {
 				return;
 			}
 
-            if (subChannel.equals("ChannelSwitch")) {
+			if (subChannel.equals("chat_channel-switch")) {
 				String sender = in.readUTF();
                 String chatChannel = in.readUTF();
 				ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
@@ -43,7 +43,7 @@ public class XeonChat implements IncomingDataListener {
 				return;
 			}
 
-            if (subChannel.equals("SetAfk")) {
+			if (subChannel.equals("chat_set-afk")) {
 				String sender = in.readUTF();
 				boolean value = in.readBoolean();
 				ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
@@ -58,7 +58,7 @@ public class XeonChat implements IncomingDataListener {
 				return;
 			}
 
-            if (subChannel.equals("SocialSpy")) {
+			if (subChannel.equals("chat_social-spy")) {
 				String sender = in.readUTF();
 				ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
 				if (player == null) {
@@ -75,7 +75,7 @@ public class XeonChat implements IncomingDataListener {
 				return;
 			}
 
-            if (subChannel.equals("GuildChat")) {
+			if (subChannel.equals("chat_guild-chat")) {
 				String guild = in.readUTF();
 				String sender = in.readUTF();
 				String text = in.readUTF();
@@ -83,7 +83,7 @@ public class XeonChat implements IncomingDataListener {
 				return;
 			}
 
-            if (subChannel.equals("PrivateMsg")) {
+			if (subChannel.equals("chat_private-send")) {
 				String sender = in.readUTF();
 				String reciever = in.readUTF();
 				String text = in.readUTF();
@@ -92,7 +92,7 @@ public class XeonChat implements IncomingDataListener {
 				return;
 			}
 
-            if (subChannel.equals("PrivateReply")) {
+			if (subChannel.equals("chat_private-reply")) {
 				String sender = in.readUTF();
 				String text = in.readUTF();
 				String prefix = in.readUTF();

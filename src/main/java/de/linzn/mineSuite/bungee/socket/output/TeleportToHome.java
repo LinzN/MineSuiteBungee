@@ -1,4 +1,4 @@
-package de.linzn.mineSuite.bungee.out;
+package de.linzn.mineSuite.bungee.socket.output;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.utils.Location;

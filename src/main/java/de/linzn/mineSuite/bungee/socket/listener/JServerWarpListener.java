@@ -1,8 +1,8 @@
-package de.linzn.mineSuite.bungee.listeners.xeonSocket;
+package de.linzn.mineSuite.bungee.socket.listener;
 
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.managers.PlayerManager;
-import de.linzn.mineSuite.bungee.out.TeleportToWarp;
+import de.linzn.mineSuite.bungee.socket.output.TeleportToWarp;
 import de.linzn.mineSuite.bungee.utils.Location;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -12,7 +12,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-public class XeonWarp implements IncomingDataListener {
+public class JServerWarpListener implements IncomingDataListener {
 
 	@Override
     public void onEvent(String channel, UUID clientUUID, byte[] dataInBytes) {

@@ -1,4 +1,4 @@
-package de.linzn.mineSuite.bungee.listeners.xeonSocket;
+package de.linzn.mineSuite.bungee.socket.listener;
 
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.BanApi;
@@ -8,16 +8,16 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-public class XeonBan implements IncomingDataListener {
+public class JServerBanListener implements IncomingDataListener {
 
 	@Override
     public void onEvent(String channel, UUID clientUUID, byte[] dataInBytes) {
         DataInputStream in = new DataInputStream(new ByteArrayInputStream(dataInBytes));
-        String subChannel = null;
+		String subChannel;
 		try {
             subChannel = in.readUTF();
 
-            if (subChannel.equals("PermaBan")) {
+			if (subChannel.equals("ban_perma-ban")) {
 				String player = in.readUTF();
 				String reason = in.readUTF();
 				String bannedby = in.readUTF();
@@ -25,7 +25,7 @@ public class XeonBan implements IncomingDataListener {
 
 				return;
 			}
-            if (subChannel.equals("TempBan")) {
+			if (subChannel.equals("ban_temp-ban")) {
 				String player = in.readUTF();
 				String reason = in.readUTF();
 				String bannedby = in.readUTF();
@@ -33,14 +33,14 @@ public class XeonBan implements IncomingDataListener {
 				BanApi.tempBan(player, reason, bannedby, seconds);
 				return;
 			}
-            if (subChannel.equals("PermaMute")) {
+			if (subChannel.equals("ban_perma-mute")) {
 				String player = in.readUTF();
 				String reason = in.readUTF();
 				String mutedby = in.readUTF();
 				BanApi.permMute(player, reason, mutedby);
 				return;
 			}
-            if (subChannel.equals("TempMute")) {
+			if (subChannel.equals("ban_temp-mute")) {
 				String player = in.readUTF();
 				String reason = in.readUTF();
 				String mutedby = in.readUTF();
@@ -48,21 +48,21 @@ public class XeonBan implements IncomingDataListener {
 				BanApi.tempMute(player, reason, mutedby, seconds);
 				return;
 			}
-            if (subChannel.equals("kick")) {
+			if (subChannel.equals("ban_kick")) {
 				String player = in.readUTF();
 				String reason = in.readUTF();
 				String kickedby = in.readUTF();
 				BanApi.kick(player, reason, kickedby);
 				return;
 			}
-            if (subChannel.equals("unban")) {
+			if (subChannel.equals("ban_unban")) {
 				String player = in.readUTF();
 				String reason = in.readUTF();
 				String unbannedby = in.readUTF();
 				BanApi.unBan(player, reason, unbannedby);
 				return;
 			}
-            if (subChannel.equals("unmute")) {
+			if (subChannel.equals("ban_unmute")) {
 				String player = in.readUTF();
 				String reason = in.readUTF();
 				String unmutedby = in.readUTF();
