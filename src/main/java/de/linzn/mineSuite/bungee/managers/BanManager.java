@@ -2,7 +2,7 @@
 package de.linzn.mineSuite.bungee.managers;
 
 import de.linzn.mineSuite.bungee.dbase.DataBaseActions;
-import de.linzn.mineSuite.bungee.out.SendMsg;
+import de.linzn.mineSuite.bungee.socket.output.JServerBanOutput;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -28,9 +28,9 @@ public class BanManager {
 			player.disconnect(getBannedMessageNew(reason, bannedby, mtime));
 		}
 		if (seconds == -1L) {
-			SendMsg.permBanMSG(pname, reason, bannedby);
+            JServerBanOutput.permBanMSG(pname, reason, bannedby);
 		} else {
-			SendMsg.tempBanMSG(pname, mtime, reason, bannedby);
+            JServerBanOutput.tempBanMSG(pname, mtime, reason, bannedby);
 		}
 
 	}
@@ -49,14 +49,14 @@ public class BanManager {
 		UUID uuid = DataBaseActions.getUUID(player);
 		if (isBanned(uuid)) {
 			DataBaseActions.unbanPlayer(uuid, reason, unbannedby);
-			SendMsg.unBan(player, reason, unbannedby);
+            JServerBanOutput.unBan(player, reason, unbannedby);
 		}
 	}
 
 	public static void unBan(final UUID uuid, final String reason, final String unbannedby, final String pname) {
 		if (isBanned(uuid)) {
 			DataBaseActions.unbanPlayer(uuid, reason, unbannedby);
-			SendMsg.unBan(pname, reason, unbannedby);
+            JServerBanOutput.unBan(pname, reason, unbannedby);
 
 		}
 	}

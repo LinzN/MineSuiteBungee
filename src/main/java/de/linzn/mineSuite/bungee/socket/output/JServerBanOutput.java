@@ -1,4 +1,4 @@
-package de.linzn.mineSuite.bungee.out;
+package de.linzn.mineSuite.bungee.socket.output;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import net.md_5.bungee.api.ProxyServer;
@@ -8,7 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 @SuppressWarnings("deprecation")
-public class SendMsg {
+public class JServerBanOutput {
 
 	public static void permBanMSG(String banned, String reason, String bannedby) {
 		ProxyServer.getInstance().getServers();

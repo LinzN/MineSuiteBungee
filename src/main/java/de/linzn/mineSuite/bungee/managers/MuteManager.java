@@ -3,7 +3,7 @@ package de.linzn.mineSuite.bungee.managers;
 
 import de.linzn.mineSuite.bungee.dbase.BungeeDataTable;
 import de.linzn.mineSuite.bungee.dbase.DataBaseActions;
-import de.linzn.mineSuite.bungee.out.SendMsg;
+import de.linzn.mineSuite.bungee.socket.output.JServerBanOutput;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -75,10 +75,10 @@ public class MuteManager {
 			target.sendMessage(getMutedMessageNew(reason, mutedby, mtime));
 		}
 		if (seconds == -1L) {
-			SendMsg.permMuteMSG(pname, reason, mutedby);
+            JServerBanOutput.permMuteMSG(pname, reason, mutedby);
 		} else {
 
-			SendMsg.tempMuteMSG(pname, mtime, reason, mutedby);
+            JServerBanOutput.tempMuteMSG(pname, mtime, reason, mutedby);
 		}
 
 	}
@@ -97,7 +97,7 @@ public class MuteManager {
 			if (BungeeDataTable.mutedBy.containsKey(uuid)) {
 				BungeeDataTable.mutedBy.remove(uuid);
 			}
-			SendMsg.unMute(player, reason, unmutedby);
+            JServerBanOutput.unMute(player, reason, unmutedby);
 
 		}
 	}
@@ -115,7 +115,7 @@ public class MuteManager {
 			if (BungeeDataTable.mutedBy.containsKey(uuid)) {
 				BungeeDataTable.mutedBy.remove(uuid);
 			}
-			SendMsg.unMute(pname, reason, unmutedby);
+            JServerBanOutput.unMute(pname, reason, unmutedby);
 
 		}
 	}

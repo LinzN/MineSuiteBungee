@@ -1,4 +1,4 @@
-package de.linzn.mineSuite.bungee.out;
+package de.linzn.mineSuite.bungee.socket.output;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.dbase.BungeeDataTable;
@@ -11,7 +11,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-public class ChatActions {
+public class JServerChatOutput {
 
 	@SuppressWarnings("deprecation")
 	public static void sendGuildChat(String guild, String sender, String text) {

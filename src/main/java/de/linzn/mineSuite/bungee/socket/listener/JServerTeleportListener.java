@@ -3,6 +3,7 @@ package de.linzn.mineSuite.bungee.socket.listener;
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.managers.PlayerManager;
 import de.linzn.mineSuite.bungee.managers.TeleportManager;
+import de.linzn.mineSuite.bungee.socket.output.JServerTeleportOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -27,7 +28,7 @@ public class JServerTeleportListener implements IncomingDataListener {
 					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
 					return;
 				}
-				TeleportToLocation.execute(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
+                JServerTeleportOutput.teleportToLocation(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
 						in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
 				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to spawntype!");
 				return;

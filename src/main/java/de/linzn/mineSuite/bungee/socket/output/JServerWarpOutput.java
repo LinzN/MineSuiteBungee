@@ -10,11 +10,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class TeleportToHome {
+public class JServerWarpOutput {
 
-	public static void execute(ProxiedPlayer player, Location loc)
-
-	{
+    public static void teleportToWarp(ProxiedPlayer player, Location loc) {
 		ServerInfo servernew = ProxyServer.getInstance().getServerInfo(loc.getServer());
 		if (servernew == null) {
 			MineSuiteBungeePlugin.getInstance().getLogger()
@@ -37,7 +35,7 @@ public class TeleportToHome {
 
 		try {
 			dataOutputStream.writeUTF(servernew.getName());
-			dataOutputStream.writeUTF("TeleportToHome");
+			dataOutputStream.writeUTF("TeleportToWarp");
 			dataOutputStream.writeUTF(player.getName());
 			dataOutputStream.writeUTF(loc.getWorld());
 			dataOutputStream.writeDouble(loc.getX());
@@ -49,6 +47,6 @@ public class TeleportToHome {
 			e.printStackTrace();
 		}
 
-		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteHome", byteArrayOutputStream.toByteArray());
+		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteWarp", byteArrayOutputStream.toByteArray());
 	}
 }

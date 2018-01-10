@@ -1,9 +1,7 @@
 package de.linzn.mineSuite.bungee.managers;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
-import de.linzn.mineSuite.bungee.socket.output.TPAFinalise;
-import de.linzn.mineSuite.bungee.socket.output.TeleportToLocation;
-import de.linzn.mineSuite.bungee.socket.output.TeleportToPlayer;
+import de.linzn.mineSuite.bungee.socket.output.JServerTeleportOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
@@ -101,13 +99,13 @@ public class TeleportManager {
 			ProxiedPlayer target = pendingTeleportsTPA.get(player);
 			player.sendMessage(MessageDB.TELEPORT_ACCEPTED.replace("{player}", target.getName()));
 			target.sendMessage(MessageDB.TELEPORT_REQUEST_ACCEPTED.replace("{player}", player.getName()));
-			TPAFinalise.execute(target, player);
+            JServerTeleportOutput.teleportAccept(target, player);
 			pendingTeleportsTPA.remove(player);
 		} else if (pendingTeleportsTPAHere.containsKey(player)) {
 			ProxiedPlayer target = pendingTeleportsTPAHere.get(player);
 			player.sendMessage(MessageDB.TELEPORT_ACCEPTED.replace("{player}", target.getName()));
 			target.sendMessage(MessageDB.TELEPORT_REQUEST_ACCEPTED.replace("{player}", player.getName()));
-			TPAFinalise.execute(player, target);
+            JServerTeleportOutput.teleportAccept(player, target);
 			pendingTeleportsTPAHere.remove(player);
 		} else {
 			PlayerManager.sendMessageToTarget(player, MessageDB.NO_TELEPORTS);
@@ -140,7 +138,7 @@ public class TeleportManager {
 
 	public static void sendPlayerToLastBack(ProxiedPlayer player) {
 		if (PlayerManager.hasDeathBackLocation(player)) {
-			TeleportToLocation.execute(player, PlayerManager.getLastBackLocation(player));
+            JServerTeleportOutput.teleportToLocation(player, PlayerManager.getLastBackLocation(player));
 			ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to deathpoint!");
 			PlayerManager.removeDeathBackLocation(player);
 		} else {
@@ -160,7 +158,7 @@ public class TeleportManager {
 
 		for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
 			if (!player.equals(p)) {
-				TeleportToPlayer.execute(p, t);
+                JServerTeleportOutput.teleportToPlayer(p, t);
 			}
 
 			PlayerManager.sendMessageToTarget(player,
@@ -176,7 +174,7 @@ public class TeleportManager {
 			return;
 		}
 
-		TeleportToPlayer.execute(p, t);
+        JServerTeleportOutput.teleportToPlayer(p, t);
 
 		if (!silent) {
 			t.sendMessage(MessageDB.PLAYER_TELEPORTED_TO_YOU.replace("{player}", p.getName()));

@@ -301,7 +301,7 @@ public class JServerGuildListener implements IncomingDataListener {
 
 			if (subChannel.equals("TeleportToGuildSpawn")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
-				JServerGuildOutput.execute(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
+				JServerGuildOutput.teleportToGuildSpawn(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
 						in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
 				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to guild!");
 				return;

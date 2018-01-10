@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class JServerGuildOutput {
 
-	public static void execute(ProxiedPlayer player, Location loc)
+    public static void teleportToGuildSpawn(ProxiedPlayer player, Location loc)
 
 	{
 		ServerInfo servernew = ProxyServer.getInstance().getServerInfo(loc.getServer());

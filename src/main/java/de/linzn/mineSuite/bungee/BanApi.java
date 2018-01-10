@@ -3,7 +3,7 @@ package de.linzn.mineSuite.bungee;
 import de.linzn.mineSuite.bungee.dbase.DataBaseActions;
 import de.linzn.mineSuite.bungee.managers.BanManager;
 import de.linzn.mineSuite.bungee.managers.MuteManager;
-import de.linzn.mineSuite.bungee.out.SendMsg;
+import de.linzn.mineSuite.bungee.socket.output.JServerBanOutput;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -94,7 +94,7 @@ public class BanApi {
 		if (p != null) {
 			String sendmessage = "§6Du wurdest von §a" + kickedby + " §6vom Server geschmissen. \nGrund: §a" + reason;
 			p.disconnect(sendmessage);
-			SendMsg.kickMSG(player, reason, kickedby);
+            JServerBanOutput.kickMSG(player, reason, kickedby);
 		}
 	}
 }

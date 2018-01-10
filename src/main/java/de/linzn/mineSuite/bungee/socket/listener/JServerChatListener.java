@@ -2,7 +2,7 @@ package de.linzn.mineSuite.bungee.socket.listener;
 
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.dbase.BungeeDataTable;
-import de.linzn.mineSuite.bungee.out.ChatActions;
+import de.linzn.mineSuite.bungee.socket.output.JServerChatOutput;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -28,7 +28,7 @@ public class JServerChatListener implements IncomingDataListener {
 				String suffix = in.readUTF();
                 String chatChannel = in.readUTF();
 				String guild = in.readUTF();
-                ChatActions.channelSend(sender, text, prefix, suffix, chatChannel, guild);
+                JServerChatOutput.channelSend(sender, text, prefix, suffix, chatChannel, guild);
 				return;
 			}
 
@@ -79,7 +79,7 @@ public class JServerChatListener implements IncomingDataListener {
 				String guild = in.readUTF();
 				String sender = in.readUTF();
 				String text = in.readUTF();
-				ChatActions.sendGuildChat(guild, sender, text);
+                JServerChatOutput.sendGuildChat(guild, sender, text);
 				return;
 			}
 
@@ -88,7 +88,7 @@ public class JServerChatListener implements IncomingDataListener {
 				String reciever = in.readUTF();
 				String text = in.readUTF();
 				String prefix = in.readUTF();
-				ChatActions.privateMsgChat(sender, reciever, text, prefix);
+                JServerChatOutput.privateMsgChat(sender, reciever, text, prefix);
 				return;
 			}
 
@@ -96,7 +96,7 @@ public class JServerChatListener implements IncomingDataListener {
 				String sender = in.readUTF();
 				String text = in.readUTF();
 				String prefix = in.readUTF();
-				ChatActions.privateReplyChat(sender, text, prefix);
+                JServerChatOutput.privateReplyChat(sender, text, prefix);
 				return;
 			}
 		} catch (IOException e1) {

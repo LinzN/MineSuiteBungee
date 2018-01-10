@@ -2,7 +2,7 @@ package de.linzn.mineSuite.bungee.socket.listener;
 
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.managers.PlayerManager;
-import de.linzn.mineSuite.bungee.socket.output.TeleportToOther;
+import de.linzn.mineSuite.bungee.socket.output.JServerTeleportOutput;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -27,7 +27,7 @@ public class JServerPortalListener implements IncomingDataListener {
 					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
 					return;
 				}
-				TeleportToOther.portalOtherServer(player, in.readUTF());
+                JServerTeleportOutput.portalOtherServer(player, in.readUTF());
 				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to server!");
 				return;
 			}

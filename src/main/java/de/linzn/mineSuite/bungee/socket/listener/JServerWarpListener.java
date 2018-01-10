@@ -2,7 +2,7 @@ package de.linzn.mineSuite.bungee.socket.listener;
 
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.managers.PlayerManager;
-import de.linzn.mineSuite.bungee.socket.output.TeleportToWarp;
+import de.linzn.mineSuite.bungee.socket.output.JServerWarpOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -21,13 +21,13 @@ public class JServerWarpListener implements IncomingDataListener {
 		try {
             subChannel = in.readUTF();
 
-            if (subChannel.equals("TeleportToWarp")) {
+			if (subChannel.equals("JServerWarpOutput")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
 					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
 					return;
 				}
-				TeleportToWarp.execute(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
+				JServerWarpOutput.teleportToWarp(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
 						in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
 				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to warp!");
 				return;
