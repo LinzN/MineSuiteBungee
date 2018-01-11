@@ -15,8 +15,8 @@ public class JServerGuildOutput {
     public static void teleportToGuildSpawn(ProxiedPlayer player, Location loc)
 
 	{
-		ServerInfo servernew = ProxyServer.getInstance().getServerInfo(loc.getServer());
-		if (servernew == null) {
+		ServerInfo serverNew = ProxyServer.getInstance().getServerInfo(loc.getServer());
+		if (serverNew == null) {
 			MineSuiteBungeePlugin.getInstance().getLogger()
 					.severe("Location has no Server, this should never happen. Please check");
 			new Exception("").printStackTrace();
@@ -28,8 +28,8 @@ public class JServerGuildOutput {
 			return;
 		}
 
-		if (player.getServer() == null || !player.getServer().getInfo().toString().equals(servernew.toString())) {
-			player.connect(servernew);
+		if (player.getServer() == null || !player.getServer().getInfo().toString().equals(serverNew.toString())) {
+			player.connect(serverNew);
 		}
 
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -37,7 +37,7 @@ public class JServerGuildOutput {
 
 		try {
 			dataOutputStream.writeUTF("TeleportToGuildSpawn");
-			dataOutputStream.writeUTF(servernew.getName());
+			dataOutputStream.writeUTF(serverNew.getName());
 			dataOutputStream.writeUTF(player.getName());
 			dataOutputStream.writeUTF(loc.getWorld());
 			dataOutputStream.writeDouble(loc.getX());

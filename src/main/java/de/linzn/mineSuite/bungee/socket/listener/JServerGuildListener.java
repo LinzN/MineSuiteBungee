@@ -301,9 +301,11 @@ public class JServerGuildListener implements IncomingDataListener {
 
 			if (subChannel.equals("TeleportToGuildSpawn")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
-				JServerGuildOutput.teleportToGuildSpawn(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
-						in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
-				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to guild!");
+                Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(),
+                        in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
+                JServerGuildOutput.teleportToGuildSpawn(player, location);
+                ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " has been teleported with guild system.");
+                ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
 				return;
 			}
 

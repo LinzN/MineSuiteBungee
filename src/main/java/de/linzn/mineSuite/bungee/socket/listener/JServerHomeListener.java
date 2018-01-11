@@ -23,12 +23,14 @@ public class JServerHomeListener implements IncomingDataListener {
 			if (subChannel.equals("home_teleport-home")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
-					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+					ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " home task has been canceled.");
 					return;
 				}
-				JServerHomeOutput.teleportToHome(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
-						in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
-				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to home!");
+				Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(),
+						in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
+				JServerHomeOutput.teleportToHome(player, location);
+				ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " has been teleported with home system.");
+				ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
 				return;
 			}
 

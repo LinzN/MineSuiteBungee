@@ -50,8 +50,8 @@ public class JServerTeleportOutput {
     }
 
     public static void portalOtherServer(ProxiedPlayer player, String server) {
-        ServerInfo servernew = ProxyServer.getInstance().getServerInfo(server);
-        if (servernew == null) {
+        ServerInfo serverNew = ProxyServer.getInstance().getServerInfo(server);
+        if (serverNew == null) {
             MineSuiteBungeePlugin.getInstance().getLogger()
                     .severe("Location has no Server, this should never happen. Please check");
             new Exception("").printStackTrace();
@@ -63,8 +63,8 @@ public class JServerTeleportOutput {
             return;
         }
 
-        if (player.getServer() == null || !player.getServer().getInfo().toString().equals(servernew.toString())) {
-            player.connect(servernew);
+        if (player.getServer() == null || !player.getServer().getInfo().toString().equals(serverNew.toString())) {
+            player.connect(serverNew);
         }
     }
 

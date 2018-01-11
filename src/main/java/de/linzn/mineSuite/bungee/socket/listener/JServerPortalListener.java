@@ -24,11 +24,13 @@ public class JServerPortalListener implements IncomingDataListener {
 			if (subChannel.equals("portal_teleport-server")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
-					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+					ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " portal task has been canceled.");
 					return;
 				}
-                JServerTeleportOutput.portalOtherServer(player, in.readUTF());
-				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to server!");
+				String server = in.readUTF();
+				JServerTeleportOutput.portalOtherServer(player, server);
+				ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " has been teleported with portal system.");
+				ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + server);
 				return;
 			}
 		} catch (IOException e1) {

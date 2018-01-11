@@ -25,25 +25,29 @@ public class JServerTeleportListener implements IncomingDataListener {
 			if (subChannel.equals("teleport_teleport-location")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
-					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+                    ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
 					return;
 				}
-                JServerTeleportOutput.teleportToLocation(player, new Location(in.readUTF(), in.readUTF(), in.readDouble(),
-						in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
-				ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to spawntype!");
+                Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(),
+                        in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
+                JServerTeleportOutput.teleportToLocation(player, location);
+                ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " has been teleported with teleport system.");
+                ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
 				return;
 			}
 
 			if (subChannel.equals("teleport_teleport-dead-location")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
-					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+                    ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
 					return;
 				}
-				TeleportManager.setPlayersDeathBackLocation(PlayerManager.getPlayer(player.getName()),
-						new Location(player.getServer().getInfo().getName(), in.readUTF(), in.readDouble(),
-								in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat()));
+                Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(),
+                        in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
 
+                JServerTeleportOutput.teleportToLocation(player, location);
+                ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " has been teleported to deadpoint with teleport system.");
+                TeleportManager.setPlayersDeathBackLocation(PlayerManager.getPlayer(player.getName()), location);
 				return;
 			}
 
@@ -65,7 +69,7 @@ public class JServerTeleportListener implements IncomingDataListener {
 			if (subChannel.equals("teleport_tpa-accept")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
-					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+                    ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " tpa task has been canceled.");
 					return;
 				}
 				TeleportManager.acceptTeleportRequest(player);
@@ -74,7 +78,7 @@ public class JServerTeleportListener implements IncomingDataListener {
 			if (subChannel.equals("teleport_tpa-deny")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
-					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+                    ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " tpa task has been canceled.");
 					return;
 				}
 				TeleportManager.denyTeleportRequest(player);
@@ -89,7 +93,7 @@ public class JServerTeleportListener implements IncomingDataListener {
 			if (subChannel.equals("teleport_send-player-back")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
-					ProxyServer.getInstance().getLogger().info("[" + player + "] <-> task canceled. Is offline!");
+                    ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
 					return;
 				}
 				TeleportManager.sendPlayerToLastBack(player);
