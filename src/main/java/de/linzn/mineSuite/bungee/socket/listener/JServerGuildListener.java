@@ -2,7 +2,7 @@ package de.linzn.mineSuite.bungee.socket.listener;
 
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
-import de.linzn.mineSuite.bungee.dbase.BungeeDataTable;
+import de.linzn.mineSuite.bungee.database.DataHashTable;
 import de.linzn.mineSuite.bungee.managers.PlayerManager;
 import de.linzn.mineSuite.bungee.socket.output.JServerGuildOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
@@ -270,18 +270,18 @@ public class JServerGuildListener implements IncomingDataListener {
 				invitedPlayer.sendMessage(ChatColor.YELLOW + player.getName() + ChatColor.GREEN
 						+ " hat dir eine Einladung in die Gilde " + ChatColor.YELLOW + guildName + ChatColor.GREEN
 						+ " gesendet. " + ChatColor.YELLOW + "/guild accept " + ChatColor.GREEN + "um anzunehmen!");
-				BungeeDataTable.guildInvites.put(invitedPlayer.getUniqueId(), guildUUID);
+				DataHashTable.guildInvites.put(invitedPlayer.getUniqueId(), guildUUID);
 				return;
 			}
 			if (subChannel.equals("AcceptGuildInvite")) {
 				ProxiedPlayer invitedPlayer = ProxyServer.getInstance().getPlayer(in.readUTF());
-				if (BungeeDataTable.guildInvites.containsKey(invitedPlayer.getUniqueId())) {
-					UUID guildUUID = BungeeDataTable.guildInvites.get(invitedPlayer.getUniqueId());
+				if (DataHashTable.guildInvites.containsKey(invitedPlayer.getUniqueId())) {
+					UUID guildUUID = DataHashTable.guildInvites.get(invitedPlayer.getUniqueId());
 					finishInvite(invitedPlayer, guildUUID);
 				} else {
 					invitedPlayer.sendMessage(ChatColor.RED + "Du hast keine offenen Einladungen!");
 				}
-				BungeeDataTable.guildInvites.remove(invitedPlayer.getUniqueId());
+				DataHashTable.guildInvites.remove(invitedPlayer.getUniqueId());
 
 			}
 

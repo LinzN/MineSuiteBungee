@@ -1,11 +1,11 @@
-package de.linzn.mineSuite.bungee.dbase;
+package de.linzn.mineSuite.bungee.database;
 
 import de.linzn.mineSuite.bungee.utils.Location;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public class BungeeDataTable {
+public class DataHashTable {
 
 	public static HashMap<UUID, Boolean> acceptingTeleports = new HashMap<>();
 	public static HashMap<UUID, Location> deathBackLocation = new HashMap<>();

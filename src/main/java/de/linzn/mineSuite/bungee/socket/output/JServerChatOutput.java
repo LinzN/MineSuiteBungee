@@ -1,7 +1,7 @@
 package de.linzn.mineSuite.bungee.socket.output;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
-import de.linzn.mineSuite.bungee.dbase.BungeeDataTable;
+import de.linzn.mineSuite.bungee.database.DataHashTable;
 import de.linzn.mineSuite.bungee.utils.ChatFormate;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -30,7 +30,7 @@ public class JServerChatOutput {
 		}
         MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteChat", byteArrayOutputStream.toByteArray());
 		ProxyServer.getInstance().getLogger().info(guild + "-> " + formatedText);
-		for (UUID uuid : BungeeDataTable.socialspy.keySet()) {
+		for (UUID uuid : DataHashTable.socialspy.keySet()) {
 			ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
 			p.sendMessage("§4[SPY]§r" + guild + "-> " + formatedText);
 		}
@@ -52,7 +52,7 @@ public class JServerChatOutput {
 			sendGuildChat(guild, sender, text);
 
 		} else if (channel.equalsIgnoreCase("NONE")) {
-			String ch = BungeeDataTable.channel.get(player.getUniqueId());
+			String ch = DataHashTable.channel.get(player.getUniqueId());
 			if (ch == null) {
 				ProxyServer.getInstance().getLogger().info("Channel for player " + sender + " == null ????");
 				return;
@@ -65,7 +65,7 @@ public class JServerChatOutput {
 			} else if (ch.equalsIgnoreCase("GUILD")) {
 				if (guild.equalsIgnoreCase("NONE")) {
 					player.sendMessage("Du bist in keiner Gilde!");
-					BungeeDataTable.channel.put(player.getUniqueId(), "GLOBAL");
+					DataHashTable.channel.put(player.getUniqueId(), "GLOBAL");
 				} else {
 					sendGuildChat(guild, sender, text);
 				}
@@ -120,10 +120,10 @@ public class JServerChatOutput {
 			player.sendMessage("Dieser Spieler ist nicht online!");
 			return;
 		}
-		if (BungeeDataTable.isafk.containsKey(recievedPlayer.getUniqueId())) {
+		if (DataHashTable.isafk.containsKey(recievedPlayer.getUniqueId())) {
 			player.sendMessage("§eDer Spieler ist als abwesend makiert!");
 		}
-		BungeeDataTable.msgreply.put(recievedPlayer.getUniqueId(), player.getUniqueId());
+		DataHashTable.msgreply.put(recievedPlayer.getUniqueId(), player.getUniqueId());
 
 		String formatedTextSender = ChatFormate.toPrivateMsgSenderFormate(sender, reciever, text, prefix);
 		String formatedTextReciever = ChatFormate.toPrivateMsgRecieverFormate(sender, reciever, text, prefix);
@@ -134,7 +134,7 @@ public class JServerChatOutput {
 
 		ProxyServer.getInstance().getLogger().info("[PM]" + formatedText);
 
-		for (UUID uuid : BungeeDataTable.socialspy.keySet()) {
+		for (UUID uuid : DataHashTable.socialspy.keySet()) {
 			ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
 			p.sendMessage("§4[SPY]§r" + formatedText);
 		}
@@ -144,7 +144,7 @@ public class JServerChatOutput {
 
     public static void privateReplyChat(String sender, String text, String prefix) {
 		ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
-		UUID uuidreciever = BungeeDataTable.msgreply.get(player.getUniqueId());
+		UUID uuidreciever = DataHashTable.msgreply.get(player.getUniqueId());
 		if (uuidreciever == null) {
 			player.sendMessage("Du hast niemand zum Antworten!");
 			return;
@@ -154,10 +154,10 @@ public class JServerChatOutput {
 			player.sendMessage("Dieser Spieler ist offline!");
 			return;
 		}
-		if (BungeeDataTable.isafk.containsKey(recievedPlayer.getUniqueId())) {
+		if (DataHashTable.isafk.containsKey(recievedPlayer.getUniqueId())) {
 			player.sendMessage("§eDer Spieler ist als abwesend makiert!");
 		}
-		BungeeDataTable.msgreply.put(recievedPlayer.getUniqueId(), player.getUniqueId());
+		DataHashTable.msgreply.put(recievedPlayer.getUniqueId(), player.getUniqueId());
 
 		String formatedTextSender = ChatFormate.toPrivateMsgSenderFormate(sender, recievedPlayer.getName(), text,
 				prefix);
@@ -169,7 +169,7 @@ public class JServerChatOutput {
 		recievedPlayer.sendMessage(formatedTextReciever);
 
 		ProxyServer.getInstance().getLogger().info("[Reply]" + formatedText);
-		for (UUID uuid : BungeeDataTable.socialspy.keySet()) {
+		for (UUID uuid : DataHashTable.socialspy.keySet()) {
 			ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
 			p.sendMessage("§4[SPY]§r" + formatedText);
 		}

@@ -1,8 +1,8 @@
 package de.linzn.mineSuite.bungee.listeners;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
-import de.linzn.mineSuite.bungee.dbase.BungeeDataTable;
-import de.linzn.mineSuite.bungee.dbase.DataBaseActions;
+import de.linzn.mineSuite.bungee.database.DataHashTable;
+import de.linzn.mineSuite.bungee.database.mysql.MySQLTasks;
 import de.linzn.mineSuite.bungee.managers.BanManager;
 import de.linzn.mineSuite.bungee.managers.MuteManager;
 import de.linzn.mineSuite.bungee.managers.PlayerManager;
@@ -26,7 +26,7 @@ public class ProxyServerListener implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.LOW)
 	public void playerLogin(PostLoginEvent event) {
-		if (!BungeeDataTable.session.containsKey(event.getPlayer().getUniqueId())) {
+        if (!DataHashTable.session.containsKey(event.getPlayer().getUniqueId())) {
 			ProxyServer.getInstance()
 					.broadcast(ChatColor.GOLD + event.getPlayer().getName() + " ist " + ChatColor.GREEN + "online");
 		}
@@ -74,7 +74,7 @@ public class ProxyServerListener implements Listener {
 		}
 
 		long timeStamp = new Date().getTime();
-		if (DataBaseActions.updateProfile(e.getConnection().getUniqueId(), e.getConnection().getName(), timeStamp)) {
+        if (MySQLTasks.updateProfile(e.getConnection().getUniqueId(), e.getConnection().getName(), timeStamp)) {
 			MineSuiteBungeePlugin.getInstance().getLogger()
 					.info("UUID-cache updated for incoming connection " + e.getConnection().getName());
 		} else {

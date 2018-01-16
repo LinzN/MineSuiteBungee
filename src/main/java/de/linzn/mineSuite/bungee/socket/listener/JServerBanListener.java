@@ -1,7 +1,7 @@
 package de.linzn.mineSuite.bungee.socket.listener;
 
 import de.linzn.jSocket.core.IncomingDataListener;
-import de.linzn.mineSuite.bungee.dbase.DataBaseActions;
+import de.linzn.mineSuite.bungee.database.mysql.MySQLTasks;
 import de.linzn.mineSuite.bungee.managers.MuteManager;
 import de.linzn.mineSuite.bungee.socket.output.JServerBanOutput;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
@@ -32,7 +32,7 @@ public class JServerBanListener implements IncomingDataListener {
                 }
                 if (uuid == null) {
 
-                    uuid = DataBaseActions.getUUID(player);
+                    uuid = MySQLTasks.getUUID(player);
                 }
                 if (uuid != null) {
                     de.linzn.mineSuite.bungee.managers.BanManager.banPlayer(uuid, reason, bannedby, -1L, player);
@@ -52,7 +52,7 @@ public class JServerBanListener implements IncomingDataListener {
                     uuid = ProxyServer.getInstance().getPlayer(player).getUniqueId();
                 }
                 if (uuid == null) {
-                    uuid = DataBaseActions.getUUID(player);
+                    uuid = MySQLTasks.getUUID(player);
                 }
                 if (uuid != null) {
                     de.linzn.mineSuite.bungee.managers.BanManager.banPlayer(uuid, reason, bannedby, seconds, player);
@@ -72,7 +72,7 @@ public class JServerBanListener implements IncomingDataListener {
                     uuid = ProxyServer.getInstance().getPlayer(player).getUniqueId();
                 }
                 if (uuid == null) {
-                    uuid = DataBaseActions.getUUID(player);
+                    uuid = MySQLTasks.getUUID(player);
                 }
                 if (uuid != null) {
                     MuteManager.mutePlayer(uuid, reason, mutedby, -1L, player);
@@ -92,7 +92,7 @@ public class JServerBanListener implements IncomingDataListener {
                     uuid = ProxyServer.getInstance().getPlayer(player).getUniqueId();
                 }
                 if (uuid == null) {
-                    uuid = DataBaseActions.getUUID(player);
+                    uuid = MySQLTasks.getUUID(player);
                 }
                 if (uuid != null) {
                     MuteManager.mutePlayer(uuid, reason, mutedby, seconds, player);

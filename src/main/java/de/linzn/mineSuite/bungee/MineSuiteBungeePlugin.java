@@ -1,6 +1,6 @@
 package de.linzn.mineSuite.bungee;
 
-import de.linzn.mineSuite.bungee.dbase.XeonConnectionSetup;
+import de.linzn.mineSuite.bungee.database.mysql.setup.XeonConnectionSetup;
 import de.linzn.mineSuite.bungee.listeners.ProxyServerListener;
 import de.linzn.mineSuite.bungee.socket.MineJSocketServer;
 import de.linzn.mineSuite.bungee.utils.AutoUnbanChecker;

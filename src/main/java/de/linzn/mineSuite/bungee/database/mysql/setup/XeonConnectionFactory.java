@@ -1,4 +1,4 @@
-package de.linzn.mineSuite.bungee.dbase;
+package de.linzn.mineSuite.bungee.database.mysql.setup;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

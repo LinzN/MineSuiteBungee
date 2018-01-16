@@ -1,7 +1,7 @@
 
 package de.linzn.mineSuite.bungee.managers;
 
-import de.linzn.mineSuite.bungee.dbase.DataBaseActions;
+import de.linzn.mineSuite.bungee.database.mysql.MySQLTasks;
 import de.linzn.mineSuite.bungee.socket.output.JServerBanOutput;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -20,7 +20,7 @@ public class BanManager {
 		if (seconds == -1L) {
 			end = -1L;
 		}
-		DataBaseActions.banPlayer(uuid, reason, bannedby, end);
+		MySQLTasks.banPlayer(uuid, reason, bannedby, end);
 
 		ProxiedPlayer player = ProxyServer.getInstance().getPlayer(uuid);
 		String mtime = BanManager.getRemainingTime(end);
@@ -36,26 +36,26 @@ public class BanManager {
 	}
 
 	public static boolean isBanned(ProxiedPlayer player) {
-		return DataBaseActions.isBanned(player.getUniqueId());
+		return MySQLTasks.isBanned(player.getUniqueId());
 
 	}
 
 	public static boolean isBanned(UUID uuid) {
-		return DataBaseActions.isBanned(uuid);
+		return MySQLTasks.isBanned(uuid);
 
 	}
 
 	public static void unBan(final String player, final String reason, final String unbannedby) {
-		UUID uuid = DataBaseActions.getUUID(player);
+		UUID uuid = MySQLTasks.getUUID(player);
 		if (isBanned(uuid)) {
-			DataBaseActions.unbanPlayer(uuid, reason, unbannedby);
+			MySQLTasks.unbanPlayer(uuid, reason, unbannedby);
             JServerBanOutput.unBan(player, reason, unbannedby);
 		}
 	}
 
 	public static void unBan(final UUID uuid, final String reason, final String unbannedby, final String pname) {
 		if (isBanned(uuid)) {
-			DataBaseActions.unbanPlayer(uuid, reason, unbannedby);
+			MySQLTasks.unbanPlayer(uuid, reason, unbannedby);
             JServerBanOutput.unBan(pname, reason, unbannedby);
 
 		}
@@ -63,14 +63,14 @@ public class BanManager {
 
 	public static void unBanSystem(final UUID uuid) {
 		if (isBanned(uuid)) {
-			DataBaseActions.unbanPlayer(uuid, "Abgelaufen", "SYSTEM");
+			MySQLTasks.unbanPlayer(uuid, "Abgelaufen", "SYSTEM");
 
 		}
 	}
 
 	public static long getEnd(final UUID uuid) {
 		long end = -1L;
-		end = DataBaseActions.getBanExpired(uuid);
+		end = MySQLTasks.getBanExpired(uuid);
 		return end;
 	}
 
@@ -152,7 +152,7 @@ public class BanManager {
 	}
 
 	public static String getBannedMessage(UUID uuid) {
-		List<String> list = DataBaseActions.getBanInfos(uuid);
+		List<String> list = MySQLTasks.getBanInfos(uuid);
 		String reason = list.get(0);
 		String bannedby = list.get(1);
 		long milisec = Long.parseLong(list.get(2));

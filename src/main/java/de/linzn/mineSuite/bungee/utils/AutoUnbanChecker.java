@@ -1,12 +1,12 @@
 package de.linzn.mineSuite.bungee.utils;
 
-import de.linzn.mineSuite.bungee.dbase.DataBaseActions;
+import de.linzn.mineSuite.bungee.database.mysql.MySQLTasks;
 
 public class AutoUnbanChecker implements Runnable {
 
 	public void run() {
-		DataBaseActions.clearOldBans();
-        DataBaseActions.clearOldMuted();
+		MySQLTasks.clearOldBans();
+		MySQLTasks.clearOldMuted();
 	}
 
 }

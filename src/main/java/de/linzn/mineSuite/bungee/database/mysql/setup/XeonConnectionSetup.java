@@ -1,4 +1,4 @@
-package de.linzn.mineSuite.bungee.dbase;
+package de.linzn.mineSuite.bungee.database.mysql.setup;
 
 import de.linzn.mineSuite.bungee.utils.Config;
 import net.md_5.bungee.api.ChatColor;
@@ -22,7 +22,7 @@ public class XeonConnectionSetup {
 		String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + database;
 		XeonConnectionFactory factory = new XeonConnectionFactory(url, dbUser, dbPassword);
 		XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
-		XeonConnectionHandler handler = manager.getHandler("XeonSuite", factory);
+		XeonConnectionHandler handler = manager.getHandler("MineSuiteBungee", factory);
 
 		try {
 			Connection connection = handler.getConnection();
@@ -40,12 +40,12 @@ public class XeonConnectionSetup {
 
 		} catch (Exception e) {
 			ProxyServer.getInstance().getConsole()
-					.sendMessage(ChatColor.RED + "=================XeonSuite-ERROR================");
+					.sendMessage(ChatColor.RED + "=================MineSuiteBungee-ERROR================");
 			ProxyServer.getInstance().getConsole().sendMessage(ChatColor.RED + "Unable to connect to database.");
 			ProxyServer.getInstance().getConsole()
 					.sendMessage(ChatColor.RED + "Pls check you mysql connection in config.yml.");
 			ProxyServer.getInstance().getConsole()
-					.sendMessage(ChatColor.RED + "=================XeonSuite-ERROR================");
+					.sendMessage(ChatColor.RED + "=================MineSuiteBungee-ERROR================");
 			e.printStackTrace();
 			return false;
 		}

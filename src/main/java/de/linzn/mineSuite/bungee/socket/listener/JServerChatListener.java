@@ -1,7 +1,7 @@
 package de.linzn.mineSuite.bungee.socket.listener;
 
 import de.linzn.jSocket.core.IncomingDataListener;
-import de.linzn.mineSuite.bungee.dbase.BungeeDataTable;
+import de.linzn.mineSuite.bungee.database.DataHashTable;
 import de.linzn.mineSuite.bungee.socket.output.JServerChatOutput;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -39,7 +39,7 @@ public class JServerChatListener implements IncomingDataListener {
 				if (player == null) {
 					return;
 				}
-                BungeeDataTable.channel.put(player.getUniqueId(), chatChannel);
+				DataHashTable.channel.put(player.getUniqueId(), chatChannel);
 				return;
 			}
 
@@ -51,9 +51,9 @@ public class JServerChatListener implements IncomingDataListener {
 					return;
 				}
 				if (value) {
-					BungeeDataTable.isafk.put(player.getUniqueId(), value);
+					DataHashTable.isafk.put(player.getUniqueId(), value);
 				} else {
-					BungeeDataTable.isafk.remove(player.getUniqueId());
+					DataHashTable.isafk.remove(player.getUniqueId());
 				}
 				return;
 			}
@@ -64,12 +64,12 @@ public class JServerChatListener implements IncomingDataListener {
 				if (player == null) {
 					return;
 				}
-				if (!BungeeDataTable.socialspy.containsKey(player.getUniqueId())) {
-					BungeeDataTable.socialspy.put(player.getUniqueId(), true);
+				if (!DataHashTable.socialspy.containsKey(player.getUniqueId())) {
+					DataHashTable.socialspy.put(player.getUniqueId(), true);
 					player.sendMessage("§aChannel: ALLE (SocialSpy on)");
 
 				} else {
-					BungeeDataTable.socialspy.remove(player.getUniqueId());
+					DataHashTable.socialspy.remove(player.getUniqueId());
 					player.sendMessage("§aChannel: EIGENE (SocialSpy off)");
 				}
 				return;
