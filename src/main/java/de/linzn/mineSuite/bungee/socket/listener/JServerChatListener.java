@@ -21,7 +21,7 @@ public class JServerChatListener implements IncomingDataListener {
         String subChannel = null;
 		try {
             subChannel = in.readUTF();
-			if (subChannel.equals("chat_channel-chat")) {
+            if (subChannel.equals("client_chat_channel-chat")) {
 				String sender = in.readUTF();
 				String text = in.readUTF();
 				String prefix = in.readUTF();
@@ -32,7 +32,7 @@ public class JServerChatListener implements IncomingDataListener {
 				return;
 			}
 
-			if (subChannel.equals("chat_channel-switch")) {
+            if (subChannel.equals("client_chat_channel-switch")) {
 				String sender = in.readUTF();
                 String chatChannel = in.readUTF();
 				ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
@@ -43,7 +43,7 @@ public class JServerChatListener implements IncomingDataListener {
 				return;
 			}
 
-			if (subChannel.equals("chat_set-afk")) {
+            if (subChannel.equals("client_chat_set-afk")) {
 				String sender = in.readUTF();
 				boolean value = in.readBoolean();
 				ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
@@ -58,7 +58,7 @@ public class JServerChatListener implements IncomingDataListener {
 				return;
 			}
 
-			if (subChannel.equals("chat_social-spy")) {
+            if (subChannel.equals("client_chat_social-spy")) {
 				String sender = in.readUTF();
 				ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
 				if (player == null) {
@@ -75,7 +75,7 @@ public class JServerChatListener implements IncomingDataListener {
 				return;
 			}
 
-			if (subChannel.equals("chat_guild-chat")) {
+            if (subChannel.equals("client_chat_guild-chat")) {
 				String guild = in.readUTF();
 				String sender = in.readUTF();
 				String text = in.readUTF();
@@ -83,7 +83,7 @@ public class JServerChatListener implements IncomingDataListener {
 				return;
 			}
 
-			if (subChannel.equals("chat_private-send")) {
+            if (subChannel.equals("client_chat_private-send")) {
 				String sender = in.readUTF();
 				String reciever = in.readUTF();
 				String text = in.readUTF();
@@ -92,7 +92,7 @@ public class JServerChatListener implements IncomingDataListener {
 				return;
 			}
 
-			if (subChannel.equals("chat_private-reply")) {
+            if (subChannel.equals("client_chat_private-reply")) {
 				String sender = in.readUTF();
 				String text = in.readUTF();
 				String prefix = in.readUTF();

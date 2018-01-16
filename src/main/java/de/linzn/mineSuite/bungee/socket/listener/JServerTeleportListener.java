@@ -22,7 +22,7 @@ public class JServerTeleportListener implements IncomingDataListener {
 		try {
 			subChannel = in.readUTF();
 
-			if (subChannel.equals("teleport_teleport-location")) {
+            if (subChannel.equals("client_teleport_teleport-location")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
                     ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
@@ -36,7 +36,7 @@ public class JServerTeleportListener implements IncomingDataListener {
 				return;
 			}
 
-			if (subChannel.equals("teleport_teleport-dead-location")) {
+            if (subChannel.equals("client_teleport_teleport-dead-location")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
                     ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
@@ -51,22 +51,22 @@ public class JServerTeleportListener implements IncomingDataListener {
 				return;
 			}
 
-			if (subChannel.equals("teleport_teleport-to-player")) {
+            if (subChannel.equals("client_teleport_teleport-to-player")) {
 				TeleportManager.teleportPlayerToPlayer(in.readUTF(), in.readUTF(), in.readBoolean(), in.readBoolean());
 
 				return;
 			}
 
-			if (subChannel.equals("teleport_tpa-request-here")) {
+            if (subChannel.equals("client_teleport_tpa-request-here")) {
 				TeleportManager.requestPlayerTeleportToYou(in.readUTF(), in.readUTF());
 				return;
 			}
 
-			if (subChannel.equals("teleport_tpa-to-request")) {
+            if (subChannel.equals("client_teleport_tpa-to-request")) {
 				TeleportManager.requestToTeleportToPlayer(in.readUTF(), in.readUTF());
 				return;
 			}
-			if (subChannel.equals("teleport_tpa-accept")) {
+            if (subChannel.equals("client_teleport_tpa-accept")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
                     ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " tpa task has been canceled.");
@@ -75,7 +75,7 @@ public class JServerTeleportListener implements IncomingDataListener {
 				TeleportManager.acceptTeleportRequest(player);
 				return;
 			}
-			if (subChannel.equals("teleport_tpa-deny")) {
+            if (subChannel.equals("client_teleport_tpa-deny")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
                     ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " tpa task has been canceled.");
@@ -85,12 +85,12 @@ public class JServerTeleportListener implements IncomingDataListener {
 				return;
 			}
 
-			if (subChannel.equals("teleport_teleport-all")) {
+            if (subChannel.equals("client_teleport_teleport-all")) {
 				TeleportManager.tpAll(in.readUTF(), in.readUTF());
 				return;
 			}
 
-			if (subChannel.equals("teleport_send-player-back")) {
+            if (subChannel.equals("client_teleport_send-player-back")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
                     ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");

@@ -35,7 +35,7 @@ public class JServerWarpOutput {
 
 		try {
 			dataOutputStream.writeUTF(servernew.getName());
-			dataOutputStream.writeUTF("TeleportToWarp");
+            dataOutputStream.writeUTF("server_warp_teleport-warp");
 			dataOutputStream.writeUTF(player.getName());
 			dataOutputStream.writeUTF(loc.getWorld());
 			dataOutputStream.writeDouble(loc.getX());

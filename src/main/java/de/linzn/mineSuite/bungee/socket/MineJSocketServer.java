@@ -13,6 +13,7 @@ public class MineJSocketServer {
         String hostname = Config.ConfigConfiguration.getString("jSocket.host");
         int port = Config.ConfigConfiguration.getInt("jSocket.port");
         jServer = new JServer(hostname, port);
+        setupListener();
     }
 
     private void setupListener() {

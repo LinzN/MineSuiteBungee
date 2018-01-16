@@ -20,7 +20,7 @@ public class JServerWarpListener implements IncomingDataListener {
 		String subChannel;
 		try {
             subChannel = in.readUTF();
-			if (subChannel.equals("JServerWarpOutput")) {
+            if (subChannel.equals("client_warp_teleport-warp")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
 					ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " warp task has been canceled.");

@@ -5,8 +5,8 @@ public class ChatFormate {
 	private static String channelglobalformate = "§2[G] §f{prefix}{player}§2{suffix}: {text}";
 	private static String channelstaffformate = "§6[§4Team§6] §f{player}§e: {text}";
 	private static String privatemsgformate = "{player} -> {reciever}: {text}";
-	private static String privatemsgsenderformate = "§6{prefix}Du§8 -> §6{reciever}§8: §7{text}";
-	private static String privatemsgrecieverformate = "§6{prefix}{player}§8 -> §6Dir§8: §7{text}";
+    private static String privatemsgsenderformate = "§6Du§8 -> §6{reciever}§8: §7{text}";
+    private static String privatemsgrecieverformate = "§6{player}§8 -> §6Dir§8: §7{text}";
 
 	public static String toGuildFormate(String sender, String text) {
 		String formate = guildchat.replace("{player}", sender).replace("{text}", text);

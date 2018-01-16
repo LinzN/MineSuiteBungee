@@ -37,7 +37,7 @@ public class JServerHomeOutput {
 
 		try {
 			dataOutputStream.writeUTF(servernew.getName());
-            dataOutputStream.writeUTF("JServerHomeOutput");
+            dataOutputStream.writeUTF("server_home_teleport-home");
 			dataOutputStream.writeUTF(player.getName());
 			dataOutputStream.writeUTF(loc.getWorld());
 			dataOutputStream.writeDouble(loc.getX());

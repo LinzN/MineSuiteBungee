@@ -21,7 +21,7 @@ public class JServerPortalListener implements IncomingDataListener {
 		try {
 			subChannel = in.readUTF();
 
-			if (subChannel.equals("portal_teleport-server")) {
+            if (subChannel.equals("client_portal_teleport-server")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
 					ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " portal task has been canceled.");

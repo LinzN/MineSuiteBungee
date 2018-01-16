@@ -20,7 +20,7 @@ public class JServerHomeListener implements IncomingDataListener {
 		String subChannel = null;
 		try {
 			subChannel = in.readUTF();
-			if (subChannel.equals("home_teleport-home")) {
+            if (subChannel.equals("client_home_teleport-home")) {
 				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
 				if (player == null) {
 					ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " home task has been canceled.");

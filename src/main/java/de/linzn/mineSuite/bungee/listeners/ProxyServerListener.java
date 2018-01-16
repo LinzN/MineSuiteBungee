@@ -21,6 +21,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ProxyServerListener implements Listener {
 
+    private static int protocol_id = 315;
+
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.LOW)
 	public void playerLogin(PostLoginEvent event) {
@@ -47,13 +49,18 @@ public class ProxyServerListener implements Listener {
 						ChatColor.GOLD + event.getPlayer().getName() + " ist " + ChatColor.DARK_RED + "offline");
 			} else {
 				ProxyServer.getInstance().getLogger().warning(ChatColor.YELLOW
-						+ "Player not log out correctly? Cant deinitialize player, because player is not offline!");
+                        + "Spieler ist nicht richtig ausgeloggt? Hm kann passieren.");
 			}
 		}, 1, TimeUnit.SECONDS);
 	}
 
 	@EventHandler(priority = 64)
 	public void onLogin(final LoginEvent e) {
+        if (e.getConnection().getVersion() < this.protocol_id) {
+            e.setCancelReason(ChatColor.RED + "Leider ist deine Minecraft Version zu alt. Erforderlich ist " + ChatColor.GREEN + "1.11.0 " + ChatColor.RED + " oder höher.");
+            e.setCancelled(true);
+            return;
+        }
 		if (BanManager.isBanned(e.getConnection().getUniqueId())) {
 			final Long current = System.currentTimeMillis();
 			final Long end = BanManager.getEnd(e.getConnection().getUniqueId());
