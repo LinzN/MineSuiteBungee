@@ -74,7 +74,7 @@ public class JServer implements Runnable {
                 jServerConnection.setEnable();
                 this.jServerConnections.put(jServerConnection.getUUID(), jServerConnection);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("[" + Thread.currentThread().getName() + "] " + "Connection already closed!");
             }
         } while (!this.server.isClosed());
     }
