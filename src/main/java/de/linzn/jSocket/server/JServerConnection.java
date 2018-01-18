@@ -68,6 +68,7 @@ public class JServerConnection implements Runnable {
     }
 
     public synchronized void writeOutput(String headerChannel, byte[] bytes) {
+        System.out.println("TEst header: " + headerChannel);
         if (this.isValidConnection()) {
             try {
                 byte[] fullData = bytes;
@@ -98,6 +99,7 @@ public class JServerConnection implements Runnable {
             } catch (IOException e) {
             }
             this.onDisconnect();
+            this.jServer.jServerConnections.remove(this.uuid);
         }
     }
 

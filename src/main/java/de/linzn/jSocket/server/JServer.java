@@ -19,7 +19,7 @@ public class JServer implements Runnable {
     ArrayList<ConnectionListener> connectionListeners;
     private String host;
     private int port;
-    private HashMap<UUID, JServerConnection> jServerConnections;
+    HashMap<UUID, JServerConnection> jServerConnections;
 
     public JServer(String host, int port) {
         this.host = host;
