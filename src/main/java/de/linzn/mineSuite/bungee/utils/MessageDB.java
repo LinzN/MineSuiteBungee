@@ -1,3 +1,14 @@
+/*
+ * Copyright (C) 2018. MineGaming - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the LGPLv3 license, which unfortunately won't be
+ * written for another century.
+ *
+ *  You should have received a copy of the LGPLv3 license with
+ *  this file. If not, please write to: niklas.linz@enigmar.de
+ *
+ */
+
 package de.linzn.mineSuite.bungee.utils;
 
 public class MessageDB {
@@ -10,9 +21,9 @@ public class MessageDB {
     public static String PLAYER_TELEPORTED_TO_YOU = "§a" + "{player} hat sich zu dir teleportiert!";
     public static String PLAYER_TELEPORTED = "§a" + "{player} wurde zu {target} teleportiert!";
     public static String PLAYER_REQUESTS_TO_TELEPORT_TO_YOU = "§a"
-			+ "{player} möchte sich zu dir teleportieren. Annehmen: /tpaccept Ablehnen: /tpdeny";
+            + "{player} möchte sich zu dir teleportieren. Annehmen: /tpaccept Ablehnen: /tpdeny";
     public static String PLAYER_REQUESTS_YOU_TELEPORT_TO_THEM = "§a"
-			+ "{player} möchte dich zu ihm teleportieren. Annehmen: /tpaccept Ablehnen: /tpdeny";
+            + "{player} möchte dich zu ihm teleportieren. Annehmen: /tpaccept Ablehnen: /tpdeny";
     public static String TELEPORT_ACCEPTED = "§a" + "Du hast die Anfrage von {player}' akzeptiert!";
     public static String TELEPORT_REQUEST_ACCEPTED = "§a" + "{player} hat deine Anfrage angenommen!";
     public static String TELEPORT_DENIED = "§a" + "Du hast die Anfrage von {player}' abhelehnt!!";

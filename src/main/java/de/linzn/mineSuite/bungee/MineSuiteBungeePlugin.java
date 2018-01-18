@@ -1,3 +1,14 @@
+/*
+ * Copyright (C) 2018. MineGaming - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the LGPLv3 license, which unfortunately won't be
+ * written for another century.
+ *
+ *  You should have received a copy of the LGPLv3 license with
+ *  this file. If not, please write to: niklas.linz@enigmar.de
+ *
+ */
+
 package de.linzn.mineSuite.bungee;
 
 import de.linzn.mineSuite.bungee.database.mysql.setup.XeonConnectionSetup;
@@ -22,24 +33,24 @@ public class MineSuiteBungeePlugin extends Plugin {
         return instance;
     }
 
-	@Override
+    @Override
 
-	public void onEnable() {
+    public void onEnable() {
         this.instance = this;
         this.proxy = ProxyServer.getInstance();
         this.proxy.getConsole().sendMessage(ChatColor.BLUE + "Loading MineSuite...");
         Config Filemanager = new Config(this);
-		Filemanager.setDefaultConfig();
-		if (XeonConnectionSetup.create()) {
+        Filemanager.setDefaultConfig();
+        if (XeonConnectionSetup.create()) {
             this.registerListeners();
             this.startScheduler();
             this.proxy.getConsole().sendMessage(ChatColor.BLUE + "Finish!");
             this.mineJSocketServer = new MineJSocketServer();
             this.mineJSocketServer.openServer();
-		}
-	}
+        }
+    }
 
-	@Override
+    @Override
     public void onDisable() {
         this.mineJSocketServer.closeServer();
     }
@@ -56,6 +67,6 @@ public class MineSuiteBungeePlugin extends Plugin {
     private void startScheduler() {
         this.proxy.getScheduler().schedule(MineSuiteBungeePlugin.instance, new AutoUnbanChecker(), 2, 4, TimeUnit.MINUTES);
         this.proxy.getConsole().sendMessage(ChatColor.BLUE + "Scheduler enabled!");
-	}
+    }
 
 }

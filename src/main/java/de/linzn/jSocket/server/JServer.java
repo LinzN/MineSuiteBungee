@@ -1,3 +1,14 @@
+/*
+ * Copyright (C) 2018. MineGaming - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the LGPLv3 license, which unfortunately won't be
+ * written for another century.
+ *
+ *  You should have received a copy of the LGPLv3 license with
+ *  this file. If not, please write to: niklas.linz@enigmar.de
+ *
+ */
+
 package de.linzn.jSocket.server;
 
 import de.linzn.jSocket.core.ChannelDataEventPacket;
@@ -17,9 +28,9 @@ public class JServer implements Runnable {
     public ServerSocket server;
     ArrayList<ChannelDataEventPacket> dataInputListener;
     ArrayList<ConnectionListener> connectionListeners;
+    HashMap<UUID, JServerConnection> jServerConnections;
     private String host;
     private int port;
-    HashMap<UUID, JServerConnection> jServerConnections;
 
     public JServer(String host, int port) {
         this.host = host;

@@ -1,3 +1,14 @@
+/*
+ * Copyright (C) 2018. MineGaming - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the LGPLv3 license, which unfortunately won't be
+ * written for another century.
+ *
+ *  You should have received a copy of the LGPLv3 license with
+ *  this file. If not, please write to: niklas.linz@enigmar.de
+ *
+ */
+
 package de.linzn.mineSuite.bungee.socket.output;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
@@ -14,41 +25,41 @@ public class JServerGuildOutput {
 
     public static void teleportToGuildSpawn(ProxiedPlayer player, Location loc)
 
-	{
-		ServerInfo serverNew = ProxyServer.getInstance().getServerInfo(loc.getServer());
-		if (serverNew == null) {
-			MineSuiteBungeePlugin.getInstance().getLogger()
-					.severe("Location has no Server, this should never happen. Please check");
-			new Exception("").printStackTrace();
-			return;
-		}
+    {
+        ServerInfo serverNew = ProxyServer.getInstance().getServerInfo(loc.getServer());
+        if (serverNew == null) {
+            MineSuiteBungeePlugin.getInstance().getLogger()
+                    .severe("Location has no Server, this should never happen. Please check");
+            new Exception("").printStackTrace();
+            return;
+        }
 
-		if (player == null) {
-			new Exception("").printStackTrace();
-			return;
-		}
+        if (player == null) {
+            new Exception("").printStackTrace();
+            return;
+        }
 
-		if (player.getServer() == null || !player.getServer().getInfo().toString().equals(serverNew.toString())) {
-			player.connect(serverNew);
-		}
+        if (player.getServer() == null || !player.getServer().getInfo().toString().equals(serverNew.toString())) {
+            player.connect(serverNew);
+        }
 
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 
-		try {
-			dataOutputStream.writeUTF("TeleportToGuildSpawn");
-			dataOutputStream.writeUTF(serverNew.getName());
-			dataOutputStream.writeUTF(player.getName());
-			dataOutputStream.writeUTF(loc.getWorld());
-			dataOutputStream.writeDouble(loc.getX());
-			dataOutputStream.writeDouble(loc.getY());
-			dataOutputStream.writeDouble(loc.getZ());
-			dataOutputStream.writeFloat(loc.getYaw());
-			dataOutputStream.writeFloat(loc.getPitch());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        try {
+            dataOutputStream.writeUTF("TeleportToGuildSpawn");
+            dataOutputStream.writeUTF(serverNew.getName());
+            dataOutputStream.writeUTF(player.getName());
+            dataOutputStream.writeUTF(loc.getWorld());
+            dataOutputStream.writeDouble(loc.getX());
+            dataOutputStream.writeDouble(loc.getY());
+            dataOutputStream.writeDouble(loc.getZ());
+            dataOutputStream.writeFloat(loc.getYaw());
+            dataOutputStream.writeFloat(loc.getPitch());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
-	}
+        MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
+    }
 }

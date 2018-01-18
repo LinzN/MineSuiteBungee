@@ -1,3 +1,14 @@
+/*
+ * Copyright (C) 2018. MineGaming - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the LGPLv3 license, which unfortunately won't be
+ * written for another century.
+ *
+ *  You should have received a copy of the LGPLv3 license with
+ *  this file. If not, please write to: niklas.linz@enigmar.de
+ *
+ */
+
 package de.linzn.mineSuite.bungee.socket.listener;
 
 import de.linzn.jSocket.core.IncomingDataListener;
@@ -14,29 +25,29 @@ import java.util.UUID;
 
 public class JServerHomeListener implements IncomingDataListener {
 
-	@Override
-	public void onEvent(String channel, UUID clientUUID, byte[] dataInBytes) {
-		DataInputStream in = new DataInputStream(new ByteArrayInputStream(dataInBytes));
-		String subChannel = null;
-		try {
-			subChannel = in.readUTF();
+    @Override
+    public void onEvent(String channel, UUID clientUUID, byte[] dataInBytes) {
+        DataInputStream in = new DataInputStream(new ByteArrayInputStream(dataInBytes));
+        String subChannel = null;
+        try {
+            subChannel = in.readUTF();
             if (subChannel.equals("client_home_teleport-home")) {
-				ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
-				if (player == null) {
-					ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " home task has been canceled.");
-					return;
-				}
-				Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(),
-						in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
-				JServerHomeOutput.teleportToHome(player, location);
-				ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " has been teleported with home system.");
-				ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
-				return;
-			}
+                ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
+                if (player == null) {
+                    ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " home task has been canceled.");
+                    return;
+                }
+                Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(),
+                        in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
+                JServerHomeOutput.teleportToHome(player, location);
+                ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " has been teleported with home system.");
+                ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+                return;
+            }
 
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-	}
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
 
 }
