@@ -9,11 +9,11 @@
  *
  */
 
-package de.linzn.mineSuite.bungee.socket.listener;
+package de.linzn.mineSuite.bungee.module.chat.socket;
 
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
-import de.linzn.mineSuite.bungee.socket.output.JServerChatOutput;
+import de.linzn.mineSuite.bungee.module.chat.ChatManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -32,14 +32,13 @@ public class JServerChatListener implements IncomingDataListener {
         String subChannel = null;
         try {
             subChannel = in.readUTF();
-            if (subChannel.equals("client_chat_channel-chat")) {
+            if (subChannel.equals("client_chat_default-chat")) {
                 String sender = in.readUTF();
                 String text = in.readUTF();
                 String prefix = in.readUTF();
                 String suffix = in.readUTF();
                 String chatChannel = in.readUTF();
-                String guild = in.readUTF();
-                JServerChatOutput.channelSend(sender, text, prefix, suffix, chatChannel, guild);
+                ChatManager.channelSend(sender, text, prefix, suffix, chatChannel);
                 return;
             }
 
@@ -54,7 +53,7 @@ public class JServerChatListener implements IncomingDataListener {
                 return;
             }
 
-            if (subChannel.equals("client_chat_set-afk")) {
+            if (subChannel.equals("client_chat_afk-switch")) {
                 String sender = in.readUTF();
                 boolean value = in.readBoolean();
                 ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
@@ -69,7 +68,7 @@ public class JServerChatListener implements IncomingDataListener {
                 return;
             }
 
-            if (subChannel.equals("client_chat_social-spy")) {
+            if (subChannel.equals("client_chat_spy-switch")) {
                 String sender = in.readUTF();
                 ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
                 if (player == null) {
@@ -90,16 +89,16 @@ public class JServerChatListener implements IncomingDataListener {
                 String guild = in.readUTF();
                 String sender = in.readUTF();
                 String text = in.readUTF();
-                JServerChatOutput.sendGuildChat(guild, sender, text);
+                ChatManager.sendGuildChat(guild, sender, text);
                 return;
             }
 
-            if (subChannel.equals("client_chat_private-send")) {
+            if (subChannel.equals("client_chat_private-msg")) {
                 String sender = in.readUTF();
                 String reciever = in.readUTF();
                 String text = in.readUTF();
                 String prefix = in.readUTF();
-                JServerChatOutput.privateMsgChat(sender, reciever, text, prefix);
+                ChatManager.privateMsgChat(sender, reciever, text, prefix);
                 return;
             }
 
@@ -107,7 +106,7 @@ public class JServerChatListener implements IncomingDataListener {
                 String sender = in.readUTF();
                 String text = in.readUTF();
                 String prefix = in.readUTF();
-                JServerChatOutput.privateReplyChat(sender, text, prefix);
+                ChatManager.privateReplyChat(sender, text, prefix);
                 return;
             }
         } catch (IOException e1) {

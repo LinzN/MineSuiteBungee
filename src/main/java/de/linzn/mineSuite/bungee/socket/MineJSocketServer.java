@@ -15,7 +15,7 @@ import de.linzn.jSocket.server.JServer;
 import de.linzn.jSocket.server.JServerConnection;
 import de.linzn.mineSuite.bungee.listeners.JServerBroadcastListener;
 import de.linzn.mineSuite.bungee.module.ban.socket.JServerBanListener;
-import de.linzn.mineSuite.bungee.module.chat.JServerChatListener;
+import de.linzn.mineSuite.bungee.module.chat.socket.JServerChatListener;
 import de.linzn.mineSuite.bungee.module.guild.JServerGuildListener;
 import de.linzn.mineSuite.bungee.module.home.socket.JServerHomeListener;
 import de.linzn.mineSuite.bungee.module.portal.JServerPortalListener;
