@@ -13,15 +13,17 @@ package de.linzn.mineSuite.bungee.managers;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
-import de.linzn.mineSuite.bungee.database.mysql.MySQLTasks;
+import de.linzn.mineSuite.bungee.module.ban.BanManager;
+import de.linzn.mineSuite.bungee.module.ban.mysql.BanQuery;
 import de.linzn.mineSuite.bungee.utils.Location;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;
+import java.util.UUID;
 
-public class PlayerManager {
+public class BungeeManager {
 
     public static void sendMessageToTarget(ProxiedPlayer target, String message) {
         if (target == null) {
@@ -37,10 +39,14 @@ public class PlayerManager {
         return ProxyServer.getInstance().getPlayer(player);
     }
 
+    public static ProxiedPlayer getPlayer(UUID uuid) {
+        return ProxyServer.getInstance().getPlayer(uuid);
+    }
+
     public static void initPlayer(final ProxiedPlayer player) {
         ProxyServer.getInstance().getScheduler().runAsync(MineSuiteBungeePlugin.getInstance(), () -> {
-            if (MuteManager.isMuted(player.getUniqueId())) {
-                List<String> list = MySQLTasks.getMuteInfos(player.getUniqueId());
+            if (BanManager.isMuted(player.getUniqueId())) {
+                List<String> list = BanQuery.getMuteInfos(player.getUniqueId());
                 String reason = list.get(0);
                 String mutedby = list.get(1);
                 long time = Long.parseLong(list.get(2));

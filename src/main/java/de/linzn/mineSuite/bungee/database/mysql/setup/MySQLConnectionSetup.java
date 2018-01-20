@@ -18,7 +18,7 @@ import net.md_5.bungee.api.ProxyServer;
 import java.sql.Connection;
 import java.sql.Statement;
 
-public class XeonConnectionSetup {
+public class MySQLConnectionSetup {
     public static boolean create() {
         return mysql();
 
@@ -31,9 +31,14 @@ public class XeonConnectionSetup {
         String dbUser = Config.ConfigConfiguration.getString("mysql.username");
         String dbPassword = Config.ConfigConfiguration.getString("mysql.password");
         String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + database;
-        XeonConnectionFactory factory = new XeonConnectionFactory(url, dbUser, dbPassword);
-        XeonConnectionManager manager = XeonConnectionManager.DEFAULT;
-        XeonConnectionHandler handler = manager.getHandler("MineSuiteBungee", factory);
+        MySQLConnectionFactory factory = new MySQLConnectionFactory(url, dbUser, dbPassword);
+        MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
+        MySQLConnectionHandler handler = manager.getHandler("MineSuiteBungee", factory);
+        manager.getHandler("MineSuiteBan", factory);
+        manager.getHandler("MineSuiteWarp", factory);
+        manager.getHandler("MineSuiteHome", factory);
+        manager.getHandler("MineSuiteTeleport", factory);
+        manager.getHandler("MineSuitePortal", factory);
 
         try {
             Connection connection = handler.getConnection();

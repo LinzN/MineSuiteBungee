@@ -11,10 +11,10 @@
 
 package de.linzn.mineSuite.bungee;
 
-import de.linzn.mineSuite.bungee.database.mysql.setup.XeonConnectionSetup;
+import de.linzn.mineSuite.bungee.database.mysql.setup.MySQLConnectionSetup;
 import de.linzn.mineSuite.bungee.listeners.ProxyServerListener;
+import de.linzn.mineSuite.bungee.module.ban.AutoUnbanChecker;
 import de.linzn.mineSuite.bungee.socket.MineJSocketServer;
-import de.linzn.mineSuite.bungee.utils.AutoUnbanChecker;
 import de.linzn.mineSuite.bungee.utils.Config;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
@@ -41,7 +41,7 @@ public class MineSuiteBungeePlugin extends Plugin {
         this.proxy.getConsole().sendMessage(ChatColor.BLUE + "Loading MineSuite...");
         Config Filemanager = new Config(this);
         Filemanager.setDefaultConfig();
-        if (XeonConnectionSetup.create()) {
+        if (MySQLConnectionSetup.create()) {
             this.registerListeners();
             this.startScheduler();
             this.proxy.getConsole().sendMessage(ChatColor.BLUE + "Finish!");
