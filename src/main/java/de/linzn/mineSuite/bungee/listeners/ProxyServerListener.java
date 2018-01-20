@@ -13,10 +13,9 @@ package de.linzn.mineSuite.bungee.listeners;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
-import de.linzn.mineSuite.bungee.database.mysql.MySQLTasks;
-import de.linzn.mineSuite.bungee.managers.BanManager;
-import de.linzn.mineSuite.bungee.managers.MuteManager;
-import de.linzn.mineSuite.bungee.managers.PlayerManager;
+import de.linzn.mineSuite.bungee.database.mysql.BungeeQuery;
+import de.linzn.mineSuite.bungee.managers.BungeeManager;
+import de.linzn.mineSuite.bungee.module.ban.BanManager;
 import de.linzn.mineSuite.bungee.utils.Config;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
@@ -41,7 +40,7 @@ public class ProxyServerListener implements Listener {
             ProxyServer.getInstance()
                     .broadcast(ChatColor.GOLD + event.getPlayer().getName() + " ist " + ChatColor.GREEN + "online");
         }
-        PlayerManager.initPlayer(event.getPlayer());
+        BungeeManager.initPlayer(event.getPlayer());
         event.getPlayer()
                 .sendMessage(ChatColor.GOLD + "*** Willkommen auf MineGaming! Wir wünschen dir viel Spaß! ***");
         event.getPlayer().sendMessage(ChatColor.GREEN + "Unser Forum: " + ChatColor.GRAY + " www.MineGaming.de   -   "
@@ -55,7 +54,7 @@ public class ProxyServerListener implements Listener {
         ProxyServer.getInstance().getScheduler().schedule(MineSuiteBungeePlugin.getInstance(), () -> {
             ProxiedPlayer player = ProxyServer.getInstance().getPlayer(uuid);
             if (player == null) {
-                PlayerManager.deinitPlayer(event.getPlayer());
+                BungeeManager.deinitPlayer(event.getPlayer());
                 ProxyServer.getInstance().broadcast(
                         ChatColor.GOLD + event.getPlayer().getName() + " ist " + ChatColor.DARK_RED + "offline");
             } else {
@@ -85,7 +84,7 @@ public class ProxyServerListener implements Listener {
         }
 
         long timeStamp = new Date().getTime();
-        if (MySQLTasks.updateProfile(e.getConnection().getUniqueId(), e.getConnection().getName(), timeStamp)) {
+        if (BungeeQuery.updateProfile(e.getConnection().getUniqueId(), e.getConnection().getName(), timeStamp)) {
             MineSuiteBungeePlugin.getInstance().getLogger()
                     .info("UUID-cache updated for incoming connection " + e.getConnection().getName());
         } else {
@@ -99,14 +98,14 @@ public class ProxyServerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(final ChatEvent e) {
         final ProxiedPlayer p = (ProxiedPlayer) e.getSender();
-        if (!MuteManager.isMuted(p.getUniqueId())) {
+        if (!BanManager.isMuted(p.getUniqueId())) {
             return;
         }
         final long current = System.currentTimeMillis();
-        final long end = MuteManager.getMuteTime(p.getUniqueId());
+        final long end = BanManager.getMuteTime(p.getUniqueId());
         if (end < current && end != -1L) {
             e.setCancelled(false);
-            MuteManager.unMuteSystem(p.getUniqueId());
+            BanManager.unMuteSystem(p.getUniqueId());
             return;
         }
         if (e.isCommand()) {
@@ -125,7 +124,7 @@ public class ProxyServerListener implements Listener {
 
         e.setCancelled(true);
         e.setMessage("g");
-        p.sendMessage(MuteManager.getMutedMessage(p.getUniqueId()));
+        p.sendMessage(BanManager.getMutedMessage(p.getUniqueId()));
         return;
 
     }
