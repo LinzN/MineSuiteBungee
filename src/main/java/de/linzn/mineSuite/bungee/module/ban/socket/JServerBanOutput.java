@@ -9,7 +9,7 @@
  *
  */
 
-package de.linzn.mineSuite.bungee.socket.output;
+package de.linzn.mineSuite.bungee.module.ban.socket;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import net.md_5.bungee.api.ProxyServer;
@@ -31,7 +31,7 @@ public class JServerBanOutput {
         ProxyServer.getInstance().getConsole().sendMessage(sendmessage);
         ProxyServer.getInstance().getConsole().sendMessage(sendreason);
         try {
-            dataOutputStream.writeUTF("SendActionMessage");
+            dataOutputStream.writeUTF("server_ban_notify");
             dataOutputStream.writeUTF(sendmessage);
             dataOutputStream.writeUTF(sendreason);
 
@@ -53,7 +53,7 @@ public class JServerBanOutput {
         ProxyServer.getInstance().getConsole().sendMessage(sendreason);
 
         try {
-            dataOutputStream.writeUTF("SendActionMessage");
+            dataOutputStream.writeUTF("server_ban_notify");
             dataOutputStream.writeUTF(sendmessage);
             dataOutputStream.writeUTF(sendreason);
 
@@ -76,7 +76,7 @@ public class JServerBanOutput {
         ProxyServer.getInstance().getConsole().sendMessage(sendreason);
 
         try {
-            dataOutputStream.writeUTF("SendActionMessage");
+            dataOutputStream.writeUTF("server_ban_notify");
             dataOutputStream.writeUTF(sendmessage);
             dataOutputStream.writeUTF(sendreason);
 
@@ -99,7 +99,7 @@ public class JServerBanOutput {
         ProxyServer.getInstance().getConsole().sendMessage(sendreason);
 
         try {
-            dataOutputStream.writeUTF("SendActionMessage");
+            dataOutputStream.writeUTF("server_ban_notify");
             dataOutputStream.writeUTF(sendmessage);
             dataOutputStream.writeUTF(sendreason);
 
@@ -119,8 +119,9 @@ public class JServerBanOutput {
                 + " §6vom Server geschmissen. \nGrund: §a" + reason;
         ProxyServer.getInstance().getConsole().sendMessage(sendmessage);
         try {
-            dataOutputStream.writeUTF("SendDeActionMessage");
+            dataOutputStream.writeUTF("server_ban_notify");
             dataOutputStream.writeUTF(sendmessage);
+            dataOutputStream.writeUTF("none");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -137,8 +138,9 @@ public class JServerBanOutput {
         String sendmessage = "§6Spieler §a" + unmuted + " §6wurde von §a" + unmutedby + " §6 zum Chat hinzugefügt.";
         ProxyServer.getInstance().getConsole().sendMessage(sendmessage);
         try {
-            dataOutputStream.writeUTF("SendDeActionMessage");
+            dataOutputStream.writeUTF("server_ban_notify");
             dataOutputStream.writeUTF(sendmessage);
+            dataOutputStream.writeUTF("none");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -155,8 +157,9 @@ public class JServerBanOutput {
         String sendmessage = "§6Spieler §a" + unbanned + " §6wurde von §a" + unbannedby + " §6vom Server entsperrt.";
         ProxyServer.getInstance().getConsole().sendMessage(sendmessage);
         try {
-            dataOutputStream.writeUTF("SendDeActionMessage");
+            dataOutputStream.writeUTF("server_ban_notify");
             dataOutputStream.writeUTF(sendmessage);
+            dataOutputStream.writeUTF("none");
 
         } catch (IOException e) {
             e.printStackTrace();

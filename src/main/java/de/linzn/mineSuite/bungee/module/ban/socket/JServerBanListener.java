@@ -9,12 +9,11 @@
  *
  */
 
-package de.linzn.mineSuite.bungee.socket.listener;
+package de.linzn.mineSuite.bungee.module.ban.socket;
 
 import de.linzn.jSocket.core.IncomingDataListener;
-import de.linzn.mineSuite.bungee.database.mysql.MySQLTasks;
-import de.linzn.mineSuite.bungee.managers.MuteManager;
-import de.linzn.mineSuite.bungee.socket.output.JServerBanOutput;
+import de.linzn.mineSuite.bungee.database.mysql.BungeeQuery;
+import de.linzn.mineSuite.bungee.module.ban.BanManager;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -43,10 +42,10 @@ public class JServerBanListener implements IncomingDataListener {
                 }
                 if (uuid == null) {
 
-                    uuid = MySQLTasks.getUUID(player);
+                    uuid = BungeeQuery.getUUID(player);
                 }
                 if (uuid != null) {
-                    de.linzn.mineSuite.bungee.managers.BanManager.banPlayer(uuid, reason, bannedby, -1L, player);
+                    BanManager.banPlayer(uuid, reason, bannedby, -1L, player);
                 } else {
                     ProxiedPlayer p = ProxyServer.getInstance().getPlayer(bannedby);
                     p.sendMessage(MessageDB.PLAYER_NOT_EXIST);
@@ -63,10 +62,10 @@ public class JServerBanListener implements IncomingDataListener {
                     uuid = ProxyServer.getInstance().getPlayer(player).getUniqueId();
                 }
                 if (uuid == null) {
-                    uuid = MySQLTasks.getUUID(player);
+                    uuid = BungeeQuery.getUUID(player);
                 }
                 if (uuid != null) {
-                    de.linzn.mineSuite.bungee.managers.BanManager.banPlayer(uuid, reason, bannedby, seconds, player);
+                    BanManager.banPlayer(uuid, reason, bannedby, seconds, player);
                 } else {
                     ProxiedPlayer p = ProxyServer.getInstance().getPlayer(bannedby);
                     p.sendMessage(MessageDB.PLAYER_NOT_EXIST);
@@ -83,10 +82,10 @@ public class JServerBanListener implements IncomingDataListener {
                     uuid = ProxyServer.getInstance().getPlayer(player).getUniqueId();
                 }
                 if (uuid == null) {
-                    uuid = MySQLTasks.getUUID(player);
+                    uuid = BungeeQuery.getUUID(player);
                 }
                 if (uuid != null) {
-                    MuteManager.mutePlayer(uuid, reason, mutedby, -1L, player);
+                    BanManager.mutePlayer(uuid, reason, mutedby, -1L, player);
                 } else {
                     ProxiedPlayer p = ProxyServer.getInstance().getPlayer(mutedby);
                     p.sendMessage(MessageDB.PLAYER_NOT_EXIST);
@@ -103,10 +102,10 @@ public class JServerBanListener implements IncomingDataListener {
                     uuid = ProxyServer.getInstance().getPlayer(player).getUniqueId();
                 }
                 if (uuid == null) {
-                    uuid = MySQLTasks.getUUID(player);
+                    uuid = BungeeQuery.getUUID(player);
                 }
                 if (uuid != null) {
-                    MuteManager.mutePlayer(uuid, reason, mutedby, seconds, player);
+                    BanManager.mutePlayer(uuid, reason, mutedby, seconds, player);
                 } else {
                     ProxiedPlayer p = ProxyServer.getInstance().getPlayer(mutedby);
                     p.sendMessage(MessageDB.PLAYER_NOT_EXIST);
@@ -129,14 +128,14 @@ public class JServerBanListener implements IncomingDataListener {
                 String player = in.readUTF();
                 String reason = in.readUTF();
                 String unbannedby = in.readUTF();
-                de.linzn.mineSuite.bungee.managers.BanManager.unBan(player, reason, unbannedby);
+                BanManager.unBan(player, reason, unbannedby);
                 return;
             }
             if (subChannel.equals("client_ban_unmute")) {
                 String player = in.readUTF();
                 String reason = in.readUTF();
                 String unmutedby = in.readUTF();
-                MuteManager.unMute(player, reason, unmutedby);
+                BanManager.unMute(player, reason, unmutedby);
                 return;
             }
 
