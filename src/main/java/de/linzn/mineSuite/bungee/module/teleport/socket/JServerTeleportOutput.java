@@ -9,7 +9,7 @@
  *
  */
 
-package de.linzn.mineSuite.bungee.socket.output;
+package de.linzn.mineSuite.bungee.module.teleport.socket;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.utils.Location;

@@ -9,31 +9,84 @@
  *
  */
 
-package de.linzn.mineSuite.bungee.managers;
+package de.linzn.mineSuite.bungee.module.teleport;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
-import de.linzn.mineSuite.bungee.socket.output.JServerTeleportOutput;
+import de.linzn.mineSuite.bungee.managers.BungeeManager;
+import de.linzn.mineSuite.bungee.module.teleport.mysql.TeleportQuery;
+import de.linzn.mineSuite.bungee.module.teleport.socket.JServerTeleportOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("deprecation")
 public class TeleportManager {
-    public static HashMap<ProxiedPlayer, ProxiedPlayer> pendingTeleportsTPA = new HashMap<>(); // Player
-    // ----teleported--->
-    // player
-    public static HashMap<ProxiedPlayer, ProxiedPlayer> pendingTeleportsTPAHere = new HashMap<>(); // Player
-    // ----teleported--->
-    // player
+    public static HashMap<ProxiedPlayer, ProxiedPlayer> pendingTeleportsTPA = new HashMap<>();
+    public static HashMap<ProxiedPlayer, ProxiedPlayer> pendingTeleportsTPAHere = new HashMap<>();
     private static int expireTime = 10;
 
+
+    public static void teleportToSpawnType(UUID playerUUID, String spawnType, String serverName, String worldName) {
+        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
+        if (TeleportQuery.isSpawn(spawnType, serverName, worldName)) {
+            List<String> spawnData = TeleportQuery.getSpawn(spawnType, serverName);
+            String world = spawnData.get(1);
+            String server = spawnData.get(2);
+            double x = Double.parseDouble(spawnData.get(3));
+            double y = Double.parseDouble(spawnData.get(4));
+            double z = Double.parseDouble(spawnData.get(5));
+            float yaw = Float.parseFloat(spawnData.get(6));
+            float pitch = Float.parseFloat(spawnData.get(7));
+            Location location = new Location(server, world, x, y, z, yaw, pitch);
+            JServerTeleportOutput.teleportToLocation(player, location);
+            ProxyServer.getInstance().getLogger().info("[MineSuite] " + player.getName() + " has been teleported to spawnType with teleport system.");
+            ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+        } else {
+            //todo
+            player.sendMessage("Dieser Spawn ist leider nicht gesetzt.");
+        }
+
+    }
+
+    public static void setSpawnType(UUID playerUUID, String spawnType, Location location) {
+        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
+        if (TeleportQuery.isSpawn(spawnType, location.getServer(), location.getWorld())) {
+            TeleportQuery.setSpawn(spawnType, location);
+            player.sendMessage("Der Spawn wurde aktualisiert");
+            ProxyServer.getInstance().getLogger().info("[MineSuite] " + player.getName() + " has update spawnType.");
+            ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+        } else {
+            TeleportQuery.setSpawn(spawnType, location);
+            player.sendMessage("Der Spawn wurde gesetzt.");
+            ProxyServer.getInstance().getLogger().info("[MineSuite] " + player.getName() + " has set spawnType.");
+            ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+        }
+    }
+
+    public static void unsetSpawnType(UUID playerUUID, String spawnType, String serverName, String worldName) {
+        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
+        if (TeleportQuery.isSpawn(spawnType, serverName, worldName)) {
+            TeleportQuery.unsetSpawn(spawnType, serverName, worldName);
+            //todo
+            player.sendMessage("Der Spawn wurde entfernt.");
+        } else {
+            //todo
+            player.sendMessage("Dieser Spawn ist leider nicht gesetzt.");
+        }
+    }
+
+
+
+
     public static void requestToTeleportToPlayer(String player, String target) {
-        final ProxiedPlayer bp = PlayerManager.getPlayer(player);
-        final ProxiedPlayer bt = PlayerManager.getPlayer(target);
+        final ProxiedPlayer bp = BungeeManager.getPlayer(player);
+        final ProxiedPlayer bt = BungeeManager.getPlayer(target);
         if (playerHasPendingTeleport(bp)) {
             bp.sendMessage(MessageDB.PLAYER_TELEPORT_PENDING);
             return;
@@ -71,8 +124,8 @@ public class TeleportManager {
     }
 
     public static void requestPlayerTeleportToYou(String player, String target) {
-        final ProxiedPlayer bp = PlayerManager.getPlayer(player);
-        final ProxiedPlayer bt = PlayerManager.getPlayer(target);
+        final ProxiedPlayer bp = BungeeManager.getPlayer(player);
+        final ProxiedPlayer bt = BungeeManager.getPlayer(target);
         if (playerHasPendingTeleport(bp)) {
             bp.sendMessage(MessageDB.PLAYER_TELEPORT_PENDING);
             return;
@@ -119,23 +172,23 @@ public class TeleportManager {
             JServerTeleportOutput.teleportAccept(player, target);
             pendingTeleportsTPAHere.remove(player);
         } else {
-            PlayerManager.sendMessageToTarget(player, MessageDB.NO_TELEPORTS);
+            BungeeManager.sendMessageToTarget(player, MessageDB.NO_TELEPORTS);
         }
     }
 
     public static void denyTeleportRequest(ProxiedPlayer player) {
         if (pendingTeleportsTPA.containsKey(player)) {
             ProxiedPlayer target = pendingTeleportsTPA.get(player);
-            PlayerManager.sendMessageToTarget(player, MessageDB.TELEPORT_DENIED.replace("{player}", target.getName()));
+            BungeeManager.sendMessageToTarget(player, MessageDB.TELEPORT_DENIED.replace("{player}", target.getName()));
             target.sendMessage(MessageDB.TELEPORT_REQUEST_DENIED.replace("{player}", player.getName()));
             pendingTeleportsTPA.remove(player);
         } else if (pendingTeleportsTPAHere.containsKey(player)) {
             ProxiedPlayer target = pendingTeleportsTPAHere.get(player);
-            PlayerManager.sendMessageToTarget(player, MessageDB.TELEPORT_DENIED.replace("{player}", target.getName()));
+            BungeeManager.sendMessageToTarget(player, MessageDB.TELEPORT_DENIED.replace("{player}", target.getName()));
             target.sendMessage(MessageDB.TELEPORT_REQUEST_DENIED.replace("{player}", player.getName()));
             pendingTeleportsTPAHere.remove(player);
         } else {
-            PlayerManager.sendMessageToTarget(player, MessageDB.NO_TELEPORTS);
+            BungeeManager.sendMessageToTarget(player, MessageDB.NO_TELEPORTS);
         }
     }
 
@@ -144,23 +197,23 @@ public class TeleportManager {
     }
 
     public static void setPlayersDeathBackLocation(ProxiedPlayer player, Location loc) {
-        PlayerManager.setDeathBackLocation(loc, player);
+        BungeeManager.setDeathBackLocation(loc, player);
     }
 
     public static void sendPlayerToLastBack(ProxiedPlayer player) {
-        if (PlayerManager.hasDeathBackLocation(player)) {
-            JServerTeleportOutput.teleportToLocation(player, PlayerManager.getLastBackLocation(player));
+        if (BungeeManager.hasDeathBackLocation(player)) {
+            JServerTeleportOutput.teleportToLocation(player, BungeeManager.getLastBackLocation(player));
             ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to deathpoint!");
-            PlayerManager.removeDeathBackLocation(player);
+            BungeeManager.removeDeathBackLocation(player);
         } else {
-            PlayerManager.sendMessageToTarget(player, MessageDB.NO_BACK_TP);
+            BungeeManager.sendMessageToTarget(player, MessageDB.NO_BACK_TP);
         }
 
     }
 
     public static void tpAll(String sender, String target) {
-        ProxiedPlayer p = PlayerManager.getPlayer(sender);
-        ProxiedPlayer t = PlayerManager.getPlayer(target);
+        ProxiedPlayer p = BungeeManager.getPlayer(sender);
+        ProxiedPlayer t = BungeeManager.getPlayer(target);
 
         if (t == null) {
             p.sendMessage(MessageDB.PLAYER_NOT_ONLINE);
@@ -172,14 +225,14 @@ public class TeleportManager {
                 JServerTeleportOutput.teleportToPlayer(p, t);
             }
 
-            PlayerManager.sendMessageToTarget(player,
+            BungeeManager.sendMessageToTarget(player,
                     MessageDB.ALL_PLAYERS_TELEPORTED.replace("{player}", t.getName()));
         }
     }
 
     public static void teleportPlayerToPlayer(String player, String target, boolean silent, boolean bypass) {
-        ProxiedPlayer p = PlayerManager.getPlayer(player);
-        ProxiedPlayer t = PlayerManager.getPlayer(target);
+        ProxiedPlayer p = BungeeManager.getPlayer(player);
+        ProxiedPlayer t = BungeeManager.getPlayer(target);
         if (p == null || t == null) {
             p.sendMessage(MessageDB.PLAYER_NOT_ONLINE);
             return;
