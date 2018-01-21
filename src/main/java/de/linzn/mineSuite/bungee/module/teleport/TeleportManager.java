@@ -56,28 +56,40 @@ public class TeleportManager {
 
     public static void setSpawnType(UUID playerUUID, String spawnType, Location location) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
-        if (TeleportQuery.isSpawn(spawnType, location.getServer(), location.getWorld())) {
-            TeleportQuery.setSpawn(spawnType, location);
-            player.sendMessage("Der Spawn wurde aktualisiert");
-            ProxyServer.getInstance().getLogger().info("[MineSuite] " + player.getName() + " has update spawnType.");
-            ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+        if (spawnType.equalsIgnoreCase("lobby") || spawnType.equalsIgnoreCase("serverspawn")) {
+            if (TeleportQuery.isSpawn(spawnType, location.getServer(), location.getWorld())) {
+                TeleportQuery.setSpawn(spawnType, location);
+                //todo
+                player.sendMessage("Der Spawn wurde aktualisiert");
+                ProxyServer.getInstance().getLogger().info("[MineSuite] " + player.getName() + " has update spawnType.");
+                ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+            } else {
+                TeleportQuery.setSpawn(spawnType, location);
+                //todo
+                player.sendMessage("Der Spawn wurde gesetzt.");
+                ProxyServer.getInstance().getLogger().info("[MineSuite] " + player.getName() + " has set spawnType.");
+                ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+            }
         } else {
-            TeleportQuery.setSpawn(spawnType, location);
-            player.sendMessage("Der Spawn wurde gesetzt.");
-            ProxyServer.getInstance().getLogger().info("[MineSuite] " + player.getName() + " has set spawnType.");
-            ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+            //todo
+            player.sendMessage("Kein gültiger Spawntype");
         }
     }
 
     public static void unsetSpawnType(UUID playerUUID, String spawnType, String serverName, String worldName) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
-        if (TeleportQuery.isSpawn(spawnType, serverName, worldName)) {
-            TeleportQuery.unsetSpawn(spawnType, serverName, worldName);
-            //todo
-            player.sendMessage("Der Spawn wurde entfernt.");
+        if (spawnType.equalsIgnoreCase("lobby") || spawnType.equalsIgnoreCase("serverspawn")) {
+            if (TeleportQuery.isSpawn(spawnType, serverName, worldName)) {
+                TeleportQuery.unsetSpawn(spawnType, serverName, worldName);
+                //todo
+                player.sendMessage("Der Spawn wurde entfernt.");
+            } else {
+                //todo
+                player.sendMessage("Dieser Spawn ist leider nicht gesetzt.");
+            }
         } else {
             //todo
-            player.sendMessage("Dieser Spawn ist leider nicht gesetzt.");
+            player.sendMessage("Kein gültiger Spawntype");
         }
     }
 
