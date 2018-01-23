@@ -101,10 +101,12 @@ public class PortalManager {
 
 
     public static void loadPortalsToHash() {
+        ProxyServer.getInstance().getLogger().info("[MineSuite] Loading portals ");
         for (ServerInfo server : ProxyServer.getInstance().getServers().values()) {
             HashMap<String, Portal> serverPortals = PortalQuery.getPortalsFromServer(server.getName());
             for (Portal portal : serverPortals.values()) {
                 portalList.put(portal.portalName, portal);
+                ProxyServer.getInstance().getLogger().info("[MineSuite] Found portal " + portal.portalName);
             }
         }
     }
