@@ -34,6 +34,10 @@ public class TeleportManager {
 
     public static void teleportToSpawnType(UUID playerUUID, String spawnType, String serverName, String worldName) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
+        if (player == null) {
+            ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
+            return;
+        }
         if (TeleportQuery.isSpawn(spawnType, serverName, worldName)) {
             List<String> spawnData = TeleportQuery.getSpawn(spawnType, serverName);
             String world = spawnData.get(1);
@@ -257,5 +261,14 @@ public class TeleportManager {
         }
 
         p.sendMessage(MessageDB.TELEPORTED_TO_PLAYER.replace("{player}", t.getName()));
+    }
+
+    public static void teleportToServer(UUID playerUUID, String server) {
+        ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
+        if (player == null) {
+            ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
+            return;
+        }
+        JServerTeleportOutput.teleportToServer(player, server);
     }
 }

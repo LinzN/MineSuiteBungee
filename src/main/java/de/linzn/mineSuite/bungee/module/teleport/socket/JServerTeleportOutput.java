@@ -60,7 +60,7 @@ public class JServerTeleportOutput {
         MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteTeleport", byteArrayOutputStream.toByteArray());
     }
 
-    public static void portalOtherServer(ProxiedPlayer player, String server) {
+    public static void teleportToServer(ProxiedPlayer player, String server) {
         ServerInfo serverNew = ProxyServer.getInstance().getServerInfo(server);
         if (serverNew == null) {
             MineSuiteBungeePlugin.getInstance().getLogger()

@@ -14,6 +14,7 @@ package de.linzn.mineSuite.bungee;
 import de.linzn.mineSuite.bungee.database.mysql.setup.MySQLConnectionSetup;
 import de.linzn.mineSuite.bungee.listeners.ProxyServerListener;
 import de.linzn.mineSuite.bungee.module.ban.AutoUnbanChecker;
+import de.linzn.mineSuite.bungee.module.portal.PortalManager;
 import de.linzn.mineSuite.bungee.socket.MineJSocketServer;
 import de.linzn.mineSuite.bungee.utils.Config;
 import net.md_5.bungee.api.ChatColor;
@@ -47,6 +48,7 @@ public class MineSuiteBungeePlugin extends Plugin {
             this.proxy.getConsole().sendMessage(ChatColor.BLUE + "Finish!");
             this.mineJSocketServer = new MineJSocketServer();
             this.mineJSocketServer.openServer();
+            PortalManager.loadPortalsToHash();
         }
     }
 
