@@ -60,24 +60,6 @@ public class JServerTeleportOutput {
         MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteTeleport", byteArrayOutputStream.toByteArray());
     }
 
-    public static void teleportToServer(ProxiedPlayer player, String server) {
-        ServerInfo serverNew = ProxyServer.getInstance().getServerInfo(server);
-        if (serverNew == null) {
-            MineSuiteBungeePlugin.getInstance().getLogger()
-                    .severe("Location has no Server, this should never happen. Please check");
-            new Exception("").printStackTrace();
-            return;
-        }
-
-        if (player == null) {
-            new Exception("").printStackTrace();
-            return;
-        }
-
-        if (player.getServer() == null || !player.getServer().getInfo().toString().equals(serverNew.toString())) {
-            player.connect(serverNew);
-        }
-    }
 
     public static void teleportToPlayer(ProxiedPlayer player, ProxiedPlayer target) {
         if (player.getServer().getInfo() != target.getServer().getInfo()) {

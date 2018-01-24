@@ -11,11 +11,12 @@
 
 package de.linzn.mineSuite.bungee.module.portal;
 
+import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.module.portal.mysql.Portal;
 import de.linzn.mineSuite.bungee.module.portal.mysql.PortalQuery;
 import de.linzn.mineSuite.bungee.module.portal.socket.JServerPortalOutput;
-import de.linzn.mineSuite.bungee.module.teleport.TeleportManager;
 import de.linzn.mineSuite.bungee.module.warp.WarpManager;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -33,6 +34,9 @@ public class PortalManager {
 
             return;
         }
+        //todo testmsg
+        player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Versuche zu teleportieren...");
+
         Portal portal = portalList.get(portalName);
         if (portal == null) {
 
@@ -41,7 +45,7 @@ public class PortalManager {
         if (portal.portalType.equalsIgnoreCase("warp")) {
             WarpManager.sendPlayerToWarp(playerUUID, portal.portalDestination);
         } else if (portal.portalType.equalsIgnoreCase("server")) {
-            TeleportManager.teleportToServer(playerUUID, portal.portalDestination);
+            serverPortal(playerUUID, portal.portalDestination);
         }
 
     }
@@ -54,8 +58,8 @@ public class PortalManager {
         if (PortalQuery.setPortal(portal)) {
             portalList.put(portal.portalName, portal);
             JServerPortalOutput.enablePortal(portal.serverName, portal);
-            //todo Player msg
             ProxyServer.getInstance().getLogger().info("[MineSuite] Register new portal " + portal.portalName);
+            //todo Player msg
             player.sendMessage("Das Portal wurde erstellt");
         } else {
             //todo Player msg
@@ -108,6 +112,29 @@ public class PortalManager {
                 portalList.put(portal.portalName, portal);
                 ProxyServer.getInstance().getLogger().info("[MineSuite] Found portal " + portal.portalName);
             }
+        }
+    }
+
+    private static void serverPortal(UUID playerUUID, String server) {
+        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
+        ServerInfo serverNew = ProxyServer.getInstance().getServerInfo(server);
+        if (serverNew == null) {
+            MineSuiteBungeePlugin.getInstance().getLogger()
+                    .severe("Location has no Server, this should never happen. Please check");
+            new Exception("").printStackTrace();
+            return;
+        }
+
+        if (player == null) {
+            new Exception("").printStackTrace();
+            return;
+        }
+
+        if (player.getServer() == null || !player.getServer().getInfo().toString().equals(serverNew.toString())) {
+            player.connect(serverNew);
+        } else {
+            //todo testmsg
+            player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Leider Fehlgeschlagen!");
         }
     }
 }
