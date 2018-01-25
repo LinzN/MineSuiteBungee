@@ -35,10 +35,10 @@ public class MessageDB {
     public static String teleport_PLAYER_TELEPORT_PENDING_OTHER = ChatColor.RED + "" + ChatColor.BOLD + "Bei diesem Spieler ist bereits eine Einladung offen!";
     public static String teleport_PLAYER_TELEPORTED_TO_YOU = ChatColor.GREEN + "" + ChatColor.BOLD + "{player} wurde zu dir eingeladen!";
     public static String teleport_PLAYER_REQUESTS_TO_TELEPORT_TO_YOU = ChatColor.YELLOW + "" + ChatColor.BOLD + "{player} möchte dich besuchen. " + "\n" + ChatColor.YELLOW + "" + ChatColor.BOLD + "Annehmen: /tpaccept Ablehnen: /tpdeny";
-    public static String teleport_PLAYER_REQUESTS_YOU_TELEPORT_TO_THEM = ChatColor.YELLOW + "" + ChatColor.BOLD + "{player} möchte dich zu sich einladen. " + ChatColor.YELLOW + "" + ChatColor.BOLD + "\n" + "Annehmen: /tpaccept Ablehnen: /tpdeny";
+    public static String teleport_PLAYER_REQUESTS_YOU_TELEPORT_TO_THEM = ChatColor.YELLOW + "" + ChatColor.BOLD + "{player} möchte dich zu sich einladen. " + "\n" + ChatColor.YELLOW + "" + ChatColor.BOLD + "Annehmen: /tpaccept Ablehnen: /tpdeny";
     public static String teleport_TELEPORT_ACCEPTED = ChatColor.GREEN + "" + ChatColor.BOLD + "Du hast die Einladung von {player} akzeptiert!";
     public static String teleport_TELEPORT_REQUEST_ACCEPTED = ChatColor.GREEN + "" + ChatColor.BOLD + "{player} hat deine Einladung angenommen!";
-    public static String teleport_TELEPORT_DENIED = ChatColor.YELLOW + "" + ChatColor.BOLD + "Du hast die Einladung von {player} abhelehnt!!";
+    public static String teleport_TELEPORT_DENIED = ChatColor.YELLOW + "" + ChatColor.BOLD + "Du hast die Einladung von {player} abgelehnt!!";
     public static String teleport_TELEPORT_REQUEST_DENIED = ChatColor.RED + "" + ChatColor.BOLD + "{player} hat deine Einladung abgelehnt!";
     public static String teleport_NO_TELEPORTS = ChatColor.RED + "" + ChatColor.BOLD + "Du hast keine offenen Einladungen!";
     public static String teleport_TELEPORT_REQUEST_SENT = ChatColor.YELLOW + "" + ChatColor.BOLD + "Deine Einladung wurde versendet!";
