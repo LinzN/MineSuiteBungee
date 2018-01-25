@@ -12,10 +12,12 @@
 package de.linzn.mineSuite.bungee.module.portal;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
+import de.linzn.mineSuite.bungee.managers.BungeeManager;
 import de.linzn.mineSuite.bungee.module.portal.mysql.Portal;
 import de.linzn.mineSuite.bungee.module.portal.mysql.PortalQuery;
 import de.linzn.mineSuite.bungee.module.portal.socket.JServerPortalOutput;
 import de.linzn.mineSuite.bungee.module.warp.WarpManager;
+import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -34,50 +36,66 @@ public class PortalManager {
 
             return;
         }
-        //todo testmsg
-        player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Versuche zu teleportieren...");
-
+        BungeeManager.sendMessageToTarget(player, MessageDB.default_TRY_TO_TELEPORT);
         Portal portal = portalList.get(portalName);
         if (portal == null) {
 
             return;
         }
         if (portal.portalType.equalsIgnoreCase("warp")) {
-            WarpManager.sendPlayerToWarp(playerUUID, portal.portalDestination);
+            WarpManager.sendPlayerToWarp(playerUUID, portal.portalDestination, true);
         } else if (portal.portalType.equalsIgnoreCase("server")) {
             serverPortal(playerUUID, portal.portalDestination);
         }
-
     }
 
     public static void setPortal(UUID playerUUID, Portal portal) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
-        if (getPortal(portal.portalName) != null) {
-            portalList.remove(portal.portalName);
+        if (!portal.portalType.equalsIgnoreCase("warp") && !portal.portalType.equalsIgnoreCase("server")) {
+            BungeeManager.sendMessageToTarget(player, MessageDB.portal_PORTAL_NO_TYPE);
+            return;
         }
-        if (PortalQuery.setPortal(portal)) {
-            portalList.put(portal.portalName, portal);
-            JServerPortalOutput.enablePortal(portal.serverName, portal);
-            ProxyServer.getInstance().getLogger().info("[MineSuite] Register new portal " + portal.portalName);
-            //todo Player msg
-            player.sendMessage("Das Portal wurde erstellt");
+        if (getPortal(portal.portalName) != null) {
+            String oldServer = getPortal(portal.portalName).serverName;
+            portalList.remove(portal.portalName);
+            if (PortalQuery.setPortal(portal)) {
+                portalList.put(portal.portalName, portal);
+                JServerPortalOutput.disablePortal(oldServer, portal.portalName);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ignored) {
+                }
+                JServerPortalOutput.enablePortal(portal.serverName, portal);
+                ProxyServer.getInstance().getLogger().info("[MineSuite] Update portal " + portal.portalName);
+                BungeeManager.sendMessageToTarget(player, MessageDB.portal_PORTAL_REFRESH);
+            } else {
+                BungeeManager.sendMessageToTarget(player, MessageDB.portal_PORTAL_ERROR);
+            }
         } else {
-            //todo Player msg
-            player.sendMessage("Es ist ein Fehler beim Erstellen des Portals aufgetreten.");
+            if (PortalQuery.setPortal(portal)) {
+                portalList.put(portal.portalName, portal);
+                JServerPortalOutput.enablePortal(portal.serverName, portal);
+                ProxyServer.getInstance().getLogger().info("[MineSuite] Register new portal " + portal.portalName);
+                BungeeManager.sendMessageToTarget(player, MessageDB.portal_PORTAL_CREATED);
+            } else {
+                BungeeManager.sendMessageToTarget(player, MessageDB.portal_PORTAL_ERROR);
+            }
         }
     }
 
     public static void unsetPortal(UUID playerUUID, String portalName, String serverName) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
-        if (PortalQuery.unsetPortal(portalName)) {
-            portalList.remove(portalName);
-            JServerPortalOutput.disablePortal(serverName, portalName);
-            //todo Player msg
-            ProxyServer.getInstance().getLogger().info("[MineSuite] Unregister portal " + portalName);
-            player.sendMessage("Das Portal wurde entfernt");
+        if (getPortal(portalName) != null) {
+            if (PortalQuery.unsetPortal(portalName)) {
+                portalList.remove(portalName);
+                JServerPortalOutput.disablePortal(serverName, portalName);
+                ProxyServer.getInstance().getLogger().info("[MineSuite] Unregister portal " + portalName);
+                BungeeManager.sendMessageToTarget(player, MessageDB.portal_PORTAL_DELETED);
+            } else {
+                BungeeManager.sendMessageToTarget(player, MessageDB.portal_PORTAL_ERROR);
+            }
         } else {
-            //todo Player msg
-            player.sendMessage("Es ist ein Fehler beim Entfernen des Portals aufgetreten.");
+            BungeeManager.sendMessageToTarget(player, MessageDB.portal_PORTAL_NO_PORTAL);
         }
     }
 

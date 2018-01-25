@@ -48,7 +48,7 @@ public class JServerBanListener implements IncomingDataListener {
                     BanManager.banPlayer(uuid, reason, bannedby, -1L, player);
                 } else {
                     ProxiedPlayer p = ProxyServer.getInstance().getPlayer(bannedby);
-                    p.sendMessage(MessageDB.PLAYER_NOT_EXIST);
+                    p.sendMessage(MessageDB.default_PLAYER_NOT_EXIST);
                 }
                 return;
             }
@@ -68,7 +68,7 @@ public class JServerBanListener implements IncomingDataListener {
                     BanManager.banPlayer(uuid, reason, bannedby, seconds, player);
                 } else {
                     ProxiedPlayer p = ProxyServer.getInstance().getPlayer(bannedby);
-                    p.sendMessage(MessageDB.PLAYER_NOT_EXIST);
+                    p.sendMessage(MessageDB.default_PLAYER_NOT_EXIST);
                 }
 
                 return;
@@ -88,7 +88,7 @@ public class JServerBanListener implements IncomingDataListener {
                     BanManager.mutePlayer(uuid, reason, mutedby, -1L, player);
                 } else {
                     ProxiedPlayer p = ProxyServer.getInstance().getPlayer(mutedby);
-                    p.sendMessage(MessageDB.PLAYER_NOT_EXIST);
+                    p.sendMessage(MessageDB.default_PLAYER_NOT_EXIST);
                 }
                 return;
             }
@@ -108,7 +108,7 @@ public class JServerBanListener implements IncomingDataListener {
                     BanManager.mutePlayer(uuid, reason, mutedby, seconds, player);
                 } else {
                     ProxiedPlayer p = ProxyServer.getInstance().getPlayer(mutedby);
-                    p.sendMessage(MessageDB.PLAYER_NOT_EXIST);
+                    p.sendMessage(MessageDB.default_PLAYER_NOT_EXIST);
                 }
                 return;
             }

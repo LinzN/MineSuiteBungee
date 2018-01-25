@@ -13,8 +13,10 @@ package de.linzn.mineSuite.bungee.module.ban;
 
 import de.linzn.mineSuite.bungee.database.DataHashTable;
 import de.linzn.mineSuite.bungee.database.mysql.BungeeQuery;
+import de.linzn.mineSuite.bungee.managers.BungeeManager;
 import de.linzn.mineSuite.bungee.module.ban.mysql.BanQuery;
 import de.linzn.mineSuite.bungee.module.ban.socket.JServerBanOutput;
+import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -33,7 +35,6 @@ public class BanManager {
             end = -1L;
         }
         BanQuery.banPlayer(uuid, reason, bannedby, end);
-
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(uuid);
         String mtime = BanManager.getRemainingBanTime(end);
         if (player != null) {
@@ -49,12 +50,10 @@ public class BanManager {
 
     public static boolean isBanned(ProxiedPlayer player) {
         return BanQuery.isBanned(player.getUniqueId());
-
     }
 
     public static boolean isBanned(UUID uuid) {
         return BanQuery.isBanned(uuid);
-
     }
 
     public static void unBan(final String player, final String reason, final String unbannedby) {
@@ -69,25 +68,21 @@ public class BanManager {
         if (isBanned(uuid)) {
             BanQuery.unbanPlayer(uuid, reason, unbannedby);
             JServerBanOutput.unBan(pname, reason, unbannedby);
-
         }
     }
 
     public static void unBanSystem(final UUID uuid) {
         if (isBanned(uuid)) {
-            BanQuery.unbanPlayer(uuid, "Abgelaufen", "SYSTEM");
-
+            BanQuery.unbanPlayer(uuid, "Expired", "SYSTEM");
         }
     }
 
     public static long getEnd(final UUID uuid) {
-        long end = -1L;
-        end = BanQuery.getBanExpired(uuid);
-        return end;
+        return BanQuery.getBanExpired(uuid);
     }
 
-    public static String getRemainingBanTime(long time) {
-        String remainingTime = "";
+    private static String getRemainingBanTime(long time) {
+        String remainingTime;
         final long current = System.currentTimeMillis();
         final long end;
         if (time != -1L) {
@@ -145,22 +140,18 @@ public class BanManager {
         if (seconds != 0) {
             s = seconds + " Sekunde(n)";
         }
-
         remainingTime = "§e" + w + d + h + m + s;
-
         return remainingTime;
     }
 
-    public static String getBannedMessageNew(String reason, String bannedby, String time) {
-        String BanMsg;
+    private static String getBannedMessageNew(String reason, String bannedby, String time) {
+        String banMsg;
         if (time.equalsIgnoreCase("Permanent")) {
-            BanMsg = "§6Du wurdest §aPermanent §6von §a" + bannedby + " §6vom Server gesperrt. \n§6Grund: §a" + reason;
+            banMsg = MessageDB.ban_BANNED_PERM_NOW.replace("{reason}", reason).replace("{bannedby}", bannedby);
         } else {
-            BanMsg = "§6Du wurdest für §a" + time + " §6von §a" + bannedby + " §6vom Server gesperrt. \n§6Grund: §a"
-                    + reason;
+            banMsg = MessageDB.ban_BANNED_TEMP_NOW.replace("{reason}", reason).replace("{bannedby}", bannedby).replace("{time}", time);
         }
-
-        return BanMsg;
+        return banMsg;
     }
 
     public static String getBannedMessage(UUID uuid) {
@@ -169,18 +160,16 @@ public class BanManager {
         String bannedby = list.get(1);
         long milisec = Long.parseLong(list.get(2));
         long bannedAt = Long.parseLong(list.get(3));
-        String formated = new SimpleDateFormat("dd.MM.yyyy 'um' HH:mm").format(new Date(bannedAt));
+        String formatted = new SimpleDateFormat("dd.MM.yyyy 'um' HH:mm").format(new Date(bannedAt));
         String time = getRemainingBanTime(milisec);
-        String BanMsg;
+        String banMsg;
         if (time.equalsIgnoreCase("Permanent")) {
-            BanMsg = "§6Du wurdest §aPermanent §6von §a" + bannedby + " §6 am " + formated
-                    + " vom Server gesperrt. \n§6Grund: §a" + reason;
+            banMsg = MessageDB.ban_BANNED_PERM_INFO.replace("{reason}", reason).replace("{bannedby}", bannedby).replace("{date}", formatted);
         } else {
-            BanMsg = "§6Du wurdest für §a" + time + " §6von §a" + bannedby + " §6am " + formated
-                    + " vom Server gesperrt. \n§6Grund: §a" + reason;
+            banMsg = MessageDB.ban_BANNED_TEMP_INFO.replace("{reason}", reason).replace("{bannedby}", bannedby).replace("{time}", time).replace("{date}", formatted);
         }
 
-        return BanMsg;
+        return banMsg;
     }
 
     public static boolean isMuted(final UUID uuid) {
@@ -207,7 +196,7 @@ public class BanManager {
 
     }
 
-    public static String getMuteReason(final UUID uuid) {
+    private static String getMuteReason(final UUID uuid) {
         if (DataHashTable.muteReason.containsKey(uuid)) {
             return DataHashTable.muteReason.get(uuid);
         }
@@ -215,7 +204,7 @@ public class BanManager {
 
     }
 
-    public static String getMutedBy(final UUID uuid) {
+    private static String getMutedBy(final UUID uuid) {
         if (DataHashTable.mutedBy.containsKey(uuid)) {
             return DataHashTable.mutedBy.get(uuid);
         }
@@ -223,7 +212,7 @@ public class BanManager {
 
     }
 
-    @SuppressWarnings("deprecation")
+
     public static void mutePlayer(final UUID uuid, final String reason, final String mutedby, final long seconds,
                                   final String pname) {
         final long current = System.currentTimeMillis();
@@ -243,8 +232,7 @@ public class BanManager {
         final ProxiedPlayer target = ProxyServer.getInstance().getPlayer(uuid);
         String mtime = getRemainingMuteTime(uuid);
         if (target != null) {
-
-            target.sendMessage(getMutedMessageNew(reason, mutedby, mtime));
+            BungeeManager.sendMessageToTarget(target, getMutedMessageNew(reason, mutedby, mtime));
         }
         if (seconds == -1L) {
             JServerBanOutput.permMuteMSG(pname, reason, mutedby);
@@ -270,7 +258,6 @@ public class BanManager {
                 DataHashTable.mutedBy.remove(uuid);
             }
             JServerBanOutput.unMute(player, reason, unmutedby);
-
         }
     }
 
@@ -288,13 +275,12 @@ public class BanManager {
                 DataHashTable.mutedBy.remove(uuid);
             }
             JServerBanOutput.unMute(pname, reason, unmutedby);
-
         }
     }
 
     public static void unMuteSystem(final UUID uuid) {
         if (isMuted(uuid)) {
-            BanQuery.unmutePlayer(uuid, "Abgelaufen", "SYSTEM");
+            BanQuery.unmutePlayer(uuid, "Expired", "SYSTEM");
             DataHashTable.isMuted.remove(uuid);
             if (DataHashTable.muteTime.containsKey(uuid)) {
                 DataHashTable.muteTime.remove(uuid);
@@ -309,8 +295,8 @@ public class BanManager {
         }
     }
 
-    public static String getRemainingMuteTime(final UUID uuid) {
-        String remainingTime = "";
+    private static String getRemainingMuteTime(final UUID uuid) {
+        String remainingTime;
         final long current = System.currentTimeMillis();
         final long end = getMuteTime(uuid);
         long difference = end - current;
@@ -369,29 +355,26 @@ public class BanManager {
         return remainingTime;
     }
 
-    public static String getMutedMessageNew(String reason, String mutedby, String time) {
-        String MuteMsg;
+    private static String getMutedMessageNew(String reason, String mutedby, String time) {
+        String muteMsg;
         if (time.equalsIgnoreCase("Permanent")) {
-            MuteMsg = "§6Du wurdest §aPermanent §6von §a" + mutedby + " §6vom Chat ausgeschlossen. \n§6Grund: §a"
-                    + reason;
+            muteMsg = MessageDB.ban_MUTED_PERM_NOW.replace("{reason}", reason).replace("{mutedby}", mutedby);
         } else {
-            MuteMsg = "§6Du wurdest für §a" + time + " §6von §a" + mutedby + " §6vom Chat ausgeschlossen. \n§6Grund: §a"
-                    + reason;
+            muteMsg = MessageDB.ban_MUTED_TEMP_NOW.replace("{reason}", reason).replace("{mutedby}", mutedby).replace("{time}", time);
         }
-        return MuteMsg;
+        return muteMsg;
     }
 
     public static String getMutedMessage(UUID uuid) {
-        String MuteMsg;
+        String muteMsg;
         String time = getRemainingMuteTime(uuid);
         String mutedby = getMutedBy(uuid);
         String reason = getMuteReason(uuid);
         if (time.equalsIgnoreCase("Permanent")) {
-            MuteMsg = "§6Du bist §aPermanent §6von §a" + mutedby + " §6vom Chat ausgeschlossen. \n§6Grund: §a" + reason;
+            muteMsg = MessageDB.ban_MUTED_PERM_INFO.replace("{reason}", reason).replace("{mutedby}", mutedby);
         } else {
-            MuteMsg = "§6Du bist für §a" + time + " §6von §a" + mutedby + " §6vom Chat ausgeschlossen. \n§6Grund: §a"
-                    + reason;
+            muteMsg = MessageDB.ban_MUTED_TEMP_INFO.replace("{reason}", reason).replace("{mutedby}", mutedby).replace("{time}", time);
         }
-        return MuteMsg;
+        return muteMsg;
     }
 }

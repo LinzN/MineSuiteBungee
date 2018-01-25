@@ -78,7 +78,7 @@ public class HomeQuery {
     }
 
     public static List<String> getHome(UUID uuid, String home) {
-        final List<String> rlist = new ArrayList<String>();
+        final List<String> rlist = new ArrayList<>();
 
         MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
         try {
@@ -101,7 +101,6 @@ public class HomeQuery {
             result.close();
             sql.close();
             manager.release("MineSuiteHome", conn);
-
             return rlist;
 
         } catch (SQLException e) {
@@ -135,33 +134,23 @@ public class HomeQuery {
 
     public static HashMap<String, String> getHomes(UUID uuid) {
         MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
+        HashMap<String, String> list = new HashMap<>();
         try {
-
             Connection conn = manager.getConnection("MineSuiteHome");
             PreparedStatement sel = conn
                     .prepareStatement("SELECT * FROM homes WHERE player = '" + uuid.toString().replace("-", "") + "';");
-            HashMap<String, String> list = new HashMap<String, String>();
-            try {
                 ResultSet result = sel.executeQuery();
                 if (result != null) {
-                    @SuppressWarnings("unused")
-                    int i = 0;
                     while (result.next()) {
                         list.put(result.getString("home_name"), result.getString("server"));
-                        i++;
                     }
+                    result.close();
                 }
-                result.close();
                 sel.close();
                 manager.release("MineSuiteHome", conn);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return null;
-            }
-            return list;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return list;
     }
 }

@@ -12,7 +12,7 @@
 package de.linzn.mineSuite.bungee.utils;
 
 public class ChatFormate {
-    private static String guildchat = "§6[§aGC6] {player}: §a{text}";
+    private static String guildchat = "§a[GC]§r {player}: §a{text}";
     private static String channelglobalformate = "§2[G] §f{prefix}{player}§2{suffix}: {text}";
     private static String channeltradeformate = "§9[HA] §7{player}§9: {text}";
     private static String channelstaffformate = "§4[TC] §f{player}§e: {text}";

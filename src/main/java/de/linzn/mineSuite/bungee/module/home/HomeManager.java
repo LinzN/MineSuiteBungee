@@ -15,6 +15,7 @@ import de.linzn.mineSuite.bungee.managers.BungeeManager;
 import de.linzn.mineSuite.bungee.module.home.mysql.HomeQuery;
 import de.linzn.mineSuite.bungee.module.home.socket.JServerHomeOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
+import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -29,6 +30,7 @@ public class HomeManager {
             ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " home task has been canceled.");
             return;
         }
+        BungeeManager.sendMessageToTarget(player, MessageDB.default_TRY_TO_TELEPORT);
         if (HomeQuery.isHome(playerUUID, homeName)) {
             List<String> homeData = HomeQuery.getHome(playerUUID, homeName);
             String world = homeData.get(1);
@@ -43,8 +45,7 @@ public class HomeManager {
             ProxyServer.getInstance().getLogger().info("[MineSuite] " + player.getName() + " has been teleported with home system.");
             ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
         } else {
-            //todo Player msg
-            player.sendMessage("Dieses Home gibt es leider nicht!");
+            BungeeManager.sendMessageToTarget(player, MessageDB.home_NO_HOME);
         }
 
     }
@@ -54,17 +55,14 @@ public class HomeManager {
         if (HomeQuery.isHome(homeOwner, homeName)) {
             HomeQuery.setHome(homeOwner, homeName, location.getServer(), location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
             ProxyServer.getInstance().getLogger().info("[MineSuite] Update Home N: " + homeName + " S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
-            //todo Player msg
-            player.sendMessage("Du hast dein Home " + homeName + " aktualisiert!");
+            BungeeManager.sendMessageToTarget(player, MessageDB.home_REFRESH_HOME.replace("{home}", homeName));
         } else {
             if (HomeQuery.getHomes(homeOwner).size() >= limit) {
-                //todo Player msg
-                player.sendMessage("Du hast leider schon dein Homelimit erreicht!");
+                BungeeManager.sendMessageToTarget(player, MessageDB.home_HOME_LIMIT);
             } else {
                 HomeQuery.setHome(homeOwner, homeName, location.getServer(), location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
                 ProxyServer.getInstance().getLogger().info("[MineSuite] Create Home N: " + homeName + " S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
-                //todo Player msg
-                player.sendMessage("Du hast dein Home " + homeName + " gesetzt!");
+                BungeeManager.sendMessageToTarget(player, MessageDB.home_NEW_HOME.replace("{home}", homeName));
             }
         }
 
@@ -73,15 +71,12 @@ public class HomeManager {
 
     public static void removeHome(String homeName, UUID homeOwner) {
         ProxiedPlayer player = BungeeManager.getPlayer(homeOwner);
-
         if (HomeQuery.isHome(homeOwner, homeName)) {
             HomeQuery.delHome(homeOwner, homeName);
             ProxyServer.getInstance().getLogger().info("[MineSuite] Remove Home N: " + homeName + " from " + player.getName());
-            //todo Player msg
-            player.sendMessage("Du hast das Home " + homeName + " entfernt!");
+            BungeeManager.sendMessageToTarget(player, MessageDB.home_DELETE_HOME.replace("{home}", homeName));
         } else {
-            //todo Player msg
-            player.sendMessage("Dieses Home gibt es leider nicht!");
+            BungeeManager.sendMessageToTarget(player, MessageDB.home_NO_HOME);
         }
 
     }

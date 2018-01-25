@@ -12,8 +12,10 @@
 package de.linzn.mineSuite.bungee.module.chat;
 
 import de.linzn.mineSuite.bungee.database.DataHashTable;
+import de.linzn.mineSuite.bungee.managers.BungeeManager;
 import de.linzn.mineSuite.bungee.module.chat.socket.JServerChatOutput;
 import de.linzn.mineSuite.bungee.utils.ChatFormate;
+import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -21,107 +23,105 @@ import java.util.UUID;
 
 public class ChatManager {
 
-    public static void globalChat(String sender, String text, String prefix, String suffix) {
+    private static void globalChat(String sender, String text, String prefix, String suffix) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
 
         if (player == null) {
             return;
         }
-        String formatedText = ChatFormate.genGlobalChat(sender, text, prefix, suffix);
+        String formattedText = ChatFormate.genGlobalChat(sender, text, prefix, suffix);
         for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-            p.sendMessage(formatedText);
+            BungeeManager.sendMessageToTarget(p, formattedText);
         }
-        ProxyServer.getInstance().getLogger().info(formatedText);
+        ProxyServer.getInstance().getLogger().info(formattedText);
 
     }
 
-    public static void tradeChat(String sender, String text, String prefix, String suffix) {
+    private static void tradeChat(String sender, String text, String prefix, String suffix) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
 
         if (player == null) {
             return;
         }
-        String formatedText = ChatFormate.genTradeChat(sender, text, prefix, suffix);
+        String formattedText = ChatFormate.genTradeChat(sender, text, prefix, suffix);
         for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-            p.sendMessage(formatedText);
+            BungeeManager.sendMessageToTarget(p, formattedText);
         }
-        ProxyServer.getInstance().getLogger().info(formatedText);
+        ProxyServer.getInstance().getLogger().info(formattedText);
 
     }
 
-    public static void broadcastChat(String text) {
-
-        String formatedText = ChatFormate.genBroadcastChat(text);
+    private static void broadcastChat(String text) {
+        String formattedText = ChatFormate.genBroadcastChat(text);
         for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-            p.sendMessage(formatedText);
+            BungeeManager.sendMessageToTarget(p, formattedText);
         }
-        ProxyServer.getInstance().getLogger().info(formatedText);
-
+        ProxyServer.getInstance().getLogger().info(formattedText);
     }
 
-    public static void privateMsgChat(String sender, String reciever, String text, String prefix) {
+    public static void privateMsgChat(String sender, String receiver, String text, String prefix) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
-        ProxiedPlayer recievedPlayer = ProxyServer.getInstance().getPlayer(reciever);
+        ProxiedPlayer receivedPlayer = ProxyServer.getInstance().getPlayer(receiver);
 
         if (player == null) {
             return;
         }
 
-        if (recievedPlayer == null) {
-            player.sendMessage("Dieser Spieler ist nicht online!");
+        if (receivedPlayer == null) {
+            BungeeManager.sendMessageToTarget(player, MessageDB.default_PLAYER_NOT_ONLINE);
             return;
         }
-        if (DataHashTable.isafk.containsKey(recievedPlayer.getUniqueId())) {
-            player.sendMessage("§eDer Spieler ist als abwesend makiert!");
+        if (DataHashTable.isafk.containsKey(receivedPlayer.getUniqueId())) {
+            BungeeManager.sendMessageToTarget(player, MessageDB.chat_AFK_MARKED);
         }
-        DataHashTable.msgreply.put(recievedPlayer.getUniqueId(), player.getUniqueId());
+        DataHashTable.msgreply.put(receivedPlayer.getUniqueId(), player.getUniqueId());
 
-        String formatedTextSender = ChatFormate.genPrivateSender(sender, reciever, text, prefix);
-        String formatedTextReciever = ChatFormate.genPrivateReceiver(sender, reciever, text, prefix);
-        String formatedText = ChatFormate.genPrivate(sender, reciever, text);
+        String formattedTextSender = ChatFormate.genPrivateSender(sender, receiver, text, prefix);
+        String formattedTextReceiver = ChatFormate.genPrivateReceiver(sender, receiver, text, prefix);
+        String formattedText = ChatFormate.genPrivate(sender, receiver, text);
 
-        player.sendMessage(formatedTextSender);
-        recievedPlayer.sendMessage(formatedTextReciever);
+        BungeeManager.sendMessageToTarget(player, formattedTextSender);
+        BungeeManager.sendMessageToTarget(receivedPlayer, formattedTextReceiver);
 
-        ProxyServer.getInstance().getLogger().info("[PM]" + formatedText);
+        ProxyServer.getInstance().getLogger().info("[PM]" + formattedText);
 
         for (UUID uuid : DataHashTable.socialspy.keySet()) {
             ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
-            p.sendMessage("§4[SP]§r" + formatedText);
+            BungeeManager.sendMessageToTarget(p, "§4[SP]§r" + formattedText);
         }
 
     }
 
     public static void privateReplyChat(String sender, String text, String prefix) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
-        UUID uuidreciever = DataHashTable.msgreply.get(player.getUniqueId());
-        if (uuidreciever == null) {
-            player.sendMessage("Du hast niemand zum Antworten!");
+        UUID uuidReceiver = DataHashTable.msgreply.get(player.getUniqueId());
+        if (uuidReceiver == null) {
+            BungeeManager.sendMessageToTarget(player, MessageDB.chat_NO_REPLY);
             return;
         }
-        ProxiedPlayer recievedPlayer = ProxyServer.getInstance().getPlayer(uuidreciever);
-        if (recievedPlayer == null) {
-            player.sendMessage("Dieser Spieler ist offline!");
+        ProxiedPlayer receivedPlayer = ProxyServer.getInstance().getPlayer(uuidReceiver);
+        if (receivedPlayer == null) {
+            BungeeManager.sendMessageToTarget(player, MessageDB.default_PLAYER_NOT_ONLINE);
             return;
         }
-        if (DataHashTable.isafk.containsKey(recievedPlayer.getUniqueId())) {
-            player.sendMessage("§eDer Spieler ist als abwesend makiert!");
+        if (DataHashTable.isafk.containsKey(receivedPlayer.getUniqueId())) {
+            BungeeManager.sendMessageToTarget(player, MessageDB.chat_AFK_MARKED);
         }
-        DataHashTable.msgreply.put(recievedPlayer.getUniqueId(), player.getUniqueId());
+        DataHashTable.msgreply.put(receivedPlayer.getUniqueId(), player.getUniqueId());
 
-        String formatedTextSender = ChatFormate.genPrivateSender(sender, recievedPlayer.getName(), text,
+        String formattedTextSender = ChatFormate.genPrivateSender(sender, receivedPlayer.getName(), text,
                 prefix);
-        String formatedTextReciever = ChatFormate.genPrivateReceiver(sender, recievedPlayer.getName(), text,
+        String formattedTextReceiver = ChatFormate.genPrivateReceiver(sender, receivedPlayer.getName(), text,
                 prefix);
-        String formatedText = ChatFormate.genPrivate(sender, recievedPlayer.getName(), text);
+        String formattedText = ChatFormate.genPrivate(sender, receivedPlayer.getName(), text);
 
-        player.sendMessage(formatedTextSender);
-        recievedPlayer.sendMessage(formatedTextReciever);
+        BungeeManager.sendMessageToTarget(player, formattedTextSender);
+        BungeeManager.sendMessageToTarget(receivedPlayer, formattedTextReceiver);
 
-        ProxyServer.getInstance().getLogger().info("[Reply]" + formatedText);
+        ProxyServer.getInstance().getLogger().info("[Reply]" + formattedText);
         for (UUID uuid : DataHashTable.socialspy.keySet()) {
             ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
-            p.sendMessage("§4[SP]§r" + formatedText);
+            BungeeManager.sendMessageToTarget(p, "§4[SP]§r" + formattedText);
         }
     }
 
@@ -170,12 +170,12 @@ public class ChatManager {
                 */
             }
         } else {
-            globalChat(player.getDisplayName(), text, prefix, suffix);
+            globalChat(player.getName(), text, prefix, suffix);
         }
 
     }
 
-    public static void staffChat(String sender, String text, String prefix) {
+    private static void staffChat(String sender, String text, String prefix) {
         String formattedText = ChatFormate.genStaffChat(sender, text, prefix);
         JServerChatOutput.staffChat(formattedText);
     }
@@ -185,7 +185,7 @@ public class ChatManager {
         ProxyServer.getInstance().getLogger().info(guild + "-> " + formattedText);
         for (UUID uuid : DataHashTable.socialspy.keySet()) {
             ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
-            p.sendMessage("§4[SP]§r" + guild + "-> " + formattedText);
+            BungeeManager.sendMessageToTarget(p, "§4[SP]§r" + guild + "-> " + formattedText);
         }
         JServerChatOutput.sendGuildChat(guild, formattedText);
     }

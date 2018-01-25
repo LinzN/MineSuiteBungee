@@ -31,7 +31,7 @@ public class JServerWarpListener implements IncomingDataListener {
             if (subChannel.equals("client_warp_teleport-warp")) {
                 String warpName = in.readUTF();
                 UUID playerUUID = UUID.fromString(in.readUTF());
-                WarpManager.sendPlayerToWarp(playerUUID, warpName);
+                WarpManager.sendPlayerToWarp(playerUUID, warpName, false);
                 return;
 
             } else if (subChannel.equals("client_warp_create-warp")) {
