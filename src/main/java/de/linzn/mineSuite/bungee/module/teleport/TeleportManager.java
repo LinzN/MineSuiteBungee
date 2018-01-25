@@ -139,6 +139,12 @@ public class TeleportManager {
             BungeeManager.sendMessageToTarget(bp, MessageDB.default_PLAYER_NOT_ONLINE.replace("{player}", bp.getName()));
             return;
         }
+
+        if (bp.getName().equals(bt.getName())) {
+            BungeeManager.sendMessageToTarget(bp, MessageDB.teleport_TELEPORT_UNABLE.replace("{player}", bp.getName()));
+            return;
+        }
+
         if (playerHasPendingTeleport(bt)) {
             BungeeManager.sendMessageToTarget(bp, MessageDB.teleport_PLAYER_TELEPORT_PENDING_OTHER.replace("{player}", bt.getName()));
             return;
@@ -233,11 +239,18 @@ public class TeleportManager {
     }
 
     public static void teleportPlayerToPlayer(String player, String target, boolean silent, boolean bypass) {
+        ProxiedPlayer bPlayer = BungeeManager.getPlayer(player);
         ProxiedPlayer p = BungeeManager.getPlayer(player);
         BungeeManager.sendMessageToTarget(p, MessageDB.default_TRY_TO_TELEPORT);
         ProxiedPlayer t = BungeeManager.getPlayer(target);
         if (p == null || t == null) {
             BungeeManager.sendMessageToTarget(p, MessageDB.default_PLAYER_NOT_ONLINE);
+            return;
+        }
+        if (p.getName().equals(t.getName())) {
+            if (bPlayer != null) {
+                BungeeManager.sendMessageToTarget(bPlayer, MessageDB.teleport_TELEPORT_UNABLE.replace("{player}", bPlayer.getName()));
+            }
             return;
         }
         JServerTeleportOutput.teleportToPlayer(p, t);
