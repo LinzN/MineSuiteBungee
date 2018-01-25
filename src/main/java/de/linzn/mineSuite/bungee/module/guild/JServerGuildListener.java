@@ -9,13 +9,12 @@
  *
  */
 
-package de.linzn.mineSuite.bungee.socket.listener;
+package de.linzn.mineSuite.bungee.module.guild;
 
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
-import de.linzn.mineSuite.bungee.managers.PlayerManager;
-import de.linzn.mineSuite.bungee.socket.output.JServerGuildOutput;
+import de.linzn.mineSuite.bungee.managers.BungeeManager;
 import de.linzn.mineSuite.bungee.utils.Location;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
@@ -311,7 +310,7 @@ public class JServerGuildListener implements IncomingDataListener {
             }
 
             if (subChannel.equals("TeleportToGuildSpawn")) {
-                ProxiedPlayer player = PlayerManager.getPlayer(in.readUTF());
+                ProxiedPlayer player = BungeeManager.getPlayer(in.readUTF());
                 Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(),
                         in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
                 JServerGuildOutput.teleportToGuildSpawn(player, location);

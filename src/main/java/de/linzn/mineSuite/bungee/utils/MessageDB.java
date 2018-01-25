@@ -36,14 +36,14 @@ public class MessageDB {
     public static String teleport_PLAYER_TELEPORTED_TO_YOU = ChatColor.GREEN + "" + ChatColor.BOLD + "{player} wurde zu dir eingeladen!";
     public static String teleport_PLAYER_REQUESTS_TO_TELEPORT_TO_YOU = ChatColor.YELLOW + "" + ChatColor.BOLD + "{player} möchte dich besuchen. " + "\n" + ChatColor.YELLOW + "" + ChatColor.BOLD + "Annehmen: /tpaccept Ablehnen: /tpdeny";
     public static String teleport_PLAYER_REQUESTS_YOU_TELEPORT_TO_THEM = ChatColor.YELLOW + "" + ChatColor.BOLD + "{player} möchte dich zu sich einladen. " + ChatColor.YELLOW + "" + ChatColor.BOLD + "\n" + "Annehmen: /tpaccept Ablehnen: /tpdeny";
-    public static String teleport_TELEPORT_ACCEPTED = ChatColor.GREEN + "" + ChatColor.BOLD + "Du hast die Einladung von {player}' akzeptiert!";
+    public static String teleport_TELEPORT_ACCEPTED = ChatColor.GREEN + "" + ChatColor.BOLD + "Du hast die Einladung von {player} akzeptiert!";
     public static String teleport_TELEPORT_REQUEST_ACCEPTED = ChatColor.GREEN + "" + ChatColor.BOLD + "{player} hat deine Einladung angenommen!";
-    public static String teleport_TELEPORT_DENIED = ChatColor.YELLOW + "" + ChatColor.BOLD + "Du hast die Einladung von {player}' abhelehnt!!";
+    public static String teleport_TELEPORT_DENIED = ChatColor.YELLOW + "" + ChatColor.BOLD + "Du hast die Einladung von {player} abhelehnt!!";
     public static String teleport_TELEPORT_REQUEST_DENIED = ChatColor.RED + "" + ChatColor.BOLD + "{player} hat deine Einladung abgelehnt!";
     public static String teleport_NO_TELEPORTS = ChatColor.RED + "" + ChatColor.BOLD + "Du hast keine offenen Einladungen!";
     public static String teleport_TELEPORT_REQUEST_SENT = ChatColor.YELLOW + "" + ChatColor.BOLD + "Deine Einladung wurde versendet!";
     public static String teleport_TPA_REQUEST_TIMED_OUT = ChatColor.RED + "" + ChatColor.BOLD + "Die Einlandung an {player} ist abgelaufen!";
-    public static String teleport_TP_REQUEST_OTHER_TIMED_OUT = ChatColor.RED + "" + ChatColor.BOLD + "Die Einladung von {player}' ist abgelaufen!";
+    public static String teleport_TP_REQUEST_OTHER_TIMED_OUT = ChatColor.RED + "" + ChatColor.BOLD + "Die Einladung von {player} ist abgelaufen!";
     public static String teleport_TPAHERE_REQUEST_TIMED_OUT = ChatColor.RED + "" + ChatColor.BOLD + "Die Einladung an {player} ist abgelaufen!";
     public static String teleport_NO_BACK_TP = ChatColor.RED + "" + ChatColor.BOLD + "Es wurde kein Punkt gefunden, der dich zurückbringt!";
     public static String teleport_TELEPORT_UNABLE = ChatColor.RED + "" + ChatColor.BOLD + "Teleport mit diesem Spieler ist nicht möglich!";
