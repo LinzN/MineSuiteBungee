@@ -54,10 +54,11 @@ public class JServer implements Runnable {
     public void closeServer() {
         try {
             this.server.close();
-            for (UUID uuid : this.jServerConnections.keySet()) {
+            ArrayList<UUID> uuidList = new ArrayList<>(this.jServerConnections.keySet());
+            for (UUID uuid : uuidList) {
                 this.jServerConnections.get(uuid).setDisable();
-                this.jServerConnections.remove(uuid);
             }
+            this.jServerConnections.clear();
         } catch (IOException e) {
             e.printStackTrace();
         }

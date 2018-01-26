@@ -26,19 +26,19 @@ public class TeleportQuery {
         MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
         try {
             Connection conn = manager.getConnection("MineSuiteTeleport");
-            PreparedStatement sql = conn.prepareStatement("SELECT spawntype FROM spawns WHERE spawntype = '" + spawnType
+            PreparedStatement sql = conn.prepareStatement("SELECT spawntype FROM module_teleport_spawns WHERE spawntype = '" + spawnType
                     + "' AND server = '" + location.getServer() + "';");
             if (spawnType.equalsIgnoreCase("lobby")) {
-                sql = conn.prepareStatement("SELECT spawntype FROM spawns WHERE spawntype = '" + spawnType + "';");
+                sql = conn.prepareStatement("SELECT spawntype FROM module_teleport_spawns WHERE spawntype = '" + spawnType + "';");
             }
             ResultSet result = sql.executeQuery();
             if (result.next()) {
                 PreparedStatement update = conn
-                        .prepareStatement("UPDATE spawns SET server = '" + location.getServer() + "', world = '" + location.getWorld() + "', x = '"
+                        .prepareStatement("UPDATE module_teleport_spawns SET server = '" + location.getServer() + "', world = '" + location.getWorld() + "', x = '"
                                 + location.getX() + "', y = '" + location.getY() + "', z = '" + location.getZ() + "', yaw = '" + location.getYaw() + "', pitch = '" + location.getPitch()
                                 + "' WHERE spawntype = '" + spawnType + "' AND server = '" + location.getServer() + "';");
                 if (spawnType.equalsIgnoreCase("lobby")) {
-                    update = conn.prepareStatement("UPDATE spawns SET server = '" + location.getServer() + "', world = '" + location.getWorld() + "', x = '"
+                    update = conn.prepareStatement("UPDATE module_teleport_spawns SET server = '" + location.getServer() + "', world = '" + location.getWorld() + "', x = '"
                             + location.getX() + "', y = '" + location.getY() + "', z = '" + location.getZ() + "', yaw = '" + location.getYaw() + "', pitch = '" + location.getPitch()
                             + "' WHERE spawntype = '" + spawnType + "';");
                 }
@@ -47,7 +47,7 @@ public class TeleportQuery {
                 update.close();
             } else {
                 PreparedStatement insert = conn
-                        .prepareStatement("INSERT INTO spawns (spawntype, server, world, x, y, z, yaw, pitch) VALUES ('"
+                        .prepareStatement("INSERT INTO module_teleport_spawns (spawntype, server, world, x, y, z, yaw, pitch) VALUES ('"
                                 + spawnType + "', '" + location.getServer() + "', '" + location.getWorld() + "', '" + location.getX() + "', '" + location.getY() + "', '" + location.getZ()
                                 + "', '" + location.getYaw() + "', '" + location.getPitch() + "');");
                 insert.executeUpdate();
@@ -70,9 +70,9 @@ public class TeleportQuery {
             Connection conn = manager.getConnection("mineSuiteTeleport");
             PreparedStatement remove;
             if (spawnType.equalsIgnoreCase("lobby")) {
-                remove = conn.prepareStatement("DELETE FROM spawns WHERE spawntype = '" + spawnType + "';");
+                remove = conn.prepareStatement("DELETE FROM module_teleport_spawns WHERE spawntype = '" + spawnType + "';");
             } else {
-                remove = conn.prepareStatement("DELETE FROM spawns WHERE spawntype = '" + spawnType + "' AND server = '" + serverName + "';");
+                remove = conn.prepareStatement("DELETE FROM module_teleport_spawns WHERE spawntype = '" + spawnType + "' AND server = '" + serverName + "';");
             }
             remove.executeUpdate();
             remove.close();
@@ -91,7 +91,7 @@ public class TeleportQuery {
             Connection conn = manager.getConnection("MineSuiteTeleport");
             if (spawnType.equalsIgnoreCase("lobby")) {
                 PreparedStatement sql = conn
-                        .prepareStatement("SELECT world, server, x, y, z, yaw, pitch FROM spawns WHERE spawntype = '"
+                        .prepareStatement("SELECT world, server, x, y, z, yaw, pitch FROM module_teleport_spawns WHERE spawntype = '"
                                 + spawnType + "';");
                 ResultSet result = sql.executeQuery();
                 if (result.next()) {
@@ -109,7 +109,7 @@ public class TeleportQuery {
                 sql.close();
             } else {
                 PreparedStatement sql = conn
-                        .prepareStatement("SELECT world, server, x, y, z, yaw, pitch FROM spawns WHERE spawntype = '"
+                        .prepareStatement("SELECT world, server, x, y, z, yaw, pitch FROM module_teleport_spawns WHERE spawntype = '"
                                 + spawnType + "' AND server = '" + serverName + "';");
                 ResultSet result = sql.executeQuery();
                 if (result.next()) {
@@ -144,9 +144,9 @@ public class TeleportQuery {
             Connection conn = manager.getConnection("MineSuiteTeleport");
             PreparedStatement sql;
             if (spawnType.equalsIgnoreCase("lobby")) {
-                sql = conn.prepareStatement("SELECT spawntype FROM spawns WHERE spawntype = '" + spawnType + "';");
+                sql = conn.prepareStatement("SELECT spawntype FROM module_teleport_spawns WHERE spawntype = '" + spawnType + "';");
             } else {
-                sql = conn.prepareStatement("SELECT spawntype FROM spawns WHERE spawntype = '" + spawnType + "' AND server = '" + serverName + "';");
+                sql = conn.prepareStatement("SELECT spawntype FROM module_teleport_spawns WHERE spawntype = '" + spawnType + "' AND server = '" + serverName + "';");
             }
             ResultSet result = sql.executeQuery();
             if (result.next()) {

@@ -11,12 +11,12 @@
 
 package de.linzn.mineSuite.bungee;
 
+import de.linzn.mineSuite.bungee.core.Config;
+import de.linzn.mineSuite.bungee.core.socket.MineJSocketServer;
 import de.linzn.mineSuite.bungee.database.mysql.setup.MySQLConnectionSetup;
 import de.linzn.mineSuite.bungee.listeners.ProxyServerListener;
 import de.linzn.mineSuite.bungee.module.ban.AutoUnbanChecker;
 import de.linzn.mineSuite.bungee.module.portal.PortalManager;
-import de.linzn.mineSuite.bungee.socket.MineJSocketServer;
-import de.linzn.mineSuite.bungee.utils.Config;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -37,11 +37,11 @@ public class MineSuiteBungeePlugin extends Plugin {
     @Override
 
     public void onEnable() {
-        this.instance = this;
+        instance = this;
         this.proxy = ProxyServer.getInstance();
         this.proxy.getConsole().sendMessage(ChatColor.BLUE + "Loading MineSuite...");
-        Config Filemanager = new Config(this);
-        Filemanager.setDefaultConfig();
+        Config fileManager = new Config(this);
+        fileManager.setDefaultConfig();
         if (MySQLConnectionSetup.create()) {
             this.registerListeners();
             this.startScheduler();
@@ -56,6 +56,7 @@ public class MineSuiteBungeePlugin extends Plugin {
     public void onDisable() {
         this.mineJSocketServer.closeServer();
     }
+
 
     public MineJSocketServer getMineJSocketServer() {
         return mineJSocketServer;

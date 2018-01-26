@@ -11,7 +11,7 @@
 
 package de.linzn.mineSuite.bungee.module.home;
 
-import de.linzn.mineSuite.bungee.managers.BungeeManager;
+import de.linzn.mineSuite.bungee.core.BungeeManager;
 import de.linzn.mineSuite.bungee.module.home.mysql.HomeQuery;
 import de.linzn.mineSuite.bungee.module.home.socket.JServerHomeOutput;
 import de.linzn.mineSuite.bungee.utils.Location;

@@ -47,7 +47,7 @@ public class JServerTeleportOutput {
         try {
             dataOutputStream.writeUTF(servernew.getName());
             dataOutputStream.writeUTF("server_teleport_teleport-location");
-            dataOutputStream.writeUTF(player.getName());
+            dataOutputStream.writeUTF(player.getUniqueId().toString());
             dataOutputStream.writeUTF(loc.getWorld());
             dataOutputStream.writeDouble(loc.getX());
             dataOutputStream.writeDouble(loc.getY());
@@ -71,8 +71,8 @@ public class JServerTeleportOutput {
         try {
             dataOutputStream.writeUTF(target.getServer().getInfo().getName());
             dataOutputStream.writeUTF("server_teleport_teleport-to-player");
-            dataOutputStream.writeUTF(player.getName());
-            dataOutputStream.writeUTF(target.getName());
+            dataOutputStream.writeUTF(player.getUniqueId().toString());
+            dataOutputStream.writeUTF(target.getUniqueId().toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,8 +86,8 @@ public class JServerTeleportOutput {
         try {
             dataOutputStream.writeUTF(player.getServer().getInfo().getName());
             dataOutputStream.writeUTF("server_teleport_tpa-accept");
-            dataOutputStream.writeUTF(player.getName());
-            dataOutputStream.writeUTF(target.getName());
+            dataOutputStream.writeUTF(player.getUniqueId().toString());
+            dataOutputStream.writeUTF(target.getUniqueId().toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

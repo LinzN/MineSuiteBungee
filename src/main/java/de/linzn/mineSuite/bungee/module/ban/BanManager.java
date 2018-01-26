@@ -11,9 +11,9 @@
 
 package de.linzn.mineSuite.bungee.module.ban;
 
+import de.linzn.mineSuite.bungee.core.BungeeManager;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
 import de.linzn.mineSuite.bungee.database.mysql.BungeeQuery;
-import de.linzn.mineSuite.bungee.managers.BungeeManager;
 import de.linzn.mineSuite.bungee.module.ban.mysql.BanQuery;
 import de.linzn.mineSuite.bungee.module.ban.socket.JServerBanOutput;
 import de.linzn.mineSuite.bungee.utils.MessageDB;

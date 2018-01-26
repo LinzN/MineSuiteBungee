@@ -9,7 +9,7 @@
  *
  */
 
-package de.linzn.mineSuite.bungee.managers;
+package de.linzn.mineSuite.bungee.core;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.database.DataHashTable;

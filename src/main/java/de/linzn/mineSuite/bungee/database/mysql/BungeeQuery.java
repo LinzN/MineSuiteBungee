@@ -27,7 +27,7 @@ public class BungeeQuery {
 
         try {
             Connection conn = manager.getConnection("MineSuiteBungee");
-            PreparedStatement sql = conn.prepareStatement("SELECT UUID FROM uuidcache WHERE NAME = '" + player + "';");
+            PreparedStatement sql = conn.prepareStatement("SELECT UUID FROM core_uuidcache WHERE NAME = '" + player + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
                 uuid = UUID.fromString(result.getString(1));
@@ -46,16 +46,16 @@ public class BungeeQuery {
         MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
         try {
             Connection conn = manager.getConnection("MineSuiteBungee");
-            PreparedStatement sql = conn.prepareStatement("SELECT NAME FROM uuidcache WHERE UUID = '" + uuid + "';");
+            PreparedStatement sql = conn.prepareStatement("SELECT NAME FROM core_uuidcache WHERE UUID = '" + uuid + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
 
-                PreparedStatement sql2 = conn.prepareStatement("UPDATE uuidcache SET NAME = '" + player
+                PreparedStatement sql2 = conn.prepareStatement("UPDATE core_uuidcache SET NAME = '" + player
                         + "', TIMESTAMP = '" + time + "' WHERE UUID = '" + uuid.toString() + "';");
                 sql2.executeUpdate();
                 sql2.close();
             } else {
-                PreparedStatement sql2 = conn.prepareStatement("INSERT INTO uuidcache (UUID, NAME, TIMESTAMP) VALUES ('"
+                PreparedStatement sql2 = conn.prepareStatement("INSERT INTO core_uuidcache (UUID, NAME, TIMESTAMP) VALUES ('"
                         + uuid.toString() + "', '" + player + "', '" + time + "');");
                 sql2.executeUpdate();
                 sql2.close();

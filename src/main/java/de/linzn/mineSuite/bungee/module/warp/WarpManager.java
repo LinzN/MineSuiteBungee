@@ -11,7 +11,7 @@
 
 package de.linzn.mineSuite.bungee.module.warp;
 
-import de.linzn.mineSuite.bungee.managers.BungeeManager;
+import de.linzn.mineSuite.bungee.core.BungeeManager;
 import de.linzn.mineSuite.bungee.module.warp.mysql.WarpQuery;
 import de.linzn.mineSuite.bungee.module.warp.socket.JServerWarpOutput;
 import de.linzn.mineSuite.bungee.utils.Location;

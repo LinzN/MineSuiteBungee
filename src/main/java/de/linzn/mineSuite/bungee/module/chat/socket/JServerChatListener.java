@@ -29,7 +29,7 @@ public class JServerChatListener implements IncomingDataListener {
     public void onEvent(String channel, UUID clientUUID, byte[] dataInBytes) {
         // TODO Auto-generated method stub
         DataInputStream in = new DataInputStream(new ByteArrayInputStream(dataInBytes));
-        String subChannel = null;
+        String subChannel;
         try {
             subChannel = in.readUTF();
             if (subChannel.equals("client_chat_default-chat")) {

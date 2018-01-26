@@ -12,7 +12,7 @@
 package de.linzn.mineSuite.bungee.module.teleport.socket;
 
 import de.linzn.jSocket.core.IncomingDataListener;
-import de.linzn.mineSuite.bungee.managers.BungeeManager;
+import de.linzn.mineSuite.bungee.core.BungeeManager;
 import de.linzn.mineSuite.bungee.module.teleport.TeleportManager;
 import de.linzn.mineSuite.bungee.utils.Location;
 import net.md_5.bungee.api.ProxyServer;
@@ -67,7 +67,8 @@ public class JServerTeleportListener implements IncomingDataListener {
 
 
             if (subChannel.equals("client_teleport_teleport-location")) {
-                ProxiedPlayer player = BungeeManager.getPlayer(in.readUTF());
+                UUID playerUUID = UUID.fromString(in.readUTF());
+                ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
                 if (player == null) {
                     ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
                     return;
@@ -81,7 +82,8 @@ public class JServerTeleportListener implements IncomingDataListener {
             }
 
             if (subChannel.equals("client_teleport_set-dead-location")) {
-                ProxiedPlayer player = BungeeManager.getPlayer(in.readUTF());
+                UUID playerUUID = UUID.fromString(in.readUTF());
+                ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
                 if (player == null) {
                     ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " task has been canceled.");
                     return;
@@ -98,6 +100,13 @@ public class JServerTeleportListener implements IncomingDataListener {
 
                 return;
             }
+            if (subChannel.equals("client_teleport_teleport-to-player-uuid")) {
+                UUID playerUUID = UUID.fromString(in.readUTF());
+                UUID targetUUID = UUID.fromString(in.readUTF());
+                TeleportManager.teleportPlayerToPlayerUUID(playerUUID, targetUUID, in.readBoolean(), in.readBoolean());
+
+                return;
+            }
 
             if (subChannel.equals("client_teleport_tpa-request-here")) {
                 TeleportManager.requestPlayerTeleportToYou(in.readUTF(), in.readUTF());
@@ -109,7 +118,8 @@ public class JServerTeleportListener implements IncomingDataListener {
                 return;
             }
             if (subChannel.equals("client_teleport_tpa-accept")) {
-                ProxiedPlayer player = BungeeManager.getPlayer(in.readUTF());
+                UUID playerUUID = UUID.fromString(in.readUTF());
+                ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
                 if (player == null) {
                     ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " tpa task has been canceled.");
                     return;
@@ -118,7 +128,8 @@ public class JServerTeleportListener implements IncomingDataListener {
                 return;
             }
             if (subChannel.equals("client_teleport_tpa-deny")) {
-                ProxiedPlayer player = BungeeManager.getPlayer(in.readUTF());
+                UUID playerUUID = UUID.fromString(in.readUTF());
+                ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
                 if (player == null) {
                     ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " tpa task has been canceled.");
                     return;
@@ -133,7 +144,8 @@ public class JServerTeleportListener implements IncomingDataListener {
             }
 
             if (subChannel.equals("client_teleport_teleport-player-back")) {
-                ProxiedPlayer player = BungeeManager.getPlayer(in.readUTF());
+                UUID playerUUID = UUID.fromString(in.readUTF());
+                ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
                 if (player == null) {
                     ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
                     return;

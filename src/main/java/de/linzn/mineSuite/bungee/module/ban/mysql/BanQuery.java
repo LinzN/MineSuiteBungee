@@ -30,7 +30,7 @@ public class BanQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sql = conn.prepareStatement(
-                    "SELECT Banned FROM bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
+                    "SELECT Banned FROM module_ban_bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
                 updateBannedPlayer(uuid, reason, bannedby, extime);
@@ -50,7 +50,7 @@ public class BanQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sql = conn.prepareStatement(
-                    "SELECT Muted FROM mutes WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
+                    "SELECT Muted FROM module_ban_mutes WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
                 updateMutedPlayer(uuid, reason, bannedby, extime);
@@ -70,7 +70,7 @@ public class BanQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sql = conn.prepareStatement(
-                    "SELECT Banned FROM bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
+                    "SELECT Banned FROM module_ban_bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
                 updateUnbannedPlayer(uuid, reason, unbannedby);
@@ -89,7 +89,7 @@ public class BanQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sql = conn.prepareStatement(
-                    "SELECT Muted FROM mutes WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
+                    "SELECT Muted FROM module_ban_mutes WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
                 updateUnmutedPlayer(uuid, reason, unmutedby);
@@ -108,7 +108,7 @@ public class BanQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sql = conn.prepareStatement(
-                    "INSERT INTO bans (UUID, Banned, Reason, BannedBy, ExpireTime, BannedAt) VALUES ('"
+                    "INSERT INTO module_ban_bans (UUID, Banned, Reason, BannedBy, ExpireTime, BannedAt) VALUES ('"
                             + uuid.toString() + "', '" + 1 + "', '" + reason.replace("'", "") + "', '" + bannedby
                             + "', '" + extime + "', '" + date.getTime() + "');");
             sql.executeUpdate();
@@ -125,7 +125,7 @@ public class BanQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sql = conn
-                    .prepareStatement("INSERT INTO mutes (UUID, Muted, Reason, MutedBy, ExpireTime, MutedAt) VALUES ('"
+                    .prepareStatement("INSERT INTO module_ban_mutes (UUID, Muted, Reason, MutedBy, ExpireTime, MutedAt) VALUES ('"
                             + uuid.toString() + "', '" + 1 + "', '" + reason.replace("'", "") + "', '" + mutedby
                             + "', '" + extime + "', '" + date.getTime() + "');");
             sql.executeUpdate();
@@ -143,7 +143,7 @@ public class BanQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sql = conn
-                    .prepareStatement("UPDATE bans SET Banned = '" + 1 + "', Reason =  '" + reason.replace("'", "")
+                    .prepareStatement("UPDATE module_ban_bans SET Banned = '" + 1 + "', Reason =  '" + reason.replace("'", "")
                             + "', BannedBy =  '" + bannedby + "', ExpireTime =  '" + extime + "', BannedAt =  '"
                             + date.getTime() + "' WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
             sql.executeUpdate();
@@ -161,7 +161,7 @@ public class BanQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sql = conn
-                    .prepareStatement("UPDATE mutes SET Muted = '" + 1 + "', Reason =  '" + reason.replace("'", "")
+                    .prepareStatement("UPDATE module_ban_mutes SET Muted = '" + 1 + "', Reason =  '" + reason.replace("'", "")
                             + "', MutedBy =  '" + mutedby + "', ExpireTime =  '" + extime + "', MutedAt =  '"
                             + date.getTime() + "' WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
             sql.executeUpdate();
@@ -176,7 +176,7 @@ public class BanQuery {
         MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
         try {
             Connection conn = manager.getConnection("MineSuiteBan");
-            PreparedStatement sql = conn.prepareStatement("UPDATE bans SET Banned = '" + 0 + "', UnBannedBy = '"
+            PreparedStatement sql = conn.prepareStatement("UPDATE module_ban_bans SET Banned = '" + 0 + "', UnBannedBy = '"
                     + unbannedby + "', UnBannedReason = '" + reason.replace("'", "") + "' WHERE UUID = '"
                     + uuid.toString() + "' AND Banned = '" + 1 + "';");
             sql.executeUpdate();
@@ -191,7 +191,7 @@ public class BanQuery {
         MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
         try {
             Connection conn = manager.getConnection("MineSuiteBan");
-            PreparedStatement sql = conn.prepareStatement("UPDATE mutes SET Muted = '" + 0 + "', UnMutedBy = '"
+            PreparedStatement sql = conn.prepareStatement("UPDATE module_ban_mutes SET Muted = '" + 0 + "', UnMutedBy = '"
                     + unmutedby + "', UnMutedReason = '" + reason.replace("'", "") + "' WHERE UUID = '"
                     + uuid.toString() + "' AND Muted = '" + 1 + "';");
             sql.executeUpdate();
@@ -208,7 +208,7 @@ public class BanQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sql = conn.prepareStatement(
-                    "SELECT Banned FROM bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
+                    "SELECT Banned FROM module_ban_bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
                 banned = true;
@@ -231,7 +231,7 @@ public class BanQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sql = conn.prepareStatement(
-                    "SELECT Muted FROM mutes WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
+                    "SELECT Muted FROM module_ban_mutes WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
                 muted = true;
@@ -254,7 +254,7 @@ public class BanQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sql = conn.prepareStatement(
-                    "SELECT ExpireTime FROM bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
+                    "SELECT ExpireTime FROM module_ban_bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
                 banned = result.getLong(1);
@@ -276,7 +276,7 @@ public class BanQuery {
 
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sel = conn.prepareStatement(
-                    "SELECT * FROM bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
+                    "SELECT * FROM module_ban_bans WHERE UUID = '" + uuid.toString() + "' AND Banned = '" + 1 + "';");
             List<String> list = new ArrayList<String>();
 
             ResultSet result = sel.executeQuery();
@@ -307,7 +307,7 @@ public class BanQuery {
 
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sel = conn.prepareStatement(
-                    "SELECT * FROM mutes WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
+                    "SELECT * FROM module_ban_mutes WHERE UUID = '" + uuid.toString() + "' AND Muted = '" + 1 + "';");
             List<String> list = new ArrayList<String>();
             try {
                 ResultSet result = sel.executeQuery();
@@ -342,7 +342,7 @@ public class BanQuery {
 
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sel = conn
-                    .prepareStatement("SELECT * FROM bans WHERE Banned = '" + 1 + "' AND ExpireTime > '" + -1 + "';");
+                    .prepareStatement("SELECT * FROM module_ban_bans WHERE Banned = '" + 1 + "' AND ExpireTime > '" + -1 + "';");
             ResultSet result = sel.executeQuery();
             if (result != null) {
                 while (result.next()) {
@@ -376,7 +376,7 @@ public class BanQuery {
 
             Connection conn = manager.getConnection("MineSuiteBan");
             PreparedStatement sel = conn
-                    .prepareStatement("SELECT * FROM mutes WHERE Muted = '" + 1 + "' AND ExpireTime > '" + -1 + "';");
+                    .prepareStatement("SELECT * FROM module_ban_mutes WHERE Muted = '" + 1 + "' AND ExpireTime > '" + -1 + "';");
             ResultSet result = sel.executeQuery();
             if (result != null) {
                 while (result.next()) {

@@ -28,11 +28,11 @@ public class HomeQuery {
         MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
         try {
             Connection conn = manager.getConnection("MineSuiteHome");
-            PreparedStatement sql = conn.prepareStatement("SELECT home_name FROM homes WHERE player = '"
+            PreparedStatement sql = conn.prepareStatement("SELECT home_name FROM module_home_homes WHERE player = '"
                     + uuid.toString().replace("-", "") + "' AND home_name = '" + home + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
-                PreparedStatement update = conn.prepareStatement("UPDATE homes SET server = '" + server + "', world = '"
+                PreparedStatement update = conn.prepareStatement("UPDATE module_home_homes SET server = '" + server + "', world = '"
                         + world + "', x = '" + x + "', y = '" + y + "', z = '" + z + "', yaw = '" + yaw + "', pitch = '"
                         + pitch + "' WHERE player = '" + uuid.toString().replace("-", "") + "' AND home_name = '" + home
                         + "';");
@@ -40,7 +40,7 @@ public class HomeQuery {
                 update.close();
             } else {
                 PreparedStatement insert = conn.prepareStatement(
-                        "INSERT INTO homes (player, home_name, server, world, x, y, z, yaw, pitch) VALUES ('"
+                        "INSERT INTO module_home_homes (player, home_name, server, world, x, y, z, yaw, pitch) VALUES ('"
                                 + uuid.toString().replace("-", "") + "', '" + home + "', '" + server + "', '" + world
                                 + "', '" + x + "', '" + y + "', '" + z + "', '" + yaw + "', '" + pitch + "');");
                 insert.executeUpdate();
@@ -59,11 +59,11 @@ public class HomeQuery {
         MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
         try {
             Connection conn = manager.getConnection("MineSuiteHome");
-            PreparedStatement sql = conn.prepareStatement("SELECT home_name FROM homes WHERE player = '"
+            PreparedStatement sql = conn.prepareStatement("SELECT home_name FROM module_home_homes WHERE player = '"
                     + uuid.toString().replace("-", "") + "' AND home_name = '" + home + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
-                PreparedStatement update = conn.prepareStatement("DELETE FROM homes WHERE player = '"
+                PreparedStatement update = conn.prepareStatement("DELETE FROM module_home_homes WHERE player = '"
                         + uuid.toString().replace("-", "") + "' AND home_name = '" + home + "';");
                 update.executeUpdate();
                 update.close();
@@ -84,7 +84,7 @@ public class HomeQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteHome");
             PreparedStatement sql = conn
-                    .prepareStatement("SELECT world, server, x, y, z, yaw, pitch FROM homes WHERE player = '"
+                    .prepareStatement("SELECT world, server, x, y, z, yaw, pitch FROM module_home_homes WHERE player = '"
                             + uuid.toString().replace("-", "") + "' AND home_name = '" + home + "';");
             final ResultSet result = sql.executeQuery();
             if (result.next()) {
@@ -114,7 +114,7 @@ public class HomeQuery {
         MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
         try {
             Connection conn = manager.getConnection("MineSuiteHome");
-            PreparedStatement sql = conn.prepareStatement("SELECT home_name FROM homes WHERE player = '"
+            PreparedStatement sql = conn.prepareStatement("SELECT home_name FROM module_home_homes WHERE player = '"
                     + uuid.toString().replace("-", "") + "' AND home_name = '" + home + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
@@ -138,16 +138,16 @@ public class HomeQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteHome");
             PreparedStatement sel = conn
-                    .prepareStatement("SELECT * FROM homes WHERE player = '" + uuid.toString().replace("-", "") + "';");
-                ResultSet result = sel.executeQuery();
-                if (result != null) {
-                    while (result.next()) {
-                        list.put(result.getString("home_name"), result.getString("server"));
-                    }
-                    result.close();
+                    .prepareStatement("SELECT * FROM module_home_homes WHERE player = '" + uuid.toString().replace("-", "") + "';");
+            ResultSet result = sel.executeQuery();
+            if (result != null) {
+                while (result.next()) {
+                    list.put(result.getString("home_name"), result.getString("server"));
                 }
-                sel.close();
-                manager.release("MineSuiteHome", conn);
+                result.close();
+            }
+            sel.close();
+            manager.release("MineSuiteHome", conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -12,7 +12,7 @@
 package de.linzn.mineSuite.bungee.module.teleport;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
-import de.linzn.mineSuite.bungee.managers.BungeeManager;
+import de.linzn.mineSuite.bungee.core.BungeeManager;
 import de.linzn.mineSuite.bungee.module.teleport.mysql.TeleportQuery;
 import de.linzn.mineSuite.bungee.module.teleport.socket.JServerTeleportOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
@@ -238,19 +238,17 @@ public class TeleportManager {
         }
     }
 
-    public static void teleportPlayerToPlayer(String player, String target, boolean silent, boolean bypass) {
-        ProxiedPlayer bPlayer = BungeeManager.getPlayer(player);
-        ProxiedPlayer p = BungeeManager.getPlayer(player);
+    public static void teleportPlayerToPlayerUUID(UUID playerUUID, UUID targetUUID, boolean silent, boolean bypass) {
+        ProxiedPlayer p = BungeeManager.getPlayer(playerUUID);
+        ProxiedPlayer t = BungeeManager.getPlayer(targetUUID);
+
         BungeeManager.sendMessageToTarget(p, MessageDB.default_TRY_TO_TELEPORT);
-        ProxiedPlayer t = BungeeManager.getPlayer(target);
         if (p == null || t == null) {
             BungeeManager.sendMessageToTarget(p, MessageDB.default_PLAYER_NOT_ONLINE);
             return;
         }
         if (p.getName().equals(t.getName())) {
-            if (bPlayer != null) {
-                BungeeManager.sendMessageToTarget(bPlayer, MessageDB.teleport_TELEPORT_UNABLE.replace("{player}", bPlayer.getName()));
-            }
+            BungeeManager.sendMessageToTarget(p, MessageDB.teleport_TELEPORT_UNABLE.replace("{player}", p.getName()));
             return;
         }
         JServerTeleportOutput.teleportToPlayer(p, t);
@@ -259,6 +257,22 @@ public class TeleportManager {
         }
 
         BungeeManager.sendMessageToTarget(p, MessageDB.teleport_TELEPORTED_TO_PLAYER.replace("{player}", t.getName()));
+    }
+
+    public static void teleportPlayerToPlayer(String player, String target, boolean silent, boolean bypass) {
+        ProxiedPlayer p = BungeeManager.getPlayer(player);
+        ProxiedPlayer t = BungeeManager.getPlayer(target);
+
+        if (p == null || t == null) {
+            BungeeManager.sendMessageToTarget(p, MessageDB.default_PLAYER_NOT_ONLINE);
+            return;
+        }
+        if (p.getName().equals(t.getName())) {
+            BungeeManager.sendMessageToTarget(p, MessageDB.teleport_TELEPORT_UNABLE.replace("{player}", p.getName()));
+            return;
+        }
+        teleportPlayerToPlayerUUID(p.getUniqueId(), t.getUniqueId(), silent, bypass);
+
     }
 
 }

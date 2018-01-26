@@ -9,7 +9,7 @@
  *
  */
 
-package de.linzn.mineSuite.bungee.utils;
+package de.linzn.mineSuite.bungee.core;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import net.md_5.bungee.api.ChatColor;

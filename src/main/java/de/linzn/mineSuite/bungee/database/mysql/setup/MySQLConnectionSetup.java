@@ -11,7 +11,7 @@
 
 package de.linzn.mineSuite.bungee.database.mysql.setup;
 
-import de.linzn.mineSuite.bungee.utils.Config;
+import de.linzn.mineSuite.bungee.core.Config;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 
@@ -42,13 +42,30 @@ public class MySQLConnectionSetup {
 
         try {
             Connection connection = handler.getConnection();
-            String sql = "CREATE TABLE IF NOT EXISTS mutes (Id int NOT NULL AUTO_INCREMENT, UUID text, Muted text, Reason text, MutedBy text, MutedAt bigint, ExpireTime bigint, UnMutedBy text, UnMutedReason text, PRIMARY KEY (Id));";
-            String sql2 = "CREATE TABLE IF NOT EXISTS bans (Id int NOT NULL AUTO_INCREMENT, UUID text, Banned text, Reason text, BannedBy text, BannedAt bigint, ExpireTime bigint, UnBannedBy text, UnBannedReason text, PRIMARY KEY (Id));";
-            String sql3 = "CREATE TABLE IF NOT EXISTS uuidcache (Id int NOT NULL AUTO_INCREMENT, UUID text, NAME text, TIMESTAMP bigint, PRIMARY KEY (id));";
+            String core = "CREATE TABLE IF NOT EXISTS core_uuidcache (Id int NOT NULL AUTO_INCREMENT, UUID text, NAME text, TIMESTAMP bigint, PRIMARY KEY (id));";
+
+            String ban_module_1 = "CREATE TABLE IF NOT EXISTS module_ban_mutes (Id int NOT NULL AUTO_INCREMENT, UUID text, Muted text, Reason text, MutedBy text, MutedAt bigint, ExpireTime bigint, UnMutedBy text, UnMutedReason text, PRIMARY KEY (Id));";
+            String ban_module_2 = "CREATE TABLE IF NOT EXISTS module_ban_bans (Id int NOT NULL AUTO_INCREMENT, UUID text, Banned text, Reason text, BannedBy text, BannedAt bigint, ExpireTime bigint, UnBannedBy text, UnBannedReason text, PRIMARY KEY (Id));";
+
+            String warp_module_1 = "CREATE TABLE IF NOT EXISTS module_warp_warps (player VARCHAR(100), warp_name VARCHAR(100), server VARCHAR(100), world text, x double, y double, z double, yaw float, pitch float, visible int, PRIMARY KEY (`warp_name`));";
+            String teleport_module_1 = "CREATE TABLE IF NOT EXISTS module_teleport_spawns (Id int NOT NULL AUTO_INCREMENT, spawntype VARCHAR(100), server VARCHAR(100), world text, x double, y double, z double, yaw float, pitch float, visible int, PRIMARY KEY (Id));";
+            String portal_module_1 = "CREATE TABLE IF NOT EXISTS module_portal_portals (portalname VARCHAR(100), server VARCHAR(100), type VARCHAR(20), destination VARCHAR(100), world VARCHAR(100), filltype VARCHAR(100) DEFAULT 'AIR', xmax INT(11), xmin INT(11), ymax INT(11), ymin INT(11), zmax INT(11), zmin INT(11), CONSTRAINT pk_portalname PRIMARY KEY (portalname));";
+            String home_module_1 = "CREATE TABLE IF NOT EXISTS module_home_homes (player VARCHAR(100), home_name VARCHAR(100), server VARCHAR(100), world text, x double, y double, z double, yaw float, pitch float, PRIMARY KEY (`player`,`home_name`,`server`));";
+
+            String guild_module_1 = "CREATE TABLE IF NOT EXISTS module_guild_guilds (GuildUUID VARCHAR(100), GuildName VARCHAR(100), Level int, Experience bigint, PRIMARY KEY (GuildName));";
+            String guild_module_2 = "CREATE TABLE IF NOT EXISTS module_guild_spawns (GuildUUID VARCHAR(100), Server text, World text, CordX double, CordY double, CordZ double, Yaw float, Pitch float, PRIMARY KEY (GuildUUID));";
+            String guild_module_3 = "CREATE TABLE IF NOT EXISTS module_guild_user (PlayerName VARCHAR(100), UUID text, GuildUUID text, GuildRang text, PRIMARY KEY (PlayerName));";
             Statement action = connection.createStatement();
-            action.executeUpdate(sql);
-            action.executeUpdate(sql2);
-            action.executeUpdate(sql3);
+            action.executeUpdate(core);
+            action.executeUpdate(ban_module_1);
+            action.executeUpdate(ban_module_2);
+            action.executeUpdate(warp_module_1);
+            action.executeUpdate(teleport_module_1);
+            action.executeUpdate(portal_module_1);
+            action.executeUpdate(home_module_1);
+            action.executeUpdate(guild_module_1);
+            action.executeUpdate(guild_module_2);
+            action.executeUpdate(guild_module_3);
             action.close();
             handler.release(connection);
 

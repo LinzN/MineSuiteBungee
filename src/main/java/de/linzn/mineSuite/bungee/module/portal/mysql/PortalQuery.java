@@ -37,11 +37,11 @@ public class PortalQuery {
         try {
             Connection conn = manager.getConnection("MineSuitePortal");
             PreparedStatement sql = conn
-                    .prepareStatement("SELECT portalname FROM portals WHERE portalname = '" + portalName + "';");
+                    .prepareStatement("SELECT portalname FROM module_portal_portals WHERE portalname = '" + portalName + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
                 PreparedStatement update = conn.prepareStatement(
-                        "UPDATE portals SET server = '" + serverName + "', type = '" + portalType + "', destination = '" + portalDestination
+                        "UPDATE module_portal_portals SET server = '" + serverName + "', type = '" + portalType + "', destination = '" + portalDestination
                                 + "', world = '" + worldName + "', filltype = '" + material + "', xmax = '" + maxX
                                 + "', xmin = '" + minX + "', ymax = '" + maxY + "', ymin = '" + minY + "', zmax = '"
                                 + maxZ + "', zmin = '" + minZ + "' WHERE portalname = '" + portalName + "';");
@@ -49,7 +49,7 @@ public class PortalQuery {
                 update.close();
             } else {
                 PreparedStatement insert = conn.prepareStatement(
-                        "INSERT INTO portals (portalname, server, type, destination, world, filltype, xmax, xmin, ymax, ymin, zmax, zmin) VALUES('"
+                        "INSERT INTO module_portal_portals (portalname, server, type, destination, world, filltype, xmax, xmin, ymax, ymin, zmax, zmin) VALUES('"
                                 + portalName + "', '" + serverName + "', '" + portalType + "', '" + portalDestination + "', '" + worldName
                                 + "', '" + material + "', '" + maxX + "', '" + minX + "', '" + maxY + "', '" + minY
                                 + "', '" + maxZ + "', '" + minZ + "');");
@@ -73,11 +73,11 @@ public class PortalQuery {
         try {
             Connection conn = manager.getConnection("MineSuitePortal");
             PreparedStatement sql = conn
-                    .prepareStatement("SELECT portalname FROM portals WHERE portalname = '" + portalName + "';");
+                    .prepareStatement("SELECT portalname FROM module_portal_portals WHERE portalname = '" + portalName + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
                 PreparedStatement update = conn
-                        .prepareStatement("DELETE FROM portals WHERE portalname = '" + portalName + "';");
+                        .prepareStatement("DELETE FROM module_portal_portals WHERE portalname = '" + portalName + "';");
                 update.executeUpdate();
                 update.close();
             }
@@ -98,7 +98,7 @@ public class PortalQuery {
         try {
 
             Connection conn = manager.getConnection("MineSuitePortal");
-            PreparedStatement sel = conn.prepareStatement("SELECT * FROM portals WHERE server = '" + serverName + "';");
+            PreparedStatement sel = conn.prepareStatement("SELECT * FROM module_portal_portals WHERE server = '" + serverName + "';");
 
             ResultSet result = sel.executeQuery();
             if (result != null) {

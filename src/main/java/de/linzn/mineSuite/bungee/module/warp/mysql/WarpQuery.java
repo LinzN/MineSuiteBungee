@@ -31,11 +31,11 @@ public class WarpQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteWarp");
             PreparedStatement sql = conn
-                    .prepareStatement("SELECT warp_name FROM warps WHERE warp_name = '" + warp + "';");
+                    .prepareStatement("SELECT warp_name FROM module_warp_warps WHERE warp_name = '" + warp + "';");
             ResultSet result = sql.executeQuery();
             if (!result.next()) {
                 PreparedStatement insert = conn.prepareStatement(
-                        "INSERT INTO warps (player, warp_name, server, world, x, y, z, yaw, pitch, visible) VALUES ('"
+                        "INSERT INTO module_warp_warps (player, warp_name, server, world, x, y, z, yaw, pitch, visible) VALUES ('"
                                 + uuid.toString() + "', '" + warp + "', '" + server + "', '" + world + "', '" + x
                                 + "', '" + y + "', '" + z + "', '" + yaw + "', '" + pitch + "', '" + visible + "');");
                 insert.executeUpdate();
@@ -56,10 +56,10 @@ public class WarpQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteWarp");
             PreparedStatement sql = conn
-                    .prepareStatement("SELECT warp_name FROM warps WHERE warp_name = '" + warp + "';");
+                    .prepareStatement("SELECT warp_name FROM module_warp_warps WHERE warp_name = '" + warp + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
-                PreparedStatement update = conn.prepareStatement("UPDATE warps SET server = '" + server + "', world = '"
+                PreparedStatement update = conn.prepareStatement("UPDATE module_warp_warps SET server = '" + server + "', world = '"
                         + world + "', x = '" + x + "', y = '" + y + "', z = '" + z + "', yaw = '" + yaw + "', pitch = '"
                         + pitch + "', visible = " + visible + " WHERE warp_name = '" + warp + "';");
                 update.executeUpdate();
@@ -79,10 +79,10 @@ public class WarpQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteWarp");
             PreparedStatement sql = conn
-                    .prepareStatement("SELECT warp_name FROM warps WHERE warp_name = '" + warp + "';");
+                    .prepareStatement("SELECT warp_name FROM module_warp_warps WHERE warp_name = '" + warp + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
-                PreparedStatement update = conn.prepareStatement("DELETE FROM warps WHERE warp_name = '" + warp + "';");
+                PreparedStatement update = conn.prepareStatement("DELETE FROM module_warp_warps WHERE warp_name = '" + warp + "';");
                 update.executeUpdate();
                 update.close();
             }
@@ -102,7 +102,7 @@ public class WarpQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteWarp");
             PreparedStatement sql = conn.prepareStatement(
-                    "SELECT world, server, x, y, z, yaw, pitch FROM warps WHERE warp_name = '" + warp + "';");
+                    "SELECT world, server, x, y, z, yaw, pitch FROM module_warp_warps WHERE warp_name = '" + warp + "';");
             final ResultSet result = sql.executeQuery();
             if (result.next()) {
                 rlist.add(0, "empty");
@@ -132,7 +132,7 @@ public class WarpQuery {
         try {
             Connection conn = manager.getConnection("MineSuiteWarp");
             PreparedStatement sql = conn
-                    .prepareStatement("SELECT warp_name FROM warps WHERE warp_name = '" + warp + "';");
+                    .prepareStatement("SELECT warp_name FROM module_warp_warps WHERE warp_name = '" + warp + "';");
             ResultSet result = sql.executeQuery();
             if (result.next()) {
                 isWarp = true;
@@ -156,9 +156,9 @@ public class WarpQuery {
             Connection conn = manager.getConnection("MineSuiteWarp");
             PreparedStatement sel;
             if (visible == 0) {
-                sel = conn.prepareStatement("SELECT * FROM warps;");
+                sel = conn.prepareStatement("SELECT * FROM module_warp_warps;");
             } else {
-                sel = conn.prepareStatement("SELECT * FROM warps WHERE visible = '" + visible + "';");
+                sel = conn.prepareStatement("SELECT * FROM module_warp_warps WHERE visible = '" + visible + "';");
             }
 
             HashMap<String, UUID> list = new HashMap<String, UUID>();
@@ -168,8 +168,8 @@ public class WarpQuery {
                 while (result.next()) {
                     list.put(result.getString("warp_name"), UUID.fromString(result.getString("player")));
                 }
+                result.close();
             }
-            result.close();
             sel.close();
             manager.release("MineSuiteWarp", conn);
 
