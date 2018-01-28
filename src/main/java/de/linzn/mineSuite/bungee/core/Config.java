@@ -94,14 +94,24 @@ public class Config {
             config.set("jSocket.hostname", "localhost");
             config.set("jSocket.port", 9090);
 
-            final List<String> ForbittenCMD = new ArrayList<String>();
-            ForbittenCMD.add("g");
-            ForbittenCMD.add("s");
-            ForbittenCMD.add("l");
-            ForbittenCMD.add("gc");
-            ForbittenCMD.add("global");
-            ForbittenCMD.add("Global");
-            config.set("cmd.forbidden", ForbittenCMD);
+            final List<String> forbittenCMD = new ArrayList<>();
+            forbittenCMD.add("g");
+            forbittenCMD.add("s");
+            forbittenCMD.add("l");
+            forbittenCMD.add("gc");
+            forbittenCMD.add("global");
+            forbittenCMD.add("Global");
+            config.set("cmd.forbidden", forbittenCMD);
+
+            final List<String> broadcastMessages = new ArrayList<>();
+            broadcastMessages.add("vote");
+
+            config.set("broadcaster.time", 60);
+            config.set("broadcaster.messages", broadcastMessages);
+
+            config.set("broadcaster.vote.text", "Vote jetzt auf xxx");
+            config.set("broadcaster.vote.click", "https://vote.minegaming.de");
+            config.set("broadcaster.vote.hover", "Jetzt auf MG Voten!");
 
             saveConfig(config, Config.ConfigFile);
         }

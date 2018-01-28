@@ -16,7 +16,9 @@ import de.linzn.mineSuite.bungee.database.DataHashTable;
 import de.linzn.mineSuite.bungee.module.chat.socket.JServerChatOutput;
 import de.linzn.mineSuite.bungee.utils.ChatFormate;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
@@ -51,12 +53,13 @@ public class ChatManager {
 
     }
 
-    private static void broadcastChat(String text) {
+    public static void broadcastChat(String text) {
         String formattedText = ChatFormate.genBroadcastChat(text);
         for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-            BungeeManager.sendMessageToTarget(p, formattedText);
+            TextComponent vote = new TextComponent(ChatColor.translateAlternateColorCodes('&', text));
+            p.sendMessage(vote);
         }
-        ProxyServer.getInstance().getLogger().info(formattedText);
+        ProxyServer.getInstance().getLogger().info(text);
     }
 
     public static void privateMsgChat(String sender, String receiver, String text, String prefix) {
