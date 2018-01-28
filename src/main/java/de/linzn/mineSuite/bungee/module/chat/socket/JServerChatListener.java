@@ -14,6 +14,7 @@ package de.linzn.mineSuite.bungee.module.chat.socket;
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
 import de.linzn.mineSuite.bungee.module.chat.ChatManager;
+import de.linzn.mineSuite.bungee.module.chat.VoteInformer;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -107,6 +108,12 @@ public class JServerChatListener implements IncomingDataListener {
                 String text = in.readUTF();
                 String prefix = in.readUTF();
                 ChatManager.privateReplyChat(sender, text, prefix);
+                return;
+            }
+
+            if (subChannel.equals("client_chat-vote-informer")) {
+                String voter = in.readUTF();
+                VoteInformer.sendVoteInfoToUser(voter);
                 return;
             }
         } catch (IOException e1) {

@@ -13,10 +13,13 @@ package de.linzn.mineSuite.bungee;
 
 import de.linzn.mineSuite.bungee.core.AutoBroadcaster;
 import de.linzn.mineSuite.bungee.core.Config;
+import de.linzn.mineSuite.bungee.core.commands.HelpCommand;
+import de.linzn.mineSuite.bungee.core.commands.VoteCommand;
 import de.linzn.mineSuite.bungee.core.socket.MineJSocketServer;
 import de.linzn.mineSuite.bungee.database.mysql.setup.MySQLConnectionSetup;
 import de.linzn.mineSuite.bungee.listeners.ProxyServerListener;
 import de.linzn.mineSuite.bungee.module.ban.AutoUnbanChecker;
+import de.linzn.mineSuite.bungee.module.chat.VoteInformer;
 import de.linzn.mineSuite.bungee.module.portal.PortalManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
@@ -41,6 +44,8 @@ public class MineSuiteBungeePlugin extends Plugin {
         instance = this;
         this.proxy = ProxyServer.getInstance();
         this.proxy.getConsole().sendMessage(ChatColor.BLUE + "Loading MineSuite...");
+        this.getProxy().getPluginManager().registerCommand(this, new HelpCommand());
+        this.getProxy().getPluginManager().registerCommand(this, new VoteCommand());
         Config fileManager = new Config(this);
         fileManager.setDefaultConfig();
         if (MySQLConnectionSetup.create()) {
@@ -72,6 +77,7 @@ public class MineSuiteBungeePlugin extends Plugin {
         this.proxy.getScheduler().schedule(MineSuiteBungeePlugin.instance, new AutoUnbanChecker(), 2, 4, TimeUnit.MINUTES);
         int time = Config.getInt("broadcaster.time");
         this.proxy.getScheduler().schedule(MineSuiteBungeePlugin.instance, new AutoBroadcaster(), 60, time, TimeUnit.SECONDS);
+        this.proxy.getScheduler().schedule(MineSuiteBungeePlugin.instance, new VoteInformer(), 20, 300, TimeUnit.SECONDS);
         this.proxy.getConsole().sendMessage(ChatColor.BLUE + "Scheduler enabled!");
     }
 
