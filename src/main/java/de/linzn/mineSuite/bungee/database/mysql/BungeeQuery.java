@@ -42,6 +42,27 @@ public class BungeeQuery {
         return uuid;
     }
 
+    public static String getPlayerName(UUID playerUUID) {
+        MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
+        String playerName = null;
+
+        try {
+            Connection conn = manager.getConnection("MineSuiteBungee");
+            PreparedStatement sql = conn.prepareStatement("SELECT NAME FROM core_uuidcache WHERE UUID = '" + playerUUID + "';");
+            ResultSet result = sql.executeQuery();
+            if (result.next()) {
+                playerName = result.getString(1);
+            }
+            result.close();
+            sql.close();
+            manager.release("MineSuiteBungee", conn);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return playerName;
+    }
+
     public static boolean updateProfile(UUID uuid, String player, long time) {
         MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
         try {

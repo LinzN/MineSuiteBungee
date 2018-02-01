@@ -91,37 +91,34 @@ public class HomeManager {
             homename.add(s.getKey());
             servername.add(s.getValue());
         }
-        int pageNumb = page;
         int counter = 1;
         int rgCount = list.size();
-        if ((pageNumb * 6 + 1) > rgCount) {
+        if ((page * 6 + 1) > rgCount) {
             player.sendMessage("So viele Homeseiten besitzt du nicht!");
             return;
         }
         Collections.sort(homename);
         player.sendMessage("§aAuflistung all deiner Homes: ");
         player.sendMessage("§aServername?   §9Homename? ");
-        List<String> homelist = homename.subList(pageNumb * 6,
-                pageNumb * 6 + 6 > rgCount ? rgCount : pageNumb * 6 + 6);
-        for (String s : homelist) {
+        List<String> homeList = homename.subList(page * 6,
+                page * 6 + 6 > rgCount ? rgCount : page * 6 + 6);
+        for (String s : homeList) {
             player.sendMessage("§a" + list.get(s) + ": §9" + s);
             counter++;
         }
         if (counter >= 7) {
 
             int pageSeite;
-            if (pageNumb == 0) {
+            if (page == 0) {
                 pageSeite = 2;
             } else {
-                pageSeite = (pageNumb + 2);
+                pageSeite = (page + 2);
             }
             player.sendMessage("§aMehr auf Seite §e" + pageSeite + " §amit §e/homes " + pageSeite);
         }
 
-        if (counter <= 6 && pageNumb != 0) {
-            int pageSeite = (pageNumb);
-
-            player.sendMessage("§aZurück auf Seite §e" + pageSeite + "§a mit §e/homes " + pageSeite);
+        if (counter <= 6 && page != 0) {
+            player.sendMessage("§aZurück auf Seite §e" + (page) + "§a mit §e/homes " + (page));
         }
     }
 

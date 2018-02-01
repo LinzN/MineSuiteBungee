@@ -46,6 +46,12 @@ public class JServerWarpListener implements IncomingDataListener {
                 UUID playerUUID = UUID.fromString(in.readUTF());
                 WarpManager.removeWarp(warpName, playerUUID);
                 return;
+            } else if (subChannel.equals("client_warp_get-warps")) {
+                UUID playerUUID = UUID.fromString(in.readUTF());
+                int page = in.readInt();
+                int visible = in.readInt();
+                WarpManager.getWarpList(playerUUID, page, visible);
+                return;
             }
         } catch (IOException e1) {
             e1.printStackTrace();

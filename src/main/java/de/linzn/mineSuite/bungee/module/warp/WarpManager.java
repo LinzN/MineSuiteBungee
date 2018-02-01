@@ -12,6 +12,7 @@
 package de.linzn.mineSuite.bungee.module.warp;
 
 import de.linzn.mineSuite.bungee.core.BungeeManager;
+import de.linzn.mineSuite.bungee.database.mysql.BungeeQuery;
 import de.linzn.mineSuite.bungee.module.warp.mysql.WarpQuery;
 import de.linzn.mineSuite.bungee.module.warp.socket.JServerWarpOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
@@ -19,8 +20,7 @@ import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class WarpManager {
 
@@ -74,5 +74,48 @@ public class WarpManager {
         } else {
             BungeeManager.sendMessageToTarget(player, MessageDB.warp_NO_WARP);
         }
+    }
+
+    public static void getWarpList(UUID playerUUID, int page, int visible) {
+        HashMap<String, UUID> list = WarpQuery.getWarps(visible);
+        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
+        List<String> warpName = new ArrayList<>();
+
+        for (Map.Entry<String, UUID> s : list.entrySet()) {
+            warpName.add(s.getKey());
+        }
+
+        int rgCount = list.size();
+        if ((page * 6 + 1) > rgCount) {
+            player.sendMessage("So viele Seiten für Warps gibt es nicht!");
+            return;
+        }
+        Collections.sort(warpName);
+        player.sendMessage("§aDie Warpliste von MineGaming");
+        player.sendMessage("§9Warpname?   §dBesitzer? ");
+        int counter = 1;
+        List<String> warplist = warpName.subList(page * 6,
+                page * 6 + 6 > rgCount ? rgCount : page * 6 + 6);
+        for (String wl : warplist) {
+            player.sendMessage("§aWName: §9" + wl + " §agehört §d"
+                    + BungeeQuery.getPlayerName(list.get(wl)));
+            counter++;
+        }
+
+        if (counter >= 7) {
+
+            int pageSeite;
+            if (page == 0) {
+                pageSeite = 2;
+            } else {
+                pageSeite = (page + 2);
+            }
+            player.sendMessage("§aMehr auf Seite §e" + pageSeite + " §amit §e/warps " + pageSeite);
+        }
+
+        if (counter <= 6 && page != 0) {
+            player.sendMessage("§aZurück auf Seite §e" + (page) + "§a mit §e/warps " + (page));
+        }
+
     }
 }
