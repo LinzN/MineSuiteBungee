@@ -19,8 +19,7 @@ import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class HomeManager {
 
@@ -79,6 +78,51 @@ public class HomeManager {
             BungeeManager.sendMessageToTarget(player, MessageDB.home_NO_HOME);
         }
 
+    }
+
+    public static void getHomeList(UUID playerUUID, int page) {
+        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
+        HashMap<String, String> list = HomeQuery.getHomes(playerUUID);
+        List<String> homename = new ArrayList<>();
+        List<String> servername = new ArrayList<>();
+
+
+        for (Map.Entry<String, String> s : list.entrySet()) {
+            homename.add(s.getKey());
+            servername.add(s.getValue());
+        }
+        int pageNumb = page;
+        int counter = 1;
+        int rgCount = list.size();
+        if ((pageNumb * 6 + 1) > rgCount) {
+            player.sendMessage("So viele Homeseiten besitzt du nicht!");
+            return;
+        }
+        Collections.sort(homename);
+        player.sendMessage("§aAuflistung all deiner Homes: ");
+        player.sendMessage("§aServername?   §9Homename? ");
+        List<String> homelist = homename.subList(pageNumb * 6,
+                pageNumb * 6 + 6 > rgCount ? rgCount : pageNumb * 6 + 6);
+        for (String s : homelist) {
+            player.sendMessage("§a" + list.get(s) + ": §9" + s);
+            counter++;
+        }
+        if (counter >= 7) {
+
+            int pageSeite;
+            if (pageNumb == 0) {
+                pageSeite = 2;
+            } else {
+                pageSeite = (pageNumb + 2);
+            }
+            player.sendMessage("§aMehr auf Seite §e" + pageSeite + " §amit §e/homes " + pageSeite);
+        }
+
+        if (counter <= 6 && pageNumb != 0) {
+            int pageSeite = (pageNumb);
+
+            player.sendMessage("§aZurück auf Seite §e" + pageSeite + "§a mit §e/homes " + pageSeite);
+        }
     }
 
 }

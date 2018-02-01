@@ -46,6 +46,11 @@ public class JServerHomeListener implements IncomingDataListener {
                 UUID playerUUID = UUID.fromString(in.readUTF());
                 HomeManager.removeHome(homeName, playerUUID);
                 return;
+            } else if (subChannel.equals("client_home_get-homes")) {
+                UUID playerUUID = UUID.fromString(in.readUTF());
+                int homePage = in.readInt();
+                HomeManager.getHomeList(playerUUID, homePage);
+                return;
             }
 
         } catch (IOException e1) {
