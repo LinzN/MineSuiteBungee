@@ -17,6 +17,7 @@ import de.linzn.mineSuite.bungee.core.Config;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
 import de.linzn.mineSuite.bungee.database.mysql.BungeeQuery;
 import de.linzn.mineSuite.bungee.module.ban.BanManager;
+import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -41,11 +42,8 @@ public class ProxyServerListener implements Listener {
                     .broadcast(ChatColor.GOLD + event.getPlayer().getName() + " ist " + ChatColor.GREEN + "online");
         }
         BungeeManager.initPlayer(event.getPlayer());
-        event.getPlayer()
-                .sendMessage(ChatColor.GOLD + "*** Willkommen auf MineGaming! Wir wünschen dir viel Spaß! ***");
-        event.getPlayer().sendMessage(ChatColor.GREEN + "Unser Forum: " + ChatColor.GRAY + " www.MineGaming.de   -   "
-                + ChatColor.GREEN + "Votes:  " + ChatColor.GRAY + "vote.minegaming.de");
-        event.getPlayer().sendMessage(ChatColor.GOLD + "*********************************************************");
+        event.getPlayer().sendMessage(MessageDB.default_SERVER_MODT1);
+        event.getPlayer().sendMessage(MessageDB.default_SERVER_MODT2);
     }
 
     @EventHandler(priority = EventPriority.LOW)
@@ -67,7 +65,7 @@ public class ProxyServerListener implements Listener {
     @EventHandler(priority = 64)
     public void onLogin(final LoginEvent e) {
         if (e.getConnection().getVersion() < this.protocol_id) {
-            e.setCancelReason(ChatColor.RED + "Leider ist deine Minecraft Version zu alt. Erforderlich ist " + ChatColor.GREEN + "1.11.0 " + ChatColor.RED + " oder höher.");
+            e.setCancelReason(ChatColor.RED + "Leider ist deine Minecraft Version zu alt. Erforderlich ist " + ChatColor.GREEN + "1.11.X" + ChatColor.RED + " oder höher.");
             e.setCancelled(true);
             return;
         }

@@ -18,7 +18,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -149,10 +148,10 @@ public class WarpQuery {
         return isWarp;
     }
 
-    public static HashMap<String, UUID> getWarps(int visible) {
+    public static ArrayList<String[]> getWarps(int visible) {
         MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
+        ArrayList<String[]> list = new ArrayList<>();
         try {
-
             Connection conn = manager.getConnection("MineSuiteWarp");
             PreparedStatement sel;
             if (visible == 0) {
@@ -160,13 +159,13 @@ public class WarpQuery {
             } else {
                 sel = conn.prepareStatement("SELECT * FROM module_warp_warps WHERE visible = '" + visible + "';");
             }
-
-            HashMap<String, UUID> list = new HashMap<String, UUID>();
-
             ResultSet result = sel.executeQuery();
             if (result != null) {
                 while (result.next()) {
-                    list.put(result.getString("warp_name"), UUID.fromString(result.getString("player")));
+                    String[] warp = new String[3];
+                    warp[0] = result.getString("warp_name");
+                    warp[1] = result.getString("player");
+                    list.add(warp);
                 }
                 result.close();
             }

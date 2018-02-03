@@ -20,7 +20,9 @@ import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class WarpManager {
 
@@ -77,44 +79,39 @@ public class WarpManager {
     }
 
     public static void getWarpList(UUID playerUUID, int page, int visible) {
-        HashMap<String, UUID> list = WarpQuery.getWarps(visible);
+        ArrayList<String[]> list = WarpQuery.getWarps(visible);
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
-        List<String> warpName = new ArrayList<>();
 
-        for (Map.Entry<String, UUID> s : list.entrySet()) {
-            warpName.add(s.getKey());
-        }
-
-        int rgCount = list.size();
-        if ((page * 6 + 1) > rgCount) {
-            player.sendMessage("So viele Seiten für Warps gibt es nicht!");
+        int warpCount = list.size();
+        if ((page * 6 + 1) > warpCount) {
+            player.sendMessage(MessageDB.warp_WARP_PAGE_NO_WARPS);
             return;
         }
-        Collections.sort(warpName);
-        player.sendMessage("§aDie Warpliste von MineGaming");
-        player.sendMessage("§9Warpname?   §dBesitzer? ");
+
+        player.sendMessage(MessageDB.warp_WARP_PAGE_WARPS);
         int counter = 1;
-        List<String> warplist = warpName.subList(page * 6,
-                page * 6 + 6 > rgCount ? rgCount : page * 6 + 6);
-        for (String wl : warplist) {
-            player.sendMessage("§aWName: §9" + wl + " §agehört §d"
-                    + BungeeQuery.getPlayerName(list.get(wl)));
+        List<String[]> warplist = list.subList(page * 6,
+                page * 6 + 6 > warpCount ? warpCount : page * 6 + 6);
+        for (String[] wl : warplist) {
+            String warpName = wl[0];
+            UUID ownerUUID = UUID.fromString(wl[1]);
+            player.sendMessage(MessageDB.warp_WARP_PAGE_ENTRY.replace("{warp}", warpName).replace("{player}", BungeeQuery.getPlayerName(ownerUUID)));
             counter++;
         }
 
-        if (counter >= 7) {
+        if ((page * 6 + counter) < warpCount) {
 
-            int pageSeite;
+            int newPage;
             if (page == 0) {
-                pageSeite = 2;
+                newPage = 2;
             } else {
-                pageSeite = (page + 2);
+                newPage = (page + 2);
             }
-            player.sendMessage("§aMehr auf Seite §e" + pageSeite + " §amit §e/warps " + pageSeite);
+            player.sendMessage(MessageDB.default_LIST_MOREPAGE.replace("{page}", "" + newPage).replace("{command}", "/warps"));
         }
 
         if (counter <= 6 && page != 0) {
-            player.sendMessage("§aZurück auf Seite §e" + (page) + "§a mit §e/warps " + (page));
+            player.sendMessage(MessageDB.default_LIST_BACKPAGE.replace("{page}", "" + page).replace("{command}", "/warps"));
         }
 
     }

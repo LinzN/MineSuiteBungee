@@ -17,11 +17,17 @@ public class MessageDB {
 
 
     /* Default Values */
+    public static String default_SERVER_MODT1 = ChatColor.DARK_RED + "" + ChatColor.BOLD + "■■■ " + ChatColor.GREEN + "Willkommen auf MineGaming.de - Errichte deine Welt" + ChatColor.DARK_RED + "" + ChatColor.BOLD + " ■■■";
+    public static String default_SERVER_MODT2 = ChatColor.GREEN + "" + ChatColor.BOLD + "Hilfesystem: " + ChatColor.DARK_PURPLE + "/help" + "" + ChatColor.GREEN + "" + ChatColor.BOLD + " ■ ■ ■ ■ ■ ■ Forum: " + ChatColor.DARK_PURPLE + "www.MineGaming.de";
+
     public static String default_PLAYER_NOT_EXIST = ChatColor.RED + "" + ChatColor.BOLD + "Dieser Spieler wurde noch nie gesehen. Bist du dir bei dem Namen sicher?";
     public static String default_PLAYER_NOT_ONLINE = ChatColor.RED + "" + ChatColor.BOLD + "Dieser Spieler ist nicht online!";
     public static String default_TRY_TO_TELEPORT = ChatColor.GREEN + "" + ChatColor.BOLD + "Versuche zu teleportieren...";
     public static String default_NO_ACCESS = ChatColor.DARK_RED + "" + ChatColor.BOLD + "Keine Berechtigung!! Nur Shell benutzer!!!";
     public static String default_RELOADED = ChatColor.BLUE + "" + ChatColor.BOLD + "Konfiguration neu geladen!";
+    public static String default_LIST_MOREPAGE = ChatColor.GREEN + "" + ChatColor.BOLD + "Mehr auf Seite " + ChatColor.YELLOW + "{page}" + ChatColor.GREEN + "" + ChatColor.BOLD + " mit " + ChatColor.YELLOW + "{command} " + "{page}";
+    public static String default_LIST_BACKPAGE = ChatColor.GREEN + "" + ChatColor.BOLD + "Zurück auf Seite " + ChatColor.YELLOW + "{page}" + ChatColor.GREEN + "" + ChatColor.BOLD + " mit " + ChatColor.YELLOW + "{command} " + "{page}";
+
 
     /* Teleport Values*/
     public static String teleport_NOT_SET_SPAWNTYPE = ChatColor.RED + "" + ChatColor.BOLD + "Dieser Spawnpunkt konnte nicht gefunden werden :(";
@@ -66,6 +72,10 @@ public class MessageDB {
     public static String home_NEW_HOME = ChatColor.GREEN + "" + ChatColor.BOLD + "Du hast den Homepunkt {home} gesetzt!";
     public static String home_DELETE_HOME = ChatColor.GREEN + "" + ChatColor.BOLD + "Du hast den Homepunkt {home} entfernt!";
     public static String home_HOME_LIMIT = ChatColor.RED + "" + ChatColor.BOLD + "Du hast leider die maximale Anzahl deiner Homepunkte erreicht!";
+    public static String home_HOME_PAGE_NO_HOMES = ChatColor.RED + "" + ChatColor.BOLD + "Es wurden hier keine Home-Punkte gefunden!";
+    public static String home_HOME_PAGE_HOMES = ChatColor.GREEN + "" + ChatColor.BOLD + "Auflistung deiner Home-Punkte: ";
+    public static String home_HOME_PAGE_ENTRY = ChatColor.GREEN + "" + ChatColor.BOLD + "Home-Punkt: " + ChatColor.YELLOW + "{home}" + ChatColor.GREEN + "" + ChatColor.BOLD + " Server: " + ChatColor.YELLOW + "{server}";
+
 
     /* Portal Values */
     public static String portal_PORTAL_NO_TYPE = ChatColor.RED + "" + ChatColor.BOLD + "Das ist keine gültiger Portaltyp! Gültig: Warp oder Server";
@@ -84,9 +94,12 @@ public class MessageDB {
     public static String chat_HAS_VOTER_VOTE_LINK = "https://vote.minegaming.de";
     public static String chat_HAS_VOTER_VOTE_HOVER = "Jetzt auf Vote.MineGaming.de voten :D";
 
-    /* Portal Values */
+    /* Warp Values */
     public static String warp_NO_WARP = ChatColor.RED + "" + ChatColor.BOLD + "Dieser Warppunkt existiert nicht.";
     public static String warp_REFRESH_WARP = ChatColor.GREEN + "" + ChatColor.BOLD + "Du den Warppunkt {warp} aktualisiert!";
     public static String warp_NEW_WARP = ChatColor.GREEN + "" + ChatColor.BOLD + "Du hast den Warppunkt {warp} gesetzt!";
     public static String warp_DELETE_WARP = ChatColor.GREEN + "" + ChatColor.BOLD + "Du hast den Warppunkt {warp} entfernt!";
+    public static String warp_WARP_PAGE_NO_WARPS = ChatColor.RED + "" + ChatColor.BOLD + "Es wurden hier keine Warp-Punkte gefunden!";
+    public static String warp_WARP_PAGE_WARPS = ChatColor.GREEN + "" + ChatColor.BOLD + "Auflistung der Server Warp-Punkte ";
+    public static String warp_WARP_PAGE_ENTRY = ChatColor.GREEN + "" + ChatColor.BOLD + "Warp-Punkt: " + ChatColor.YELLOW + "{warp}" + ChatColor.GREEN + "" + ChatColor.BOLD + " Ersteller: " + ChatColor.YELLOW + "{player}";
 }

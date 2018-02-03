@@ -18,7 +18,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -132,9 +131,9 @@ public class HomeQuery {
         return ishome;
     }
 
-    public static HashMap<String, String> getHomes(UUID uuid) {
+    public static ArrayList<String[]> getHomes(UUID uuid) {
         MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
-        HashMap<String, String> list = new HashMap<>();
+        ArrayList<String[]> list = new ArrayList<>();
         try {
             Connection conn = manager.getConnection("MineSuiteHome");
             PreparedStatement sel = conn
@@ -142,7 +141,10 @@ public class HomeQuery {
             ResultSet result = sel.executeQuery();
             if (result != null) {
                 while (result.next()) {
-                    list.put(result.getString("home_name"), result.getString("server"));
+                    String[] homeData = new String[3];
+                    homeData[0] = result.getString("home_name");
+                    homeData[1] = result.getString("server");
+                    list.add(homeData);
                 }
                 result.close();
             }

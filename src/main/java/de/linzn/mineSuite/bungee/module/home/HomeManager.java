@@ -19,7 +19,9 @@ import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class HomeManager {
 
@@ -82,43 +84,32 @@ public class HomeManager {
 
     public static void getHomeList(UUID playerUUID, int page) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
-        HashMap<String, String> list = HomeQuery.getHomes(playerUUID);
-        List<String> homename = new ArrayList<>();
-        List<String> servername = new ArrayList<>();
+        ArrayList<String[]> list = HomeQuery.getHomes(playerUUID);
 
-
-        for (Map.Entry<String, String> s : list.entrySet()) {
-            homename.add(s.getKey());
-            servername.add(s.getValue());
-        }
-        int counter = 1;
-        int rgCount = list.size();
-        if ((page * 6 + 1) > rgCount) {
-            player.sendMessage("So viele Homeseiten besitzt du nicht!");
+        int counter = 0;
+        int homeCount = list.size();
+        if ((page * 6 + 1) > homeCount) {
+            player.sendMessage(MessageDB.home_HOME_PAGE_NO_HOMES);
             return;
         }
-        Collections.sort(homename);
-        player.sendMessage("§aAuflistung all deiner Homes: ");
-        player.sendMessage("§aServername?   §9Homename? ");
-        List<String> homeList = homename.subList(page * 6,
-                page * 6 + 6 > rgCount ? rgCount : page * 6 + 6);
-        for (String s : homeList) {
-            player.sendMessage("§a" + list.get(s) + ": §9" + s);
+        player.sendMessage(MessageDB.home_HOME_PAGE_HOMES);
+        List<String[]> homeList = list.subList(page * 6, page * 6 + 6 > homeCount ? homeCount : page * 6 + 6);
+        for (String[] home : homeList) {
+            player.sendMessage(MessageDB.home_HOME_PAGE_ENTRY.replace("{home}", home[0]).replace("{server}", home[1]));
             counter++;
         }
-        if (counter >= 7) {
-
-            int pageSeite;
+        if ((page * 6 + counter) < homeCount) {
+            int newPage;
             if (page == 0) {
-                pageSeite = 2;
+                newPage = 2;
             } else {
-                pageSeite = (page + 2);
+                newPage = (page + 2);
             }
-            player.sendMessage("§aMehr auf Seite §e" + pageSeite + " §amit §e/homes " + pageSeite);
+            player.sendMessage(MessageDB.default_LIST_MOREPAGE.replace("{page}", "" + newPage).replace("{command}", "/homes"));
         }
 
         if (counter <= 6 && page != 0) {
-            player.sendMessage("§aZurück auf Seite §e" + (page) + "§a mit §e/homes " + (page));
+            player.sendMessage(MessageDB.default_LIST_BACKPAGE.replace("{page}", "" + page).replace("{command}", "/homes"));
         }
     }
 
