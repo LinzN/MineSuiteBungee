@@ -20,6 +20,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Config {
@@ -38,6 +39,23 @@ public class Config {
             e.printStackTrace();
         }
     }
+
+    public static ArrayList<String[]> getKeyValues(String mainValue) {
+        ArrayList<String[]> list = new ArrayList<>();
+        Collection<String> set = ConfigConfiguration.getSection(mainValue).getKeys();
+        for (String selection : set) {
+            String[] broadCast = new String[3];
+            boolean enabled = ConfigConfiguration.getBoolean(mainValue + "." + selection + ".enabled");
+            if (enabled) {
+                broadCast[0] = getString(mainValue + "." + selection + ".text");
+                broadCast[1] = getString(mainValue + "." + selection + ".click");
+                broadCast[2] = getString(mainValue + "." + selection + ".hover");
+                list.add(broadCast);
+            }
+        }
+        return list;
+    }
+
 
     public static Integer getInt(final String path) {
         final Configuration config = Config.ConfigConfiguration;
@@ -63,6 +81,10 @@ public class Config {
         return null;
     }
 
+    public void reloadConfig() {
+        setDefaultConfig();
+    }
+
     public void setDefaultConfig() {
         if (!this.instance.getDataFolder().exists()) {
             this.instance.getDataFolder().mkdir();
@@ -82,7 +104,7 @@ public class Config {
             e2.printStackTrace();
         }
 
-        final Configuration config = Config.ConfigConfiguration;
+        Configuration config = Config.ConfigConfiguration;
         if (config.get("mysql.host") == null) {
             config.set("mysql.host", "localhost");
             config.set("mysql.port", 3306);
@@ -103,15 +125,12 @@ public class Config {
             forbittenCMD.add("Global");
             config.set("cmd.forbidden", forbittenCMD);
 
-            final List<String> broadcastMessages = new ArrayList<>();
-            broadcastMessages.add("vote");
 
             config.set("broadcaster.time", 60);
-            config.set("broadcaster.messages", broadcastMessages);
-
-            config.set("broadcaster.vote.text", "Vote jetzt auf xxx");
-            config.set("broadcaster.vote.click", "https://vote.minegaming.de");
-            config.set("broadcaster.vote.hover", "Jetzt auf MG Voten!");
+            config.set("broadcaster.messages.vote.enabled", true);
+            config.set("broadcaster.messages.vote.text", "Vote jetzt auf xxx");
+            config.set("broadcaster.messages.vote.click", "https://vote.minegaming.de");
+            config.set("broadcaster.messages.vote.hover", "Jetzt auf MG Voten!");
 
             saveConfig(config, Config.ConfigFile);
         }

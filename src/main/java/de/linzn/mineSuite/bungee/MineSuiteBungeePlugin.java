@@ -14,6 +14,7 @@ package de.linzn.mineSuite.bungee;
 import de.linzn.mineSuite.bungee.core.AutoBroadcaster;
 import de.linzn.mineSuite.bungee.core.Config;
 import de.linzn.mineSuite.bungee.core.commands.HelpCommand;
+import de.linzn.mineSuite.bungee.core.commands.ReloadCommand;
 import de.linzn.mineSuite.bungee.core.commands.VoteCommand;
 import de.linzn.mineSuite.bungee.core.socket.MineJSocketServer;
 import de.linzn.mineSuite.bungee.database.mysql.setup.MySQLConnectionSetup;
@@ -33,6 +34,7 @@ public class MineSuiteBungeePlugin extends Plugin {
     public ProxyServer proxy;
 
     private MineJSocketServer mineJSocketServer;
+    public Config fileManager;
 
     public static MineSuiteBungeePlugin getInstance() {
         return instance;
@@ -43,15 +45,17 @@ public class MineSuiteBungeePlugin extends Plugin {
     public void onEnable() {
         instance = this;
         this.proxy = ProxyServer.getInstance();
-        this.proxy.getConsole().sendMessage(ChatColor.BLUE + "Loading MineSuite...");
+        this.getLogger().info(ChatColor.BLUE + "Create MineSuite Bungee instance");
         this.getProxy().getPluginManager().registerCommand(this, new HelpCommand());
         this.getProxy().getPluginManager().registerCommand(this, new VoteCommand());
-        Config fileManager = new Config(this);
+        this.getProxy().getPluginManager().registerCommand(this, new ReloadCommand());
+        this.getLogger().info(ChatColor.BLUE + "Commands added");
+        fileManager = new Config(this);
         fileManager.setDefaultConfig();
         if (MySQLConnectionSetup.create()) {
+            this.getLogger().info(ChatColor.BLUE + "Database connection successfully");
             this.registerListeners();
             this.startScheduler();
-            this.proxy.getConsole().sendMessage(ChatColor.BLUE + "Finish!");
             this.mineJSocketServer = new MineJSocketServer();
             this.mineJSocketServer.openServer();
             PortalManager.loadPortalsToHash();
@@ -69,6 +73,7 @@ public class MineSuiteBungeePlugin extends Plugin {
     }
 
     private void registerListeners() {
+        this.getLogger().info(ChatColor.BLUE + "Register Listeners");
         this.proxy.getPluginManager().registerListener(this, new ProxyServerListener());
     }
 
@@ -78,7 +83,7 @@ public class MineSuiteBungeePlugin extends Plugin {
         int time = Config.getInt("broadcaster.time");
         this.proxy.getScheduler().schedule(MineSuiteBungeePlugin.instance, new AutoBroadcaster(), 60, time, TimeUnit.SECONDS);
         this.proxy.getScheduler().schedule(MineSuiteBungeePlugin.instance, new VoteInformer(), 20, 300, TimeUnit.SECONDS);
-        this.proxy.getConsole().sendMessage(ChatColor.BLUE + "Scheduler enabled!");
+        this.getLogger().info(ChatColor.BLUE + "Scheduler enabled!");
     }
 
 }

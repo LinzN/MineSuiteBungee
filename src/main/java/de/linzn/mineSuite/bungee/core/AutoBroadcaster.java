@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 public class AutoBroadcaster implements Runnable {
+    private static int lastIndex;
 
 
     private static void broadcast(String text, String onClick, String onHover) {
@@ -41,13 +42,14 @@ public class AutoBroadcaster implements Runnable {
     }
 
     public void run() {
-        List<String> broadcastList = Config.getStringList("broadcaster.messages");
-        int index = new Random().nextInt(broadcastList.size());
-        String entry = broadcastList.get(index);
-        String text = Config.getString("broadcaster." + entry + ".text");
-        String click = Config.getString("broadcaster." + entry + ".click");
-        String hover = Config.getString("broadcaster." + entry + ".hover");
-        broadcast(text, click, hover);
+        List<String[]> broadcastList = Config.getKeyValues("broadcaster.messages");
+        int index;
+        do {
+            index = new Random().nextInt(broadcastList.size());
+        } while (lastIndex == index);
+        String[] broadCast = broadcastList.get(index);
+        broadcast(broadCast[0], broadCast[1], broadCast[2]);
+        lastIndex = index;
     }
 
 }

@@ -20,6 +20,8 @@ public class MessageDB {
     public static String default_PLAYER_NOT_EXIST = ChatColor.RED + "" + ChatColor.BOLD + "Dieser Spieler wurde noch nie gesehen. Bist du dir bei dem Namen sicher?";
     public static String default_PLAYER_NOT_ONLINE = ChatColor.RED + "" + ChatColor.BOLD + "Dieser Spieler ist nicht online!";
     public static String default_TRY_TO_TELEPORT = ChatColor.GREEN + "" + ChatColor.BOLD + "Versuche zu teleportieren...";
+    public static String default_NO_ACCESS = ChatColor.DARK_RED + "" + ChatColor.BOLD + "Keine Berechtigung!! Nur Shell benutzer!!!";
+    public static String default_RELOADED = ChatColor.BLUE + "" + ChatColor.BOLD + "Konfiguration neu geladen!";
 
     /* Teleport Values*/
     public static String teleport_NOT_SET_SPAWNTYPE = ChatColor.RED + "" + ChatColor.BOLD + "Dieser Spawnpunkt konnte nicht gefunden werden :(";
