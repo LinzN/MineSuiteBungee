@@ -143,5 +143,12 @@ public class ProxyServerListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onServerKickLogin(ServerKickEvent event) {
+        if (event.getState() == ServerKickEvent.State.CONNECTING && event.getPlayer().getServer() != null) {
+            event.getPlayer().sendMessage(MessageDB.teleport_SERVER_ERROR);
+            JServerBungeeOutput.cancelTeleport(event.getPlayer().getServer().getInfo().getName(), event.getPlayer().getUniqueId(), event.getKickedFrom().getName());
+        }
+    }
 
 }
