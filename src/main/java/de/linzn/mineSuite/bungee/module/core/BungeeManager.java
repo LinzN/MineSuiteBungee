@@ -110,7 +110,7 @@ public class BungeeManager {
     }
 
     public static boolean waitForReady(String server, UUID playerUUID, String locationServer) {
-        MineSuiteBungeePlugin.getInstance().getLogger().info("Request for confirm task");
+        MineSuiteBungeePlugin.getInstance().getLogger().info("Request confirm callback for " + playerUUID.toString() + " on server " + server);
         DataHashTable.readyToTeleport.put(playerUUID, new AtomicBoolean(false));
         JServerBungeeOutput.requestTeleportConfirm(server, playerUUID, locationServer);
         int counter = 0;

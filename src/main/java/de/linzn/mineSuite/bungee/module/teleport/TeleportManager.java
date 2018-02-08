@@ -31,6 +31,28 @@ public class TeleportManager {
     private static HashMap<ProxiedPlayer, ProxiedPlayer> pendingTeleportsTPAHere = new HashMap<>();
     private static int expireTime = 10;
 
+    public static void teleportToLocation(UUID playerUUID, Location location) {
+        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
+        if (player == null) {
+            ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
+            return;
+        }
+
+        if (ProxyServer.getInstance().getServerInfo(location.getServer()) == null) {
+            MineSuiteBungeePlugin.getInstance().getLogger().severe("Server is invalid");
+            player.sendMessage(MessageDB.teleport_SERVER_ERROR);
+            return;
+        }
+        if (!BungeeManager.waitForReady(player.getServer().getInfo().getName(), playerUUID, location.getServer())) {
+            ProxyServer.getInstance().getLogger().severe("[MineSuite] " + player.getName() + " teleport break?");
+            return;
+        }
+
+        BungeeManager.sendMessageToTarget(player, MessageDB.default_TRY_TO_TELEPORT);
+        JServerTeleportOutput.teleportToLocation(player, location);
+        ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " has been teleported with teleport system.");
+        ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+    }
 
     public static void teleportToSpawnType(UUID playerUUID, String spawnType, String serverName, String worldName) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);

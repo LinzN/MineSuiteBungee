@@ -65,16 +65,10 @@ public class JServerTeleportListener implements IncomingDataListener {
                 }
                 case "client_teleport_teleport-location": {
                     UUID playerUUID = UUID.fromString(in.readUTF());
-                    ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
-                    if (player == null) {
-                        ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
-                        return;
-                    }
+
                     Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(),
                             in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
-                    JServerTeleportOutput.teleportToLocation(player, location);
-                    ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " has been teleported with teleport system.");
-                    ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+                    TeleportManager.teleportToLocation(playerUUID, location);
                     break;
                 }
                 case "client_teleport_set-dead-location": {

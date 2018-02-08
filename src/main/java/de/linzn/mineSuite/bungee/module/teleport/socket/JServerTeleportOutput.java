@@ -80,8 +80,14 @@ public class JServerTeleportOutput {
     }
 
     public static void teleportToPlayer(ProxiedPlayer player, ProxiedPlayer target) {
+        Callback<Boolean> callBack = (aBoolean, throwable) -> {
+            if (!aBoolean) {
+                player.sendMessage(MessageDB.teleport_SERVER_ERROR);
+                JServerBungeeOutput.cancelTeleport(player.getServer().getInfo().getName(), player.getUniqueId(), player.getServer().getInfo().getName());
+            }
+        };
         if (player.getServer().getInfo() != target.getServer().getInfo()) {
-            player.connect(target.getServer().getInfo());
+            player.connect(target.getServer().getInfo(), callBack);
         }
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
