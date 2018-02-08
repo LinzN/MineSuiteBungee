@@ -9,7 +9,7 @@
  *
  */
 
-package de.linzn.mineSuite.bungee.listeners;
+package de.linzn.mineSuite.bungee.module.core.socket;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 

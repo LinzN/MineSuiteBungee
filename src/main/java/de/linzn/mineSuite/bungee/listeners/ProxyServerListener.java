@@ -12,11 +12,12 @@
 package de.linzn.mineSuite.bungee.listeners;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
-import de.linzn.mineSuite.bungee.core.BungeeManager;
 import de.linzn.mineSuite.bungee.core.Config;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
 import de.linzn.mineSuite.bungee.database.mysql.BungeeQuery;
 import de.linzn.mineSuite.bungee.module.ban.BanManager;
+import de.linzn.mineSuite.bungee.module.core.BungeeManager;
+import de.linzn.mineSuite.bungee.module.core.socket.JServerBungeeOutput;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;

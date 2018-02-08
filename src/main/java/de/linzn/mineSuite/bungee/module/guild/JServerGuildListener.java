@@ -13,8 +13,8 @@ package de.linzn.mineSuite.bungee.module.guild;
 
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
-import de.linzn.mineSuite.bungee.core.BungeeManager;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
+import de.linzn.mineSuite.bungee.module.core.BungeeManager;
 import de.linzn.mineSuite.bungee.utils.Location;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;

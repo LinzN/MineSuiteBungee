@@ -11,11 +11,11 @@
 
 package de.linzn.mineSuite.bungee.module.ban;
 
-import de.linzn.mineSuite.bungee.core.BungeeManager;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
 import de.linzn.mineSuite.bungee.database.mysql.BungeeQuery;
 import de.linzn.mineSuite.bungee.module.ban.mysql.BanQuery;
 import de.linzn.mineSuite.bungee.module.ban.socket.JServerBanOutput;
+import de.linzn.mineSuite.bungee.module.core.BungeeManager;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;

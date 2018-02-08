@@ -9,13 +9,13 @@
  *
  */
 
-package de.linzn.mineSuite.bungee.core;
+package de.linzn.mineSuite.bungee.module.core;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
-import de.linzn.mineSuite.bungee.listeners.JServerBungeeOutput;
 import de.linzn.mineSuite.bungee.module.ban.BanManager;
 import de.linzn.mineSuite.bungee.module.ban.mysql.BanQuery;
+import de.linzn.mineSuite.bungee.module.core.socket.JServerBungeeOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;

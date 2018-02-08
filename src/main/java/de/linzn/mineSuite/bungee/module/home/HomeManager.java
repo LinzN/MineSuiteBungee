@@ -12,7 +12,7 @@
 package de.linzn.mineSuite.bungee.module.home;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
-import de.linzn.mineSuite.bungee.core.BungeeManager;
+import de.linzn.mineSuite.bungee.module.core.BungeeManager;
 import de.linzn.mineSuite.bungee.module.home.mysql.HomeQuery;
 import de.linzn.mineSuite.bungee.module.teleport.socket.JServerTeleportOutput;
 import de.linzn.mineSuite.bungee.utils.Location;

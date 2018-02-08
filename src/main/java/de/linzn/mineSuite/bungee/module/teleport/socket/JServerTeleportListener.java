@@ -12,7 +12,7 @@
 package de.linzn.mineSuite.bungee.module.teleport.socket;
 
 import de.linzn.jSocket.core.IncomingDataListener;
-import de.linzn.mineSuite.bungee.core.BungeeManager;
+import de.linzn.mineSuite.bungee.module.core.BungeeManager;
 import de.linzn.mineSuite.bungee.module.teleport.TeleportManager;
 import de.linzn.mineSuite.bungee.utils.Location;
 import net.md_5.bungee.api.ProxyServer;

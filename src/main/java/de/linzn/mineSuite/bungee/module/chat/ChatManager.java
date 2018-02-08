@@ -11,9 +11,9 @@
 
 package de.linzn.mineSuite.bungee.module.chat;
 
-import de.linzn.mineSuite.bungee.core.BungeeManager;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
 import de.linzn.mineSuite.bungee.module.chat.socket.JServerChatOutput;
+import de.linzn.mineSuite.bungee.module.core.BungeeManager;
 import de.linzn.mineSuite.bungee.utils.ChatFormate;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ChatColor;
