@@ -30,45 +30,49 @@ public class JServerPortalListener implements IncomingDataListener {
         try {
             subChannel = in.readUTF();
 
-            if (subChannel.equals("client_portal_create-portal")) {
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                /* Portal target destination and type */
-                String portalName = in.readUTF();
-                String portalType = in.readUTF();
-                String portalDestination = in.readUTF();
-                String fillType = in.readUTF();
-                /* Location of the portal */
-                String serverName = in.readUTF();
-                String worldName = in.readUTF();
-                /* Cords of min side minX, minY, minZ */
-                double minX = in.readDouble();
-                double minY = in.readDouble();
-                double minZ = in.readDouble();
-                /* Cords of min side maxX, maxY, maxZ */
-                double maxX = in.readDouble();
-                double maxY = in.readDouble();
-                double maxZ = in.readDouble();
-                Portal portal = new Portal(portalName, serverName, portalType, portalDestination, fillType, worldName, minX, minY, minZ, maxX, maxY, maxZ);
-                PortalManager.setPortal(playerUUID, portal);
-            }
+            switch (subChannel) {
+                case "client_portal_create-portal": {
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    /* Portal target destination and type */
+                    String portalName = in.readUTF();
+                    String portalType = in.readUTF();
+                    String portalDestination = in.readUTF();
+                    String fillType = in.readUTF();
+                    /* Location of the portal */
+                    String serverName = in.readUTF();
+                    String worldName = in.readUTF();
+                    /* Cords of min side minX, minY, minZ */
+                    double minX = in.readDouble();
+                    double minY = in.readDouble();
+                    double minZ = in.readDouble();
+                    /* Cords of min side maxX, maxY, maxZ */
+                    double maxX = in.readDouble();
+                    double maxY = in.readDouble();
+                    double maxZ = in.readDouble();
+                    Portal portal = new Portal(portalName, serverName, portalType, portalDestination, fillType, worldName, minX, minY, minZ, maxX, maxY, maxZ);
+                    PortalManager.setPortal(playerUUID, portal);
+                    break;
+                }
 
-            if (subChannel.equals("client_portal_remove-portal")) {
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                String portalName = in.readUTF();
-                String serverName = in.readUTF();
-                PortalManager.unsetPortal(playerUUID, portalName, serverName);
-            }
-
-            if (subChannel.equals("client_portal_request-portals")) {
-                String serverName = in.readUTF();
-                PortalManager.processingPortalRequest(serverName);
-            }
-
-            if (subChannel.equals("client_portal_use-portal")) {
-                String portalName = in.readUTF();
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                PortalManager.playerUsePortal(portalName, playerUUID);
-                //todo some stuff
+                case "client_portal_remove-portal": {
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    String portalName = in.readUTF();
+                    String serverName = in.readUTF();
+                    PortalManager.unsetPortal(playerUUID, portalName, serverName);
+                    break;
+                }
+                case "client_portal_request-portals": {
+                    String serverName = in.readUTF();
+                    PortalManager.processingPortalRequest(serverName);
+                    break;
+                }
+                case "client_portal_use-portal": {
+                    String portalName = in.readUTF();
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    PortalManager.playerUsePortal(portalName, playerUUID);
+                    //todo some stuff
+                    break;
+                }
             }
         } catch (IOException e1) {
             e1.printStackTrace();

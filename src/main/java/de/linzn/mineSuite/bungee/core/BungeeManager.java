@@ -13,15 +13,18 @@ package de.linzn.mineSuite.bungee.core;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
+import de.linzn.mineSuite.bungee.listeners.JServerBungeeOutput;
 import de.linzn.mineSuite.bungee.module.ban.BanManager;
 import de.linzn.mineSuite.bungee.module.ban.mysql.BanQuery;
 import de.linzn.mineSuite.bungee.utils.Location;
+import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BungeeManager {
 
@@ -73,6 +76,7 @@ public class BungeeManager {
             DataHashTable.isafk.remove(player.getUniqueId());
             DataHashTable.socialspy.remove(player.getUniqueId());
             DataHashTable.session.remove(player.getUniqueId());
+            DataHashTable.readyToTeleport.remove(player.getUniqueId());
             removeDeathBackLocation(player);
         });
     }
@@ -103,6 +107,33 @@ public class BungeeManager {
 
     public static Location getDeathBackLocation(ProxiedPlayer player) {
         return DataHashTable.deathBackLocation.get(player.getUniqueId());
+    }
+
+    public static boolean waitForReady(String server, UUID playerUUID, String locationServer) {
+        MineSuiteBungeePlugin.getInstance().getLogger().info("Request for confirm task");
+        DataHashTable.readyToTeleport.put(playerUUID, new AtomicBoolean(false));
+        JServerBungeeOutput.requestTeleportConfirm(server, playerUUID, locationServer);
+        int counter = 0;
+        while (!DataHashTable.readyToTeleport.get(playerUUID).get()) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ignored) {
+            }
+            if (counter >= 100) { /* 5000 ms cancel task */
+                DataHashTable.readyToTeleport.remove(playerUUID);
+                JServerBungeeOutput.cancelTeleport(server, playerUUID, locationServer);
+                ProxiedPlayer p = ProxyServer.getInstance().getPlayer(playerUUID);
+                if (p != null) {
+                    p.sendMessage(MessageDB.teleport_CONFIRM_ERROR);
+                }
+                MineSuiteBungeePlugin.getInstance().getLogger().info("Confirm error time");
+                return false;
+            }
+            counter++;
+        }
+        MineSuiteBungeePlugin.getInstance().getLogger().info("Confirm success");
+        DataHashTable.readyToTeleport.remove(playerUUID);
+        return true;
     }
 
 }

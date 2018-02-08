@@ -32,126 +32,114 @@ public class JServerTeleportListener implements IncomingDataListener {
         try {
             subChannel = in.readUTF();
 
-            if (subChannel.equals("client_teleport-set-spawntype")) {
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                String spawnType = in.readUTF();
-                String serverName = in.readUTF();
-                String worldName = in.readUTF();
-                double x = in.readDouble();
-                double y = in.readDouble();
-                double z = in.readDouble();
-                float yaw = in.readFloat();
-                float pitch = in.readFloat();
-                Location location = new Location(serverName, worldName, x, y, z, yaw, pitch);
-                TeleportManager.setSpawnType(playerUUID, spawnType, location);
-                return;
-            }
-
-            if (subChannel.equals("client_teleport-unset-spawntype")) {
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                String spawnType = in.readUTF();
-                String serverName = in.readUTF();
-                String worldName = in.readUTF();
-                TeleportManager.unsetSpawnType(playerUUID, spawnType, serverName, worldName);
-                return;
-            }
-
-            if (subChannel.equals("client_teleport-teleport-to-spawntype")) {
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                String spawnType = in.readUTF();
-                String serverName = in.readUTF();
-                String worldName = in.readUTF();
-                TeleportManager.teleportToSpawnType(playerUUID, spawnType, serverName, worldName);
-                return;
-            }
-
-
-            if (subChannel.equals("client_teleport_teleport-location")) {
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
-                if (player == null) {
-                    ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
-                    return;
+            switch (subChannel) {
+                case "client_teleport-set-spawntype": {
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    String spawnType = in.readUTF();
+                    String serverName = in.readUTF();
+                    String worldName = in.readUTF();
+                    double x = in.readDouble();
+                    double y = in.readDouble();
+                    double z = in.readDouble();
+                    float yaw = in.readFloat();
+                    float pitch = in.readFloat();
+                    Location location = new Location(serverName, worldName, x, y, z, yaw, pitch);
+                    TeleportManager.setSpawnType(playerUUID, spawnType, location);
+                    break;
                 }
-                Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(),
-                        in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
-                JServerTeleportOutput.teleportToLocation(player, location);
-                ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " has been teleported with teleport system.");
-                ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
-                return;
-            }
-
-            if (subChannel.equals("client_teleport_set-dead-location")) {
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
-                if (player == null) {
-                    ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " task has been canceled.");
-                    return;
+                case "client_teleport-unset-spawntype": {
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    String spawnType = in.readUTF();
+                    String serverName = in.readUTF();
+                    String worldName = in.readUTF();
+                    TeleportManager.unsetSpawnType(playerUUID, spawnType, serverName, worldName);
+                    break;
                 }
-                Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(),
-                        in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
-
-                TeleportManager.setPlayersDeathBackLocation(BungeeManager.getPlayer(player.getName()), location);
-                return;
-            }
-
-            if (subChannel.equals("client_teleport_teleport-to-player")) {
-                TeleportManager.teleportPlayerToPlayer(in.readUTF(), in.readUTF(), in.readBoolean(), in.readBoolean());
-
-                return;
-            }
-            if (subChannel.equals("client_teleport_teleport-to-player-uuid")) {
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                UUID targetUUID = UUID.fromString(in.readUTF());
-                TeleportManager.teleportPlayerToPlayerUUID(playerUUID, targetUUID, in.readBoolean(), in.readBoolean());
-
-                return;
-            }
-
-            if (subChannel.equals("client_teleport_tpa-request-here")) {
-                TeleportManager.requestPlayerTeleportToYou(in.readUTF(), in.readUTF());
-                return;
-            }
-
-            if (subChannel.equals("client_teleport_tpa-to-request")) {
-                TeleportManager.requestToTeleportToPlayer(in.readUTF(), in.readUTF());
-                return;
-            }
-            if (subChannel.equals("client_teleport_tpa-accept")) {
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
-                if (player == null) {
-                    ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " tpa task has been canceled.");
-                    return;
+                case "client_teleport-teleport-to-spawntype": {
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    String spawnType = in.readUTF();
+                    String serverName = in.readUTF();
+                    String worldName = in.readUTF();
+                    TeleportManager.teleportToSpawnType(playerUUID, spawnType, serverName, worldName);
+                    break;
                 }
-                TeleportManager.acceptTeleportRequest(player);
-                return;
-            }
-            if (subChannel.equals("client_teleport_tpa-deny")) {
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
-                if (player == null) {
-                    ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " tpa task has been canceled.");
-                    return;
+                case "client_teleport_teleport-location": {
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
+                    if (player == null) {
+                        ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
+                        return;
+                    }
+                    Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(),
+                            in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
+                    JServerTeleportOutput.teleportToLocation(player, location);
+                    ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " has been teleported with teleport system.");
+                    ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+                    break;
                 }
-                TeleportManager.denyTeleportRequest(player);
-                return;
-            }
+                case "client_teleport_set-dead-location": {
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
+                    if (player == null) {
+                        ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " task has been canceled.");
+                        return;
+                    }
+                    Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(),
+                            in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
 
-            if (subChannel.equals("client_teleport_teleport-all")) {
-                TeleportManager.tpAll(in.readUTF(), in.readUTF());
-                return;
-            }
-
-            if (subChannel.equals("client_teleport_teleport-player-back")) {
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
-                if (player == null) {
-                    ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
-                    return;
+                    TeleportManager.setPlayersDeathBackLocation(BungeeManager.getPlayer(player.getName()), location);
+                    break;
                 }
-                TeleportManager.sendPlayerToLastBack(player);
-                return;
+                case "client_teleport_teleport-to-player":
+                    TeleportManager.teleportPlayerToPlayer(in.readUTF(), in.readUTF(), in.readBoolean(), in.readBoolean());
+
+                    break;
+                case "client_teleport_teleport-to-player-uuid": {
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    UUID targetUUID = UUID.fromString(in.readUTF());
+                    TeleportManager.teleportPlayerToPlayerUUID(playerUUID, targetUUID, in.readBoolean(), in.readBoolean());
+
+                    break;
+                }
+                case "client_teleport_tpa-request-here":
+                    TeleportManager.requestPlayerTeleportToYou(in.readUTF(), in.readUTF());
+                    break;
+                case "client_teleport_tpa-to-request":
+                    TeleportManager.requestToTeleportToPlayer(in.readUTF(), in.readUTF());
+                    break;
+                case "client_teleport_tpa-accept": {
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
+                    if (player == null) {
+                        ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " tpa task has been canceled.");
+                        return;
+                    }
+                    TeleportManager.acceptTeleportRequest(player);
+                    break;
+                }
+                case "client_teleport_tpa-deny": {
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
+                    if (player == null) {
+                        ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " tpa task has been canceled.");
+                        return;
+                    }
+                    TeleportManager.denyTeleportRequest(player);
+                    break;
+                }
+                case "client_teleport_teleport-all":
+                    TeleportManager.tpAll(in.readUTF(), in.readUTF());
+                    break;
+                case "client_teleport_teleport-player-back": {
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    ProxiedPlayer player = BungeeManager.getPlayer(playerUUID);
+                    if (player == null) {
+                        ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
+                        return;
+                    }
+                    TeleportManager.sendPlayerToLastBack(player);
+                    break;
+                }
             }
 
         } catch (IOException e1) {

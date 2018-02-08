@@ -38,7 +38,7 @@ public class TeleportManager {
             ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " teleport task has been canceled.");
             return;
         }
-        BungeeManager.sendMessageToTarget(player, MessageDB.default_TRY_TO_TELEPORT);
+
         if (TeleportQuery.isSpawn(spawnType, serverName, worldName)) {
             List<String> spawnData = TeleportQuery.getSpawn(spawnType, serverName);
             String world = spawnData.get(1);
@@ -49,9 +49,23 @@ public class TeleportManager {
             float yaw = Float.parseFloat(spawnData.get(6));
             float pitch = Float.parseFloat(spawnData.get(7));
             Location location = new Location(server, world, x, y, z, yaw, pitch);
+
+            if (ProxyServer.getInstance().getServerInfo(server) == null) {
+                MineSuiteBungeePlugin.getInstance().getLogger().severe("Server is invalid");
+                player.sendMessage(MessageDB.teleport_SERVER_ERROR);
+                return;
+            }
+            if (!BungeeManager.waitForReady(player.getServer().getInfo().getName(), playerUUID, server)) {
+                ProxyServer.getInstance().getLogger().severe("[MineSuite] " + player.getName() + " teleport break?");
+                return;
+            }
+
+
+            BungeeManager.sendMessageToTarget(player, MessageDB.default_TRY_TO_TELEPORT);
             JServerTeleportOutput.teleportToLocation(player, location);
             ProxyServer.getInstance().getLogger().info("[MineSuite] " + player.getName() + " has been teleported to spawnType with teleport system.");
             ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+
         } else {
             BungeeManager.sendMessageToTarget(player, MessageDB.teleport_NOT_SET_SPAWNTYPE);
         }
@@ -208,11 +222,24 @@ public class TeleportManager {
     }
 
     public static void sendPlayerToLastBack(ProxiedPlayer player) {
-        BungeeManager.sendMessageToTarget(player, MessageDB.default_TRY_TO_TELEPORT);
         if (BungeeManager.hasDeathBackLocation(player)) {
+
+            if (ProxyServer.getInstance().getServerInfo(BungeeManager.getLastBackLocation(player).getServer()) == null) {
+                MineSuiteBungeePlugin.getInstance().getLogger().severe("Server is invalid");
+                player.sendMessage(MessageDB.teleport_SERVER_ERROR);
+                return;
+            }
+
+            if (!BungeeManager.waitForReady(player.getServer().getInfo().getName(), player.getUniqueId(), BungeeManager.getLastBackLocation(player).getServer())) {
+                ProxyServer.getInstance().getLogger().severe("[MineSuite] " + player.getName() + " teleport break?");
+                return;
+            }
+
+            BungeeManager.sendMessageToTarget(player, MessageDB.default_TRY_TO_TELEPORT);
             JServerTeleportOutput.teleportToLocation(player, BungeeManager.getLastBackLocation(player));
             ProxyServer.getInstance().getLogger().info("[" + player + "] <-> teleportet to deathpoint!");
             BungeeManager.removeDeathBackLocation(player);
+
         } else {
             BungeeManager.sendMessageToTarget(player, MessageDB.teleport_NO_BACK_TP);
         }
@@ -242,7 +269,7 @@ public class TeleportManager {
         ProxiedPlayer p = BungeeManager.getPlayer(playerUUID);
         ProxiedPlayer t = BungeeManager.getPlayer(targetUUID);
 
-        BungeeManager.sendMessageToTarget(p, MessageDB.default_TRY_TO_TELEPORT);
+
         if (p == null || t == null) {
             BungeeManager.sendMessageToTarget(p, MessageDB.default_PLAYER_NOT_ONLINE);
             return;
@@ -251,12 +278,20 @@ public class TeleportManager {
             BungeeManager.sendMessageToTarget(p, MessageDB.teleport_TELEPORT_UNABLE.replace("{player}", p.getName()));
             return;
         }
+
+        if (!BungeeManager.waitForReady(p.getServer().getInfo().getName(), p.getUniqueId(), t.getServer().getInfo().getName())) {
+            ProxyServer.getInstance().getLogger().severe("[MineSuite] " + p.getName() + " teleport break?");
+            return;
+        }
+
+        BungeeManager.sendMessageToTarget(p, MessageDB.default_TRY_TO_TELEPORT);
         JServerTeleportOutput.teleportToPlayer(p, t);
         if (!silent) {
             BungeeManager.sendMessageToTarget(t, MessageDB.teleport_PLAYER_TELEPORTED_TO_YOU.replace("{player}", p.getName()));
         }
 
         BungeeManager.sendMessageToTarget(p, MessageDB.teleport_TELEPORTED_TO_PLAYER.replace("{player}", t.getName()));
+
     }
 
     public static void teleportPlayerToPlayer(String player, String target, boolean silent, boolean bypass) {
@@ -274,5 +309,6 @@ public class TeleportManager {
         teleportPlayerToPlayerUUID(p.getUniqueId(), t.getUniqueId(), silent, bypass);
 
     }
+
 
 }

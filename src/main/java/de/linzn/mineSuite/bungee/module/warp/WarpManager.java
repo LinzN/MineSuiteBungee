@@ -11,10 +11,11 @@
 
 package de.linzn.mineSuite.bungee.module.warp;
 
+import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.core.BungeeManager;
 import de.linzn.mineSuite.bungee.database.mysql.BungeeQuery;
+import de.linzn.mineSuite.bungee.module.teleport.socket.JServerTeleportOutput;
 import de.linzn.mineSuite.bungee.module.warp.mysql.WarpQuery;
-import de.linzn.mineSuite.bungee.module.warp.socket.JServerWarpOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
@@ -32,9 +33,6 @@ public class WarpManager {
             ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " warp task has been canceled.");
             return;
         }
-        if (!portal) {
-            BungeeManager.sendMessageToTarget(player, MessageDB.default_TRY_TO_TELEPORT);
-        }
         if (WarpQuery.isWarp(warpName)) {
             List<String> warpData = WarpQuery.getWarp(warpName);
             String world = warpData.get(1);
@@ -45,9 +43,25 @@ public class WarpManager {
             float yaw = Float.parseFloat(warpData.get(6));
             float pitch = Float.parseFloat(warpData.get(7));
             Location location = new Location(server, world, x, y, z, yaw, pitch);
-            JServerWarpOutput.teleportToWarp(player, location);
+
+            if (ProxyServer.getInstance().getServerInfo(server) == null) {
+                MineSuiteBungeePlugin.getInstance().getLogger().severe("Server is invalid");
+                player.sendMessage(MessageDB.teleport_SERVER_ERROR);
+                return;
+            }
+            if (!BungeeManager.waitForReady(player.getServer().getInfo().getName(), playerUUID, server)) {
+                ProxyServer.getInstance().getLogger().severe("[MineSuite] " + player.getName() + " teleport break?");
+                return;
+            }
+
+            if (!portal) {
+                BungeeManager.sendMessageToTarget(player, MessageDB.default_TRY_TO_TELEPORT);
+            }
+            //JServerWarpOutput.teleportToWarp(player, location);
+            JServerTeleportOutput.teleportToLocation(player, location);
             ProxyServer.getInstance().getLogger().info("[MineSuite] " + player.getName() + " has been teleported with warp system.");
             ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+
         } else {
             BungeeManager.sendMessageToTarget(player, MessageDB.warp_NO_WARP);
         }

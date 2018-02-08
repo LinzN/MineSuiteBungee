@@ -12,7 +12,11 @@
 package de.linzn.mineSuite.bungee.module.teleport.socket;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
+import de.linzn.mineSuite.bungee.listeners.JServerBungeeOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
+import de.linzn.mineSuite.bungee.utils.MessageDB;
+import net.md_5.bungee.api.Callback;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -25,21 +29,18 @@ public class JServerTeleportOutput {
 
     public static void teleportToLocation(ProxiedPlayer player, Location loc) {
         ServerInfo servernew = ProxyServer.getInstance().getServerInfo(loc.getServer());
-        if (servernew == null) {
-            MineSuiteBungeePlugin.getInstance().getLogger()
-                    .severe("Location has no Server, this should never happen. Please check");
-            new Exception("").printStackTrace();
-            return;
-        }
 
-        if (player == null) {
-            new Exception("").printStackTrace();
-            return;
-        }
+        Callback<Boolean> callBack = (aBoolean, throwable) -> {
+            if (!aBoolean) {
+                player.sendMessage(MessageDB.teleport_SERVER_ERROR);
+                JServerBungeeOutput.cancelTeleport(player.getServer().getInfo().getName(), player.getUniqueId(), loc.getServer());
+            }
+        };
 
         if (player.getServer() == null || !player.getServer().getInfo().toString().equals(servernew.toString())) {
-            player.connect(servernew);
+            player.connect(servernew, callBack);
         }
+
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
@@ -60,6 +61,23 @@ public class JServerTeleportOutput {
         MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteTeleport", byteArrayOutputStream.toByteArray());
     }
 
+    public static void teleportToServer(ProxiedPlayer player, String server) {
+        ServerInfo serverNew = ProxyServer.getInstance().getServerInfo(server);
+
+        Callback<Boolean> callBack = (aBoolean, throwable) -> {
+            if (!aBoolean) {
+                player.sendMessage(MessageDB.teleport_SERVER_ERROR);
+                JServerBungeeOutput.cancelTeleport(player.getServer().getInfo().getName(), player.getUniqueId(), server);
+            }
+        };
+
+        if (player.getServer() == null || !player.getServer().getInfo().toString().equals(serverNew.toString())) {
+            player.connect(serverNew, callBack);
+        } else {
+            //todo testmsg
+            player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Leider Fehlgeschlagen!");
+        }
+    }
 
     public static void teleportToPlayer(ProxiedPlayer player, ProxiedPlayer target) {
         if (player.getServer().getInfo() != target.getServer().getInfo()) {
@@ -93,4 +111,5 @@ public class JServerTeleportOutput {
         }
         MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteTeleport", byteArrayOutputStream.toByteArray());
     }
+
 }

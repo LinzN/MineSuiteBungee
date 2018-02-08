@@ -11,9 +11,10 @@
 
 package de.linzn.mineSuite.bungee.module.home;
 
+import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.core.BungeeManager;
 import de.linzn.mineSuite.bungee.module.home.mysql.HomeQuery;
-import de.linzn.mineSuite.bungee.module.home.socket.JServerHomeOutput;
+import de.linzn.mineSuite.bungee.module.teleport.socket.JServerTeleportOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ProxyServer;
@@ -31,7 +32,6 @@ public class HomeManager {
             ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " home task has been canceled.");
             return;
         }
-        BungeeManager.sendMessageToTarget(player, MessageDB.default_TRY_TO_TELEPORT);
         if (HomeQuery.isHome(playerUUID, homeName)) {
             List<String> homeData = HomeQuery.getHome(playerUUID, homeName);
             String world = homeData.get(1);
@@ -42,9 +42,22 @@ public class HomeManager {
             float yaw = Float.parseFloat(homeData.get(6));
             float pitch = Float.parseFloat(homeData.get(7));
             Location location = new Location(server, world, x, y, z, yaw, pitch);
-            JServerHomeOutput.teleportToHome(player, location);
+
+            if (ProxyServer.getInstance().getServerInfo(server) == null) {
+                MineSuiteBungeePlugin.getInstance().getLogger().severe("Server is invalid");
+                player.sendMessage(MessageDB.teleport_SERVER_ERROR);
+                return;
+            }
+            if (!BungeeManager.waitForReady(player.getServer().getInfo().getName(), playerUUID, server)) {
+                ProxyServer.getInstance().getLogger().severe("[MineSuite] " + player.getName() + " teleport break?");
+                return;
+            }
+
+            BungeeManager.sendMessageToTarget(player, MessageDB.default_TRY_TO_TELEPORT);
+            JServerTeleportOutput.teleportToLocation(player, location);
             ProxyServer.getInstance().getLogger().info("[MineSuite] " + player.getName() + " has been teleported with home system.");
             ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+
         } else {
             BungeeManager.sendMessageToTarget(player, MessageDB.home_NO_HOME);
         }

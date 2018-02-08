@@ -28,29 +28,33 @@ public class JServerHomeListener implements IncomingDataListener {
         String subChannel;
         try {
             subChannel = in.readUTF();
-            if (subChannel.equals("client_home_teleport-home")) {
-                String homeName = in.readUTF();
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                HomeManager.sendPlayerToHome(playerUUID, homeName);
-                return;
-
-            } else if (subChannel.equals("client_home_create-home")) {
-                String homeName = in.readUTF();
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(), in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
-                int homeLimit = in.readInt();
-                HomeManager.createHome(homeName, playerUUID, location, homeLimit);
-                return;
-            } else if (subChannel.equals("client_home_remove-home")) {
-                String homeName = in.readUTF();
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                HomeManager.removeHome(homeName, playerUUID);
-                return;
-            } else if (subChannel.equals("client_home_get-homes")) {
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                int homePage = in.readInt();
-                HomeManager.getHomeList(playerUUID, homePage);
-                return;
+            switch (subChannel) {
+                case "client_home_teleport-home": {
+                    String homeName = in.readUTF();
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    HomeManager.sendPlayerToHome(playerUUID, homeName);
+                    break;
+                }
+                case "client_home_create-home": {
+                    String homeName = in.readUTF();
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(), in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
+                    int homeLimit = in.readInt();
+                    HomeManager.createHome(homeName, playerUUID, location, homeLimit);
+                    break;
+                }
+                case "client_home_remove-home": {
+                    String homeName = in.readUTF();
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    HomeManager.removeHome(homeName, playerUUID);
+                    break;
+                }
+                case "client_home_get-homes": {
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    int homePage = in.readInt();
+                    HomeManager.getHomeList(playerUUID, homePage);
+                    break;
+                }
             }
 
         } catch (IOException e1) {

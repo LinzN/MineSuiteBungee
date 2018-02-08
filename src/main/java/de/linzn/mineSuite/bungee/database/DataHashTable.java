@@ -15,6 +15,7 @@ import de.linzn.mineSuite.bungee.utils.Location;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DataHashTable {
 
@@ -32,5 +33,6 @@ public class DataHashTable {
     public static HashMap<UUID, Boolean> isafk = new HashMap<>();
     public static HashMap<UUID, Boolean> socialspy = new HashMap<>();
     public static HashMap<UUID, Boolean> session = new HashMap<>();
+    public static HashMap<UUID, AtomicBoolean> readyToTeleport = new HashMap<>();
 
 }

@@ -55,6 +55,8 @@ public class MessageDB {
     public static String teleport_TPAHERE_REQUEST_TIMED_OUT = ChatColor.RED + "" + ChatColor.BOLD + "Die Einladung an {player} ist abgelaufen!";
     public static String teleport_NO_BACK_TP = ChatColor.RED + "" + ChatColor.BOLD + "Es wurde kein Punkt gefunden, der dich zurückbringt!";
     public static String teleport_TELEPORT_UNABLE = ChatColor.RED + "" + ChatColor.BOLD + "Teleport mit diesem Spieler ist nicht möglich!";
+    public static String teleport_CONFIRM_ERROR = ChatColor.DARK_RED + "" + ChatColor.BOLD + "Error on CONFIRM task. Please contact a team member!";
+    public static String teleport_SERVER_ERROR = ChatColor.DARK_RED + "" + ChatColor.BOLD + "Error on SERVER task. Please contact a team member!";
 
     /* Ban Values */
     public static String ban_BANNED_PERM_NOW = ChatColor.RED + "Du wurdest Permanent von " + ChatColor.GOLD + "{bannedby}" + ChatColor.RED + " vom Server gesperrt. " + "\n " + "Grund: " + ChatColor.GOLD + "{reason}";

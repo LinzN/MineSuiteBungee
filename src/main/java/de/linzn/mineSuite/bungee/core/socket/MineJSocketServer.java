@@ -15,6 +15,7 @@ import de.linzn.jSocket.server.JServer;
 import de.linzn.jSocket.server.JServerConnection;
 import de.linzn.mineSuite.bungee.core.Config;
 import de.linzn.mineSuite.bungee.listeners.JServerBroadcastListener;
+import de.linzn.mineSuite.bungee.listeners.JServerBungeeListener;
 import de.linzn.mineSuite.bungee.module.ban.socket.JServerBanListener;
 import de.linzn.mineSuite.bungee.module.chat.socket.JServerChatListener;
 import de.linzn.mineSuite.bungee.module.guild.JServerGuildListener;
@@ -35,6 +36,7 @@ public class MineJSocketServer {
     }
 
     private void setupListener() {
+        jServer.registerIncomingDataListener("mineSuiteBungee", new JServerBungeeListener());
         jServer.registerIncomingDataListener("mineSuiteBroadcast", new JServerBroadcastListener());
         jServer.registerIncomingDataListener("mineSuiteBan", new JServerBanListener());
         jServer.registerIncomingDataListener("mineSuiteChat", new JServerChatListener());

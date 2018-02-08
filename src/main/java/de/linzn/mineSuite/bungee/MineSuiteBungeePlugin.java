@@ -32,9 +32,8 @@ public class MineSuiteBungeePlugin extends Plugin {
 
     private static MineSuiteBungeePlugin instance;
     public ProxyServer proxy;
-
-    private MineJSocketServer mineJSocketServer;
     public Config fileManager;
+    private MineJSocketServer mineJSocketServer;
 
     public static MineSuiteBungeePlugin getInstance() {
         return instance;

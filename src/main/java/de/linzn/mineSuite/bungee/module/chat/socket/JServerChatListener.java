@@ -33,88 +33,82 @@ public class JServerChatListener implements IncomingDataListener {
         String subChannel;
         try {
             subChannel = in.readUTF();
-            if (subChannel.equals("client_chat_default-chat")) {
-                String sender = in.readUTF();
-                String text = in.readUTF();
-                String prefix = in.readUTF();
-                String suffix = in.readUTF();
-                String chatChannel = in.readUTF();
-                ChatManager.channelSend(sender, text, prefix, suffix, chatChannel);
-                return;
-            }
-
-            if (subChannel.equals("client_chat_channel-switch")) {
-                String sender = in.readUTF();
-                String chatChannel = in.readUTF();
-                ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
-                if (player == null) {
-                    return;
+            switch (subChannel) {
+                case "client_chat_default-chat": {
+                    String sender = in.readUTF();
+                    String text = in.readUTF();
+                    String prefix = in.readUTF();
+                    String suffix = in.readUTF();
+                    String chatChannel = in.readUTF();
+                    ChatManager.channelSend(sender, text, prefix, suffix, chatChannel);
+                    break;
                 }
-                DataHashTable.channel.put(player.getUniqueId(), chatChannel);
-                return;
-            }
-
-            if (subChannel.equals("client_chat_afk-switch")) {
-                String sender = in.readUTF();
-                boolean value = in.readBoolean();
-                ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
-                if (player == null) {
-                    return;
+                case "client_chat_channel-switch": {
+                    String sender = in.readUTF();
+                    String chatChannel = in.readUTF();
+                    ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
+                    if (player == null) {
+                        return;
+                    }
+                    DataHashTable.channel.put(player.getUniqueId(), chatChannel);
+                    break;
                 }
-                if (value) {
-                    DataHashTable.isafk.put(player.getUniqueId(), value);
-                } else {
-                    DataHashTable.isafk.remove(player.getUniqueId());
+                case "client_chat_afk-switch": {
+                    String sender = in.readUTF();
+                    boolean value = in.readBoolean();
+                    ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
+                    if (player == null) {
+                        return;
+                    }
+                    if (value) {
+                        DataHashTable.isafk.put(player.getUniqueId(), value);
+                    } else {
+                        DataHashTable.isafk.remove(player.getUniqueId());
+                    }
+                    break;
                 }
-                return;
-            }
+                case "client_chat_spy-switch": {
+                    String sender = in.readUTF();
+                    ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
+                    if (player == null) {
+                        return;
+                    }
+                    if (!DataHashTable.socialspy.containsKey(player.getUniqueId())) {
+                        DataHashTable.socialspy.put(player.getUniqueId(), true);
+                        player.sendMessage("§aChannel: ALLE (SocialSpy on)");
 
-            if (subChannel.equals("client_chat_spy-switch")) {
-                String sender = in.readUTF();
-                ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
-                if (player == null) {
-                    return;
+                    } else {
+                        DataHashTable.socialspy.remove(player.getUniqueId());
+                        player.sendMessage("§aChannel: EIGENE (SocialSpy off)");
+                    }
+                    break;
                 }
-                if (!DataHashTable.socialspy.containsKey(player.getUniqueId())) {
-                    DataHashTable.socialspy.put(player.getUniqueId(), true);
-                    player.sendMessage("§aChannel: ALLE (SocialSpy on)");
-
-                } else {
-                    DataHashTable.socialspy.remove(player.getUniqueId());
-                    player.sendMessage("§aChannel: EIGENE (SocialSpy off)");
+                case "client_chat_guild-chat": {
+                    String guild = in.readUTF();
+                    String sender = in.readUTF();
+                    String text = in.readUTF();
+                    ChatManager.sendGuildChat(guild, sender, text);
+                    break;
                 }
-                return;
-            }
-
-            if (subChannel.equals("client_chat_guild-chat")) {
-                String guild = in.readUTF();
-                String sender = in.readUTF();
-                String text = in.readUTF();
-                ChatManager.sendGuildChat(guild, sender, text);
-                return;
-            }
-
-            if (subChannel.equals("client_chat_private-msg")) {
-                String sender = in.readUTF();
-                String reciever = in.readUTF();
-                String text = in.readUTF();
-                String prefix = in.readUTF();
-                ChatManager.privateMsgChat(sender, reciever, text, prefix);
-                return;
-            }
-
-            if (subChannel.equals("client_chat_private-reply")) {
-                String sender = in.readUTF();
-                String text = in.readUTF();
-                String prefix = in.readUTF();
-                ChatManager.privateReplyChat(sender, text, prefix);
-                return;
-            }
-
-            if (subChannel.equals("client_chat-vote-informer")) {
-                String voter = in.readUTF();
-                VoteInformer.sendVoteInfoToUser(voter);
-                return;
+                case "client_chat_private-msg": {
+                    String sender = in.readUTF();
+                    String reciever = in.readUTF();
+                    String text = in.readUTF();
+                    String prefix = in.readUTF();
+                    ChatManager.privateMsgChat(sender, reciever, text, prefix);
+                    break;
+                }
+                case "client_chat_private-reply": {
+                    String sender = in.readUTF();
+                    String text = in.readUTF();
+                    String prefix = in.readUTF();
+                    ChatManager.privateReplyChat(sender, text, prefix);
+                    break;
+                }
+                case "client_chat-vote-informer":
+                    String voter = in.readUTF();
+                    VoteInformer.sendVoteInfoToUser(voter);
+                    break;
             }
         } catch (IOException e1) {
             e1.printStackTrace();

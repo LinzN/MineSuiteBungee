@@ -28,30 +28,34 @@ public class JServerWarpListener implements IncomingDataListener {
         String subChannel;
         try {
             subChannel = in.readUTF();
-            if (subChannel.equals("client_warp_teleport-warp")) {
-                String warpName = in.readUTF();
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                WarpManager.sendPlayerToWarp(playerUUID, warpName, false);
-                return;
-
-            } else if (subChannel.equals("client_warp_create-warp")) {
-                String warpName = in.readUTF();
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(), in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
-                int publicWarp = in.readInt();
-                WarpManager.createWarp(warpName, playerUUID, location, publicWarp);
-                return;
-            } else if (subChannel.equals("client_warp_remove-warp")) {
-                String warpName = in.readUTF();
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                WarpManager.removeWarp(warpName, playerUUID);
-                return;
-            } else if (subChannel.equals("client_warp_get-warps")) {
-                UUID playerUUID = UUID.fromString(in.readUTF());
-                int page = in.readInt();
-                int visible = in.readInt();
-                WarpManager.getWarpList(playerUUID, page, visible);
-                return;
+            switch (subChannel) {
+                case "client_warp_teleport-warp": {
+                    String warpName = in.readUTF();
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    WarpManager.sendPlayerToWarp(playerUUID, warpName, false);
+                    break;
+                }
+                case "client_warp_create-warp": {
+                    String warpName = in.readUTF();
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(), in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
+                    int publicWarp = in.readInt();
+                    WarpManager.createWarp(warpName, playerUUID, location, publicWarp);
+                    break;
+                }
+                case "client_warp_remove-warp": {
+                    String warpName = in.readUTF();
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    WarpManager.removeWarp(warpName, playerUUID);
+                    break;
+                }
+                case "client_warp_get-warps": {
+                    UUID playerUUID = UUID.fromString(in.readUTF());
+                    int page = in.readInt();
+                    int visible = in.readInt();
+                    WarpManager.getWarpList(playerUUID, page, visible);
+                    break;
+                }
             }
         } catch (IOException e1) {
             e1.printStackTrace();

@@ -16,9 +16,9 @@ import de.linzn.mineSuite.bungee.core.BungeeManager;
 import de.linzn.mineSuite.bungee.module.portal.mysql.Portal;
 import de.linzn.mineSuite.bungee.module.portal.mysql.PortalQuery;
 import de.linzn.mineSuite.bungee.module.portal.socket.JServerPortalOutput;
+import de.linzn.mineSuite.bungee.module.teleport.socket.JServerTeleportOutput;
 import de.linzn.mineSuite.bungee.module.warp.WarpManager;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -36,7 +36,6 @@ public class PortalManager {
 
             return;
         }
-        BungeeManager.sendMessageToTarget(player, MessageDB.default_TRY_TO_TELEPORT);
         Portal portal = portalList.get(portalName);
         if (portal == null) {
 
@@ -136,23 +135,19 @@ public class PortalManager {
     private static void serverPortal(UUID playerUUID, String server) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerUUID);
         ServerInfo serverNew = ProxyServer.getInstance().getServerInfo(server);
-        if (serverNew == null) {
-            MineSuiteBungeePlugin.getInstance().getLogger()
-                    .severe("Location has no Server, this should never happen. Please check");
-            new Exception("").printStackTrace();
+
+        if (ProxyServer.getInstance().getServerInfo(server) == null) {
+            MineSuiteBungeePlugin.getInstance().getLogger().severe("Server is invalid");
+            player.sendMessage(MessageDB.teleport_SERVER_ERROR);
             return;
         }
-
-        if (player == null) {
-            new Exception("").printStackTrace();
+        if (!BungeeManager.waitForReady(player.getServer().getInfo().getName(), playerUUID, server)) {
+            ProxyServer.getInstance().getLogger().severe("[MineSuite] " + player.getName() + " teleport break?");
             return;
         }
+        BungeeManager.sendMessageToTarget(player, MessageDB.default_TRY_TO_TELEPORT);
+        JServerTeleportOutput.teleportToServer(player, server);
 
-        if (player.getServer() == null || !player.getServer().getInfo().toString().equals(serverNew.toString())) {
-            player.connect(serverNew);
-        } else {
-            //todo testmsg
-            player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Leider Fehlgeschlagen!");
-        }
+
     }
 }
