@@ -9,21 +9,20 @@
  *
  */
 
-package de.linzn.mineSuite.bungee.module.guild;
+package de.linzn.mineSuite.bungee.module.guild.socket;
 
-import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
-import de.linzn.mineSuite.bungee.database.DataHashTable;
-import de.linzn.mineSuite.bungee.module.core.BungeeManager;
 import de.linzn.mineSuite.bungee.utils.Location;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.UUID;
 
-public class JServerGuildListener implements IncomingDataListener {
+public class JServerGuildOutput {
 
     public static void deletePlayerFromGuild(String pname, String uuid)
 
@@ -226,126 +225,43 @@ public class JServerGuildListener implements IncomingDataListener {
         MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
     }
 
-    @Override
-    public void onEvent(String channel, UUID clientUUID, byte[] dataInBytes) {
-        DataInputStream in = new DataInputStream(new ByteArrayInputStream(dataInBytes));
-        String subChannel = null;
-        try {
-            subChannel = in.readUTF();
+    public static void teleportToGuildSpawn(ProxiedPlayer player, Location loc)
 
-            if (subChannel.equalsIgnoreCase("createGuild")) {
-                UUID guildUUID = UUID.fromString(in.readUTF());
-                String guildName = in.readUTF();
-                String guildMaster = in.readUTF();
-                createGuild(guildUUID, guildName, guildMaster);
-                return;
-            }
-
-            if (subChannel.equalsIgnoreCase("deleteGuild")) {
-                UUID guildUUID = UUID.fromString(in.readUTF());
-                deleteGuild(guildUUID);
-                return;
-            }
-            if (subChannel.equalsIgnoreCase("UpdateGuildMaster")) {
-                UUID guildUUID = UUID.fromString(in.readUTF());
-                String oldMaster = in.readUTF();
-                String newMaster = in.readUTF();
-                updateGuildMaster(guildUUID, oldMaster, newMaster);
-                return;
-            }
-            if (subChannel.equalsIgnoreCase("AddGuildToPlayer")) {
-                String pname = in.readUTF();
-                UUID guildUUID = UUID.fromString(in.readUTF());
-                String gRang = in.readUTF();
-                addPlayerToGuild(pname, guildUUID, gRang);
-                return;
-            }
-            if (subChannel.equalsIgnoreCase("DeleteGuildFromPlayer")) {
-                String pname = in.readUTF();
-                String uuid = in.readUTF();
-                deletePlayerFromGuild(pname, uuid);
-                return;
-            }
-
-            if (subChannel.equals("SendGuildInvite")) {
-                ProxiedPlayer player = ProxyServer.getInstance().getPlayer(in.readUTF());
-                ProxiedPlayer invitedPlayer = ProxyServer.getInstance().getPlayer(in.readUTF());
-                String guildName = in.readUTF();
-                UUID guildUUID = UUID.fromString(in.readUTF());
-
-                if (invitedPlayer == null) {
-                    player.sendMessage(ChatColor.RED + "Dieser Spieler ist nicht online!");
-                    return;
-                }
-                invitedPlayer.sendMessage(ChatColor.YELLOW + player.getName() + ChatColor.GREEN
-                        + " hat dir eine Einladung in die Gilde " + ChatColor.YELLOW + guildName + ChatColor.GREEN
-                        + " gesendet. " + ChatColor.YELLOW + "/guild accept " + ChatColor.GREEN + "um anzunehmen!");
-                DataHashTable.guildInvites.put(invitedPlayer.getUniqueId(), guildUUID);
-                return;
-            }
-            if (subChannel.equals("AcceptGuildInvite")) {
-                ProxiedPlayer invitedPlayer = ProxyServer.getInstance().getPlayer(in.readUTF());
-                if (DataHashTable.guildInvites.containsKey(invitedPlayer.getUniqueId())) {
-                    UUID guildUUID = DataHashTable.guildInvites.get(invitedPlayer.getUniqueId());
-                    finishInvite(invitedPlayer, guildUUID);
-                } else {
-                    invitedPlayer.sendMessage(ChatColor.RED + "Du hast keine offenen Einladungen!");
-                }
-                DataHashTable.guildInvites.remove(invitedPlayer.getUniqueId());
-
-            }
-
-            if (subChannel.equals("UpdateGuildSpawn")) {
-                UUID guildUUID = UUID.fromString(in.readUTF());
-                String server = in.readUTF();
-                String world = in.readUTF();
-                double x = in.readDouble();
-                double y = in.readDouble();
-                double z = in.readDouble();
-                float yaw = in.readFloat();
-                float pitch = in.readFloat();
-
-                updateGuildSpawn(guildUUID, server, world, x, y, z, yaw, pitch);
-
-            }
-
-            if (subChannel.equals("TeleportToGuildSpawn")) {
-                ProxiedPlayer player = BungeeManager.getPlayer(in.readUTF());
-                Location location = new Location(in.readUTF(), in.readUTF(), in.readDouble(),
-                        in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
-                JServerGuildOutput.teleportToGuildSpawn(player, location);
-                ProxyServer.getInstance().getLogger().info("[MineSuite]" + player.getName() + " has been teleported with guild system.");
-                ProxyServer.getInstance().getLogger().info("[MineSuite] S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
-                return;
-            }
-
-            if (subChannel.equals("SendExpUpdate")) {
-                String server = in.readUTF();
-                UUID guildUUID = UUID.fromString(in.readUTF());
-                long exp = in.readLong();
-                long totalXp = in.readLong();
-                sendExpUpdate(server, guildUUID, exp, totalXp);
-
-            }
-
-            if (subChannel.equals("UpdateGuildName")) {
-                UUID guildUUID = UUID.fromString(in.readUTF());
-                String guildName = in.readUTF();
-                updateGuildName(guildUUID, guildName);
-
-            }
-
-            if (subChannel.equals("UpdateGuildPlayer")) {
-                UUID guildUUID = UUID.fromString(in.readUTF());
-                String player = in.readUTF();
-                String rang = in.readUTF();
-                updateGuildPlayer(guildUUID, player, rang);
-
-            }
-
-        } catch (IOException e1) {
-            e1.printStackTrace();
+    {
+        ServerInfo serverNew = ProxyServer.getInstance().getServerInfo(loc.getServer());
+        if (serverNew == null) {
+            MineSuiteBungeePlugin.getInstance().getLogger()
+                    .severe("Location has no Server, this should never happen. Please check");
+            new Exception("").printStackTrace();
+            return;
         }
-    }
 
+        if (player == null) {
+            new Exception("").printStackTrace();
+            return;
+        }
+
+        if (player.getServer() == null || !player.getServer().getInfo().toString().equals(serverNew.toString())) {
+            player.connect(serverNew);
+        }
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+        try {
+            dataOutputStream.writeUTF("TeleportToGuildSpawn");
+            dataOutputStream.writeUTF(serverNew.getName());
+            dataOutputStream.writeUTF(player.getName());
+            dataOutputStream.writeUTF(loc.getWorld());
+            dataOutputStream.writeDouble(loc.getX());
+            dataOutputStream.writeDouble(loc.getY());
+            dataOutputStream.writeDouble(loc.getZ());
+            dataOutputStream.writeFloat(loc.getYaw());
+            dataOutputStream.writeFloat(loc.getPitch());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteGuild", byteArrayOutputStream.toByteArray());
+    }
 }
