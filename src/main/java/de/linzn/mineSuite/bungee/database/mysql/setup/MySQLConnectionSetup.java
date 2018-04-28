@@ -39,6 +39,7 @@ public class MySQLConnectionSetup {
         manager.getHandler("MineSuiteHome", factory);
         manager.getHandler("MineSuiteTeleport", factory);
         manager.getHandler("MineSuitePortal", factory);
+        manager.getHandler("MineSuiteGuild", factory);
 
         try {
             Connection connection = handler.getConnection();
