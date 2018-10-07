@@ -20,7 +20,12 @@ import de.linzn.mineSuite.bungee.core.socket.MineJSocketServer;
 import de.linzn.mineSuite.bungee.database.mysql.setup.MySQLConnectionSetup;
 import de.linzn.mineSuite.bungee.listeners.ProxyServerListener;
 import de.linzn.mineSuite.bungee.module.ban.AutoUnbanChecker;
+import de.linzn.mineSuite.bungee.module.chat.ChatManager;
 import de.linzn.mineSuite.bungee.module.chat.VoteInformer;
+import de.linzn.mineSuite.bungee.module.chat.chats.BroadcastChat;
+import de.linzn.mineSuite.bungee.module.chat.chats.GlobalChat;
+import de.linzn.mineSuite.bungee.module.chat.chats.StaffChat;
+import de.linzn.mineSuite.bungee.module.chat.chats.TradeChat;
 import de.linzn.mineSuite.bungee.module.portal.PortalManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
@@ -58,6 +63,7 @@ public class MineSuiteBungeePlugin extends Plugin {
             this.mineJSocketServer = new MineJSocketServer();
             this.mineJSocketServer.openServer();
             PortalManager.loadPortalsToHash();
+            this.registerChatChannels();
         }
     }
 
@@ -83,6 +89,13 @@ public class MineSuiteBungeePlugin extends Plugin {
         this.proxy.getScheduler().schedule(MineSuiteBungeePlugin.instance, new AutoBroadcaster(), 60, time, TimeUnit.SECONDS);
         this.proxy.getScheduler().schedule(MineSuiteBungeePlugin.instance, new VoteInformer(), 20, 300, TimeUnit.SECONDS);
         this.getLogger().info(ChatColor.BLUE + "Scheduler enabled!");
+    }
+
+    private void registerChatChannels() {
+        ChatManager.registerChat(new BroadcastChat());
+        ChatManager.registerChat(new GlobalChat());
+        ChatManager.registerChat(new StaffChat());
+        ChatManager.registerChat(new TradeChat());
     }
 
 }

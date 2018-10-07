@@ -11,56 +11,22 @@
 
 package de.linzn.mineSuite.bungee.module.chat;
 
+import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
 import de.linzn.mineSuite.bungee.module.chat.socket.JServerChatOutput;
 import de.linzn.mineSuite.bungee.module.core.BungeeManager;
 import de.linzn.mineSuite.bungee.utils.ChatFormate;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public class ChatManager {
 
-    private static void globalChat(String sender, String text, String prefix, String suffix) {
-        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
+    private static HashMap<String, IChatChannel> chatChannels = new HashMap();
 
-        if (player == null) {
-            return;
-        }
-        String formattedText = ChatFormate.genGlobalChat(sender, text, prefix, suffix);
-        for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-            BungeeManager.sendMessageToTarget(p, formattedText);
-        }
-        ProxyServer.getInstance().getLogger().info(formattedText);
-
-    }
-
-    private static void tradeChat(String sender, String text, String prefix, String suffix) {
-        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
-
-        if (player == null) {
-            return;
-        }
-        String formattedText = ChatFormate.genTradeChat(sender, text, prefix, suffix);
-        for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-            BungeeManager.sendMessageToTarget(p, formattedText);
-        }
-        ProxyServer.getInstance().getLogger().info(formattedText);
-
-    }
-
-    public static void broadcastChat(String text) {
-        String formattedText = ChatFormate.genBroadcastChat(text);
-        for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-            TextComponent vote = new TextComponent(ChatColor.translateAlternateColorCodes('&', text));
-            p.sendMessage(vote);
-        }
-        ProxyServer.getInstance().getLogger().info(text);
-    }
 
     public static void privateMsgChat(String sender, String receiver, String text, String prefix) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
@@ -128,25 +94,40 @@ public class ChatManager {
         }
     }
 
-    @SuppressWarnings("deprecation")
+
     public static void channelSend(String sender, String text, String prefix, String suffix, String channel) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
         if (player == null) {
             return;
         }
         if (channel.equalsIgnoreCase("GLOBAL")) {
-            globalChat(sender, text, prefix, suffix);
+            if (chatChannels.containsKey("GLOBAL")) {
+                IChatChannel globalChannel = getChat("GLOBAL");
+                globalChannel.sendChat(sender, text, prefix, suffix);
+            }
         } else if (channel.equalsIgnoreCase("STAFF")) {
-            staffChat(sender, text, prefix);
-
+            if (chatChannels.containsKey("STAFF")) {
+                IChatChannel staffChannel = getChat("STAFF");
+                staffChannel.sendChat(sender, text, prefix, null);
+            }
         } else if (channel.equalsIgnoreCase("TRADE")) {
-            tradeChat(sender, text, prefix, suffix);
+            if (chatChannels.containsKey("TRADE")) {
+                IChatChannel tradeChannel = getChat("TRADE");
+                tradeChannel.sendChat(sender, text, prefix, suffix);
+            }
 
         } else if (channel.equalsIgnoreCase("BROADCAST")) {
-            broadcastChat(text);
+            if (chatChannels.containsKey("BROADCAST")) {
+                IChatChannel broadcastChannel = getChat("BROADCAST");
+                broadcastChannel.sendChat(null, text, null, null);
+            }
+
 
         } else if (channel.equalsIgnoreCase("GUILD")) {
-            //sendGuildChat(guild, sender, text);
+            if (chatChannels.containsKey("GUILD")) {
+                IChatChannel guildChannel = getChat("GUILD");
+                guildChannel.sendChat(sender, text, prefix, suffix);
+            }
 
         } else if (channel.equalsIgnoreCase("NONE")) {
             String ch = DataHashTable.channel.get(player.getUniqueId());
@@ -155,33 +136,34 @@ public class ChatManager {
                 return;
             }
             if (ch.equalsIgnoreCase("GLOBAL")) {
-                globalChat(sender, text, prefix, suffix);
-            } else if (ch.equalsIgnoreCase("STAFF")) {
-                staffChat(sender, text, prefix);
-
-            } else if (ch.equalsIgnoreCase("TRADE")) {
-                tradeChat(sender, text, prefix, suffix);
-
-            } else if (ch.equalsIgnoreCase("GUILD")) {
-                /*
-                if (guild.equalsIgnoreCase("NONE")) {
-                    player.sendMessage("Du bist in keiner Gilde!");
-                    DataHashTable.channel.put(player.getUniqueId(), "GLOBAL");
-                } else {
-                    sendGuildChat(guild, sender, text);
+                if (chatChannels.containsKey("GLOBAL")) {
+                    IChatChannel globalChannel = getChat("GLOBAL");
+                    globalChannel.sendChat(sender, text, prefix, suffix);
                 }
-                */
+            } else if (ch.equalsIgnoreCase("STAFF")) {
+                if (chatChannels.containsKey("STAFF")) {
+                    IChatChannel staffChannel = getChat("STAFF");
+                    staffChannel.sendChat(sender, text, prefix, null);
+                }
+            } else if (ch.equalsIgnoreCase("TRADE")) {
+                if (chatChannels.containsKey("TRADE")) {
+                    IChatChannel tradeChannel = getChat("TRADE");
+                    tradeChannel.sendChat(sender, text, prefix, suffix);
+                }
+            } else if (ch.equalsIgnoreCase("GUILD")) {
+                if (chatChannels.containsKey("GUILD")) {
+                    IChatChannel guildChannel = getChat("GUILD");
+                    guildChannel.sendChat(sender, text, prefix, suffix);
+                }
             }
         } else {
-            globalChat(player.getName(), text, prefix, suffix);
+            if (chatChannels.containsKey("GLOBAL")) {
+                IChatChannel globalChannel = getChat("GLOBAL");
+                globalChannel.sendChat(sender, text, prefix, suffix);
+            }
         }
-
     }
 
-    private static void staffChat(String sender, String text, String prefix) {
-        String formattedText = ChatFormate.genStaffChat(sender, text, prefix);
-        JServerChatOutput.staffChat(formattedText);
-    }
 
     public static void sendGuildChat(String guild, String sender, String text) {
         String formattedText = ChatFormate.genGuildChat(sender, text);
@@ -191,6 +173,20 @@ public class ChatManager {
             BungeeManager.sendMessageToTarget(p, "§4[SP]§r" + guild + "-> " + formattedText);
         }
         JServerChatOutput.sendGuildChat(guild, formattedText);
+    }
+
+    public static void registerChat(IChatChannel iChatChannel) {
+        MineSuiteBungeePlugin.getInstance().getLogger().info("Register new Chat: " + iChatChannel.getChannelName());
+        chatChannels.put(iChatChannel.getChannelName(), iChatChannel);
+    }
+
+    public static IChatChannel getChat(String channelName) {
+        return chatChannels.get(channelName);
+    }
+
+    public static void unregisterChat(String channelName) {
+        MineSuiteBungeePlugin.getInstance().getLogger().info("Unregister new Chat: " + channelName);
+        chatChannels.remove(channelName);
     }
 
 }
