@@ -11,7 +11,6 @@
 
 package de.linzn.mineSuite.bungee;
 
-import de.linzn.mineSuite.bungee.core.AutoBroadcaster;
 import de.linzn.mineSuite.bungee.core.Config;
 import de.linzn.mineSuite.bungee.core.commands.HelpCommand;
 import de.linzn.mineSuite.bungee.core.commands.ReloadCommand;
@@ -86,7 +85,7 @@ public class MineSuiteBungeePlugin extends Plugin {
     private void startScheduler() {
         this.proxy.getScheduler().schedule(MineSuiteBungeePlugin.instance, new AutoUnbanChecker(), 2, 4, TimeUnit.MINUTES);
         int time = Config.getInt("broadcaster.time");
-        this.proxy.getScheduler().schedule(MineSuiteBungeePlugin.instance, new AutoBroadcaster(), 60, time, TimeUnit.SECONDS);
+        //this.proxy.getScheduler().schedule(MineSuiteBungeePlugin.instance, new AutoBroadcaster(), 60, time, TimeUnit.SECONDS);
         this.proxy.getScheduler().schedule(MineSuiteBungeePlugin.instance, new VoteInformer(), 20, 300, TimeUnit.SECONDS);
         this.getLogger().info(ChatColor.BLUE + "Scheduler enabled!");
     }

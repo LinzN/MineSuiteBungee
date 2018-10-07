@@ -43,13 +43,18 @@ public class AutoBroadcaster implements Runnable {
 
     public void run() {
         List<String[]> broadcastList = Config.getKeyValues("broadcaster.messages");
-        int index;
-        do {
-            index = new Random().nextInt(broadcastList.size());
-        } while (lastIndex == index);
-        String[] broadCast = broadcastList.get(index);
+        String[] broadCast;
+        if (broadcastList.size() > 1) {
+            int index;
+            do {
+                index = new Random().nextInt(broadcastList.size());
+            } while (lastIndex == index);
+            broadCast = broadcastList.get(index);
+            lastIndex = index;
+        } else {
+            broadCast = broadcastList.get(0);
+        }
         broadcast(broadCast[0], broadCast[1], broadCast[2]);
-        lastIndex = index;
     }
 
 }
