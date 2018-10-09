@@ -12,6 +12,7 @@
 package de.linzn.mineSuite.bungee.database;
 
 import de.linzn.mineSuite.bungee.utils.Location;
+import javafx.util.Pair;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -34,5 +35,6 @@ public class DataHashTable {
     public static HashMap<UUID, Boolean> socialspy = new HashMap<>();
     public static HashMap<UUID, Boolean> session = new HashMap<>();
     public static HashMap<UUID, AtomicBoolean> readyToTeleport = new HashMap<>();
+    public static HashMap<String, Pair<AtomicBoolean, Double>> economyRequest = new HashMap<>();
 
 }

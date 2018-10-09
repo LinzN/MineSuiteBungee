@@ -18,6 +18,7 @@ import de.linzn.mineSuite.bungee.module.ban.mysql.BanQuery;
 import de.linzn.mineSuite.bungee.module.core.socket.JServerBungeeOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
+import javafx.util.Pair;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -134,6 +135,29 @@ public class BungeeManager {
         MineSuiteBungeePlugin.getInstance().getLogger().info("Confirm success");
         DataHashTable.readyToTeleport.remove(playerUUID);
         return true;
+    }
+
+    public static double request_balance(String server, String accountName) {
+        MineSuiteBungeePlugin.getInstance().getLogger().info("Request confirm economy callback for " + accountName + " on server " + server);
+        DataHashTable.economyRequest.put(accountName, new Pair<>(new AtomicBoolean(false), 0D));
+        JServerBungeeOutput.request_economy_balance(server, accountName);
+        int counter = 0;
+        while (!DataHashTable.economyRequest.get(accountName).getKey().get()) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ignored) {
+            }
+            if (counter >= 100) { /* 5000 ms cancel task */
+                DataHashTable.economyRequest.remove(accountName);
+                MineSuiteBungeePlugin.getInstance().getLogger().info("Confirm economy error time");
+                return -1D;
+            }
+            counter++;
+        }
+        MineSuiteBungeePlugin.getInstance().getLogger().info("Confirm success");
+        double balance = DataHashTable.economyRequest.get(accountName).getValue();
+        DataHashTable.economyRequest.remove(accountName);
+        return balance;
     }
 
 }
