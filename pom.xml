@@ -32,7 +32,7 @@
         <!--Spigot API -->
         <dependency>
             <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
+            <artifactId>bungeecord-proxy</artifactId>
             <version>1.13-SNAPSHOT</version>
         </dependency>
     </dependencies>
