@@ -20,15 +20,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DataHashTable {
 
-    public static HashMap<UUID, Boolean> acceptingTeleports = new HashMap<>();
     public static HashMap<UUID, Location> deathBackLocation = new HashMap<>();
-    public static HashMap<UUID, Location> teleportBackLocation = new HashMap<>();
     public static HashMap<UUID, Boolean> lastBack = new HashMap<>();
     public static HashMap<UUID, Boolean> isMuted = new HashMap<>();
     public static HashMap<UUID, Long> muteTime = new HashMap<>();
     public static HashMap<UUID, String> mutedBy = new HashMap<>();
     public static HashMap<UUID, String> muteReason = new HashMap<>();
-    public static HashMap<UUID, UUID> guildInvites = new HashMap<>();
     public static HashMap<UUID, UUID> msgreply = new HashMap<>();
     public static HashMap<UUID, String> channel = new HashMap<>();
     public static HashMap<UUID, Boolean> isafk = new HashMap<>();

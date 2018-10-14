@@ -83,13 +83,6 @@ public class JServerChatListener implements IncomingDataListener {
                     }
                     break;
                 }
-                case "client_chat_guild-chat": {
-                    String guild = in.readUTF();
-                    String sender = in.readUTF();
-                    String text = in.readUTF();
-                    ChatManager.sendGuildChat(guild, sender, text);
-                    break;
-                }
                 case "client_chat_private-msg": {
                     String sender = in.readUTF();
                     String reciever = in.readUTF();

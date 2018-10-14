@@ -20,23 +20,6 @@ import java.io.IOException;
 
 public class JServerChatOutput {
 
-    @SuppressWarnings("deprecation")
-    public static void sendGuildChat(String guild, String formattedText) {
-        ProxyServer.getInstance().getServers();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
-
-        try {
-            dataOutputStream.writeUTF("server_chat_guild-chat");
-            dataOutputStream.writeUTF(guild);
-            dataOutputStream.writeUTF(formattedText);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteChat", byteArrayOutputStream.toByteArray());
-    }
-
 
     public static void staffChat(String formattedText) {
         ProxyServer.getInstance().getServers();

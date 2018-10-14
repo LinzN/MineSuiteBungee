@@ -13,7 +13,6 @@ package de.linzn.mineSuite.bungee.module.chat;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
-import de.linzn.mineSuite.bungee.module.chat.socket.JServerChatOutput;
 import de.linzn.mineSuite.bungee.module.core.BungeeManager;
 import de.linzn.mineSuite.bungee.utils.ChatFormate;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
@@ -164,16 +163,6 @@ public class ChatManager {
         }
     }
 
-
-    public static void sendGuildChat(String guild, String sender, String text) {
-        String formattedText = ChatFormate.genGuildChat(sender, text);
-        ProxyServer.getInstance().getLogger().info(guild + "-> " + formattedText);
-        for (UUID uuid : DataHashTable.socialspy.keySet()) {
-            ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
-            BungeeManager.sendMessageToTarget(p, "§4[SP]§r" + guild + "-> " + formattedText);
-        }
-        JServerChatOutput.sendGuildChat(guild, formattedText);
-    }
 
     public static void registerChat(IChatChannel iChatChannel) {
         MineSuiteBungeePlugin.getInstance().getLogger().info("Register new Chat: " + iChatChannel.getChannelName());

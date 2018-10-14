@@ -12,7 +12,6 @@
 package de.linzn.mineSuite.bungee.utils;
 
 public class ChatFormate {
-    private static String guildchat = "§a[GC]§r {player}: §a{text}";
     private static String channelglobalformate = "§2[G] §f{prefix}{player}§2{suffix}: {text}";
     private static String channeltradeformate = "§9[H] §7{player}§9: {text}";
     private static String channelstaffformate = "§4[TC] §f{player}§e: {text}";
@@ -22,10 +21,6 @@ public class ChatFormate {
 
     private static String broadcast = "{text}";
 
-    public static String genGuildChat(String sender, String text) {
-        String formate = guildchat.replace("{player}", sender).replace("{text}", text);
-        return formate;
-    }
 
     public static String genGlobalChat(String sender, String text, String prefix, String suffix) {
         String formate = channelglobalformate.replace("{prefix}", prefix).replace("{suffix}", suffix)

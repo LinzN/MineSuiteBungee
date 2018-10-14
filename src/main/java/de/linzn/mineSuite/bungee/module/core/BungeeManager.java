@@ -71,7 +71,6 @@ public class BungeeManager {
             DataHashTable.muteTime.remove(player.getUniqueId());
             DataHashTable.muteReason.remove(player.getUniqueId());
             DataHashTable.mutedBy.remove(player.getUniqueId());
-            DataHashTable.guildInvites.remove(player.getUniqueId());
             DataHashTable.msgreply.remove(player.getUniqueId());
             DataHashTable.channel.remove(player.getUniqueId());
             DataHashTable.isafk.remove(player.getUniqueId());
