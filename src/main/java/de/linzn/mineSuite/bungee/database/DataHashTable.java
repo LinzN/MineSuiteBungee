@@ -11,8 +11,8 @@
 
 package de.linzn.mineSuite.bungee.database;
 
-import de.linzn.mineSuite.bungee.utils.FakePair;
 import de.linzn.mineSuite.bungee.utils.Location;
+import de.linzn.mineSuite.bungee.utils.MinePair;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -32,6 +32,6 @@ public class DataHashTable {
     public static HashMap<UUID, Boolean> socialspy = new HashMap<>();
     public static HashMap<UUID, Boolean> session = new HashMap<>();
     public static HashMap<UUID, AtomicBoolean> readyToTeleport = new HashMap<>();
-    public static HashMap<String, FakePair> economyRequest = new HashMap<>();
+    public static HashMap<String, MinePair<AtomicBoolean, Double>> economyRequest = new HashMap<>();
 
 }
