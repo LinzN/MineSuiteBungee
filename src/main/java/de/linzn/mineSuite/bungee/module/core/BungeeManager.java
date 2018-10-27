@@ -18,7 +18,7 @@ import de.linzn.mineSuite.bungee.module.ban.mysql.BanQuery;
 import de.linzn.mineSuite.bungee.module.core.socket.JServerBungeeOutput;
 import de.linzn.mineSuite.bungee.utils.Location;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
-import de.linzn.mineSuite.bungee.utils.MinePair;
+import de.linzn.openJL.pairs.EditablePair;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -138,10 +138,10 @@ public class BungeeManager {
 
     public static double request_balance(String server, String accountName) {
         MineSuiteBungeePlugin.getInstance().getLogger().info("Request confirm economy callback for " + accountName + " on server " + server);
-        DataHashTable.economyRequest.put(accountName, new MinePair<>(new AtomicBoolean(false), 0D));
+        DataHashTable.economyRequest.put(accountName, new EditablePair<>(new AtomicBoolean(false), 0D));
         JServerBungeeOutput.request_economy_balance(server, accountName);
         int counter = 0;
-        while (!DataHashTable.economyRequest.get(accountName).getKey().get()) {
+        while (!DataHashTable.economyRequest.get(accountName).getLeft().get()) {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException ignored) {
@@ -154,7 +154,7 @@ public class BungeeManager {
             counter++;
         }
         MineSuiteBungeePlugin.getInstance().getLogger().info("Confirm success");
-        double balance = DataHashTable.economyRequest.get(accountName).getValue();
+        double balance = DataHashTable.economyRequest.get(accountName).getRight();
         DataHashTable.economyRequest.remove(accountName);
         return balance;
     }

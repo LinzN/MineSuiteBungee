@@ -48,7 +48,7 @@ public class JServerBungeeListener implements IncomingDataListener {
                 double balance = in.readDouble();
                 if (DataHashTable.economyRequest.containsKey(accountName)) {
                     DataHashTable.economyRequest.get(accountName).setValue(balance);
-                    DataHashTable.economyRequest.get(accountName).getKey().set(true);
+                    DataHashTable.economyRequest.get(accountName).getLeft().set(true);
                 }
             }
 
