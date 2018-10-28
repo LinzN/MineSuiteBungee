@@ -40,6 +40,11 @@
             <artifactId>openJL</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>de.linzn</groupId>
+            <artifactId>jSocket</artifactId>
+            <version>1.0.1</version>
+        </dependency>
     </dependencies>
 
 
@@ -90,6 +95,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>de.linzn:openJL</include>
+                                    <include>de.linzn:jSocket</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

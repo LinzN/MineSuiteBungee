@@ -30,7 +30,7 @@ public class MineJSocketServer {
     public MineJSocketServer() {
         String hostname = Config.ConfigConfiguration.getString("jSocket.host");
         int port = Config.ConfigConfiguration.getInt("jSocket.port");
-        jServer = new JServer(hostname, port);
+        jServer = new JServer(hostname, port, new BungeeTaskler());
         setupListener();
     }
 
