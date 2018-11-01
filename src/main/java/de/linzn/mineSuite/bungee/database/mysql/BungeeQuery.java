@@ -63,7 +63,57 @@ public class BungeeQuery {
         return playerName;
     }
 
-    public static boolean updateProfile(UUID uuid, String player, long time) {
+    public static String getLastIPAddress(String playerName) {
+        UUID playerUUID = getUUID(playerName);
+        if (playerUUID != null) {
+            return getLastIPAddress(playerUUID);
+        }
+        return null;
+    }
+
+    public static String getLastIPAddress(UUID playerUUID) {
+        MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
+        String lastIP = null;
+
+        try {
+            Connection conn = manager.getConnection("MineSuiteBungee");
+            PreparedStatement sql = conn.prepareStatement("SELECT LASTIP FROM core_uuidcache WHERE UUID = '" + playerUUID + "';");
+            ResultSet result = sql.executeQuery();
+            if (result.next()) {
+                lastIP = result.getString(1);
+            }
+            result.close();
+            sql.close();
+            manager.release("MineSuiteBungee", conn);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lastIP;
+    }
+
+    public static long getLastPlayerLogin(UUID uuid) {
+        MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
+        long lastLogin = 0;
+        try {
+            Connection conn = manager.getConnection("MineSuiteBungee");
+            PreparedStatement sql = conn.prepareStatement("SELECT TIMESTAMP FROM core_uuidcache WHERE UUID = '" + uuid + "';");
+            ResultSet result = sql.executeQuery();
+
+            if (result.next()) {
+                lastLogin = result.getLong(1);
+            }
+            result.close();
+            sql.close();
+            manager.release("MineSuiteBungee", conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lastLogin;
+    }
+
+
+    public static boolean updateProfile(UUID uuid, String player, long time, String lastIP) {
         MySQLConnectionManager manager = MySQLConnectionManager.DEFAULT;
         try {
             Connection conn = manager.getConnection("MineSuiteBungee");
@@ -72,12 +122,12 @@ public class BungeeQuery {
             if (result.next()) {
 
                 PreparedStatement sql2 = conn.prepareStatement("UPDATE core_uuidcache SET NAME = '" + player
-                        + "', TIMESTAMP = '" + time + "' WHERE UUID = '" + uuid.toString() + "';");
+                        + "', TIMESTAMP = '" + time + "', LASTIP = '" + lastIP + "' WHERE UUID = '" + uuid.toString() + "';");
                 sql2.executeUpdate();
                 sql2.close();
             } else {
-                PreparedStatement sql2 = conn.prepareStatement("INSERT INTO core_uuidcache (UUID, NAME, TIMESTAMP) VALUES ('"
-                        + uuid.toString() + "', '" + player + "', '" + time + "');");
+                PreparedStatement sql2 = conn.prepareStatement("INSERT INTO core_uuidcache (UUID, NAME, TIMESTAMP, LASTIP) VALUES ('"
+                        + uuid.toString() + "', '" + player + "', '" + time + "', '" + lastIP + "');");
                 sql2.executeUpdate();
                 sql2.close();
             }

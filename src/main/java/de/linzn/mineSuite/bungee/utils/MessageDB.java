@@ -20,8 +20,11 @@ public class MessageDB {
     public static String default_SERVER_MODT1 = ChatColor.DARK_RED + "" + ChatColor.BOLD + "■■■ " + ChatColor.GREEN + "Willkommen auf MineGaming.de - Errichte deine Welt" + ChatColor.DARK_RED + "" + ChatColor.BOLD + " ■■■";
     public static String default_SERVER_MODT2 = ChatColor.GREEN + "" + ChatColor.BOLD + "Hilfesystem: " + ChatColor.DARK_PURPLE + "/help" + "" + ChatColor.GREEN + "" + ChatColor.BOLD + " ■ ■ ■ ■ ■ ■ Forum: " + ChatColor.DARK_PURPLE + "www.MineGaming.de";
 
+    public static String default_PLAYER_ENTRY_NOT_EXIST = ChatColor.RED + "" + ChatColor.BOLD + "Der Spieler {player} existiert nicht oder hat für diesen Wert keinen Eintrag!";
     public static String default_PLAYER_NOT_EXIST = ChatColor.RED + "" + ChatColor.BOLD + "Dieser Spieler wurde noch nie gesehen. Bist du dir bei dem Namen sicher?";
     public static String default_PLAYER_NOT_ONLINE = ChatColor.RED + "" + ChatColor.BOLD + "Dieser Spieler ist nicht online!";
+    public static String default_PLAYER_IP_CHECK = ChatColor.GREEN + "IP check ist: " + ChatColor.YELLOW + "" + ChatColor.BOLD + "{value}";
+    public static String default_PLAYER_LAST_SEEN = ChatColor.GREEN + "Spieler {player} zuletzt gesehen: " + ChatColor.YELLOW + "" + ChatColor.BOLD + "{date}";
     public static String default_TRY_TO_TELEPORT = ChatColor.GREEN + "" + ChatColor.BOLD + "Versuche zu teleportieren...";
     public static String default_NO_ACCESS = ChatColor.DARK_RED + "" + ChatColor.BOLD + "Keine Berechtigung!! Nur Shell benutzer!!!";
     public static String default_RELOADED = ChatColor.BLUE + "" + ChatColor.BOLD + "Konfiguration neu geladen!";

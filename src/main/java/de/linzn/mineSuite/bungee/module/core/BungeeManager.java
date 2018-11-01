@@ -13,6 +13,7 @@ package de.linzn.mineSuite.bungee.module.core;
 
 import de.linzn.mineSuite.bungee.MineSuiteBungeePlugin;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
+import de.linzn.mineSuite.bungee.database.mysql.BungeeQuery;
 import de.linzn.mineSuite.bungee.module.ban.BanManager;
 import de.linzn.mineSuite.bungee.module.ban.mysql.BanQuery;
 import de.linzn.mineSuite.bungee.module.core.socket.JServerBungeeOutput;
@@ -23,6 +24,8 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -157,6 +160,49 @@ public class BungeeManager {
         double balance = DataHashTable.economyRequest.get(accountName).getRight();
         DataHashTable.economyRequest.remove(accountName);
         return balance;
+    }
+
+    public static void lastPlayerSeen(UUID actor, String targetPlayer) {
+        ProxiedPlayer actorP = ProxyServer.getInstance().getPlayer(actor);
+        if (actorP == null) {
+            return;
+        }
+        UUID targetUUID = BungeeQuery.getUUID(targetPlayer);
+
+        if (targetUUID == null) {
+            sendMessageToTarget(actorP, MessageDB.default_PLAYER_NOT_EXIST);
+            return;
+        }
+        long lastLogin = BungeeQuery.getLastPlayerLogin(targetUUID);
+        String formatted = new SimpleDateFormat("dd.MM.yyyy '-' HH:mm 'Uhr'").format(new Date(lastLogin));
+        sendMessageToTarget(actorP, MessageDB.default_PLAYER_LAST_SEEN.replace("{player}", targetPlayer).replace("{date}", formatted));
+    }
+
+    public static void compareIPAddresses(UUID actor, String firstPlayer, String secondPlayer) {
+        ProxiedPlayer actorP = ProxyServer.getInstance().getPlayer(actor);
+        if (actorP == null) {
+            return;
+        }
+        String firstIP = BungeeQuery.getLastIPAddress(firstPlayer);
+        String secondIP = BungeeQuery.getLastIPAddress(secondPlayer);
+
+        if (firstIP == null) {
+            sendMessageToTarget(actorP, MessageDB.default_PLAYER_ENTRY_NOT_EXIST.replace("{player}", firstPlayer));
+            return;
+        }
+        if (secondIP == null) {
+            sendMessageToTarget(actorP, MessageDB.default_PLAYER_ENTRY_NOT_EXIST.replace("{player}", secondPlayer));
+            return;
+        }
+
+        boolean isSameIP = firstIP.equalsIgnoreCase(secondIP);
+
+        if (isSameIP) {
+            sendMessageToTarget(actorP, MessageDB.default_PLAYER_IP_CHECK.replace("{value}", "POSITIVE"));
+        } else {
+            sendMessageToTarget(actorP, MessageDB.default_PLAYER_IP_CHECK.replace("{value}", "NEGATIVE"));
+        }
+
     }
 
 }

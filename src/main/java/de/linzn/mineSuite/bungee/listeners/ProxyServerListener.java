@@ -83,12 +83,13 @@ public class ProxyServerListener implements Listener {
         }
 
         long timeStamp = new Date().getTime();
-        if (BungeeQuery.updateProfile(e.getConnection().getUniqueId(), e.getConnection().getName(), timeStamp)) {
+        String ip = e.getConnection().getAddress().getAddress().getHostAddress();
+        if (BungeeQuery.updateProfile(e.getConnection().getUniqueId(), e.getConnection().getName(), timeStamp, ip)) {
             MineSuiteBungeePlugin.getInstance().getLogger()
-                    .info("UUID-cache updated for incoming connection " + e.getConnection().getName());
+                    .info("UUID-cache updated for incoming connection " + e.getConnection().getName() + " Address: " + ip);
         } else {
             MineSuiteBungeePlugin.getInstance().getLogger().info(
-                    "FAIL! UUID-cache update for incoming connection " + e.getConnection().getName() + " failed!");
+                    "FAIL! UUID-cache update for incoming connection " + e.getConnection().getName() + " failed! Address: " + ip);
         }
 
     }

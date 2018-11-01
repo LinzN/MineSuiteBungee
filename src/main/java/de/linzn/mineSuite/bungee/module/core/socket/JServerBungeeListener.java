@@ -13,6 +13,7 @@ package de.linzn.mineSuite.bungee.module.core.socket;
 
 import de.linzn.jSocket.core.IncomingDataListener;
 import de.linzn.mineSuite.bungee.database.DataHashTable;
+import de.linzn.mineSuite.bungee.module.core.BungeeManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -50,6 +51,17 @@ public class JServerBungeeListener implements IncomingDataListener {
                     DataHashTable.economyRequest.get(accountName).setValue(balance);
                     DataHashTable.economyRequest.get(accountName).getLeft().set(true);
                 }
+            }
+            if (subChannel.equals("client_compare-ip")) {
+                UUID actorUUID = UUID.fromString(in.readUTF());
+                String firstPlayer = in.readUTF();
+                String secondPlayer = in.readUTF();
+                BungeeManager.compareIPAddresses(actorUUID, firstPlayer, secondPlayer);
+            }
+            if (subChannel.equals("client_get-last-seen")) {
+                UUID actorUUID = UUID.fromString(in.readUTF());
+                String targetPlayer = in.readUTF();
+                BungeeManager.lastPlayerSeen(actorUUID, targetPlayer);
             }
 
         } catch (IOException e1) {
