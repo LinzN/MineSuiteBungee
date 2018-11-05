@@ -29,7 +29,7 @@ public class VoteInformer implements Runnable {
     public static void sendVoteInfoToUser(String playerName, double value) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerName);
         if (player != null) {
-            TextComponent vote = new TextComponent(MessageDB.chat_INFORM_VOTER.replace("", "{value}" + value));
+            TextComponent vote = new TextComponent(MessageDB.chat_INFORM_VOTER.replace("{value}", "" + value));
             vote.setColor(ChatColor.GREEN);
             vote.setBold(true);
             player.sendMessage(vote);
