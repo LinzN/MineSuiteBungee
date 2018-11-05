@@ -100,7 +100,8 @@ public class JServerChatListener implements IncomingDataListener {
                 }
                 case "client_chat-vote-informer":
                     String voter = in.readUTF();
-                    VoteInformer.sendVoteInfoToUser(voter);
+                    double value = in.readDouble();
+                    VoteInformer.sendVoteInfoToUser(voter, value);
                     break;
             }
         } catch (IOException e1) {

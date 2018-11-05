@@ -93,9 +93,10 @@ public class MessageDB {
     /* Chat Values */
     public static String chat_AFK_MARKED = ChatColor.YELLOW + "" + ChatColor.BOLD + "Dieser Spieler ist als abwesend makiert. Er wird vorraussichtlich nicht antworten.";
     public static String chat_NO_REPLY = ChatColor.RED + "" + ChatColor.BOLD + "Du hast niemand wo du antworten kannst :(";
-    public static String chat_INFORM_VOTER = "Danke dass du für uns gevotet hat. Hier deine Belohnung :D";
+    public static String chat_INFORM_VOTER = "Danke dass du für uns gevotet hat. Hier deine Belohnung! {value} Mines :D";
     public static String chat_NO_VOTER = "Leider hat niemand gevotet :(! Jetzt voten und bis zu 450 Mines verdienen!";
-    public static String chat_HAS_VOTER = "Die Spieler " + "{playernames}" + " haben auf Vote.MineGaming.de gevotet und wurden mit bis zu 450 Mines belohnt!";
+    public static String chat_HAS_VOTER = "Die Spieler " + "{playernames}" + " haben auf https://Vote.MineGaming.de gevotet und wurden mit bis zu 450 Mines belohnt!";
+    public static String chat_HAS_VOTER_SINGLE = "Der Spieler " + "{player}" + " hat auf https://Vote.MineGaming.de gevotet und wurde mit bis zu 450 Mines belohnt!";
     public static String chat_HAS_VOTER_VOTE_LINK = "https://vote.minegaming.de";
     public static String chat_HAS_VOTER_VOTE_HOVER = "Jetzt auf Vote.MineGaming.de voten :D";
 

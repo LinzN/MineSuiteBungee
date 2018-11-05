@@ -26,10 +26,10 @@ public class VoteInformer implements Runnable {
 
     private static HashSet<String> voters = new HashSet<>();
 
-    public static void sendVoteInfoToUser(String playerName) {
+    public static void sendVoteInfoToUser(String playerName, double value) {
         ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerName);
         if (player != null) {
-            TextComponent vote = new TextComponent(MessageDB.chat_INFORM_VOTER);
+            TextComponent vote = new TextComponent(MessageDB.chat_INFORM_VOTER.replace("", "{value}" + value));
             vote.setColor(ChatColor.GREEN);
             vote.setBold(true);
             player.sendMessage(vote);
@@ -48,8 +48,13 @@ public class VoteInformer implements Runnable {
         }
         TextComponent vote = new TextComponent();
         if (playerNames != null) {
-            vote.setText(ChatColor.GREEN + MessageDB.chat_HAS_VOTER.replace("{playernames}", ChatColor.GOLD + "" + ChatColor.BOLD + playerNames + ChatColor.RESET + ChatColor.GREEN));
-            vote.setColor(ChatColor.GREEN);
+            if (voters.size() != 1) {
+                vote.setText(ChatColor.GREEN + MessageDB.chat_HAS_VOTER.replace("{playernames}", ChatColor.GOLD + "" + ChatColor.BOLD + playerNames + ChatColor.RESET + ChatColor.GREEN));
+                vote.setColor(ChatColor.GREEN);
+            } else {
+                vote.setText(ChatColor.GREEN + MessageDB.chat_HAS_VOTER_SINGLE.replace("{player}", ChatColor.GOLD + "" + ChatColor.BOLD + playerNames + ChatColor.RESET + ChatColor.GREEN));
+                vote.setColor(ChatColor.GREEN);
+            }
         } else {
             vote.setText(MessageDB.chat_NO_VOTER);
             vote.setColor(ChatColor.GOLD);
