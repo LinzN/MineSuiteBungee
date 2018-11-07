@@ -19,4 +19,9 @@ public class BungeeTaskler implements ThreadTaskler {
     public void runSingleThreadExecutor(Runnable runnable) {
         ProxyServer.getInstance().getScheduler().runAsync(MineSuiteBungeePlugin.getInstance(), runnable);
     }
+
+    @Override
+    public boolean isDebugging() {
+        return MineSuiteBungeePlugin.getInstance().getDebugMode();
+    }
 }

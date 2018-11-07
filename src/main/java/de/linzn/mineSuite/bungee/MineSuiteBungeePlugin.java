@@ -39,6 +39,7 @@ public class MineSuiteBungeePlugin extends Plugin {
     public ProxyServer proxy;
     public Config fileManager;
     private MineJSocketServer mineJSocketServer;
+    private boolean debugMode = false;
 
     public static MineSuiteBungeePlugin getInstance() {
         return instance;
@@ -96,6 +97,14 @@ public class MineSuiteBungeePlugin extends Plugin {
         ChatManager.registerChat(new GlobalChat());
         ChatManager.registerChat(new StaffChat());
         ChatManager.registerChat(new TradeChat());
+    }
+
+    public boolean getDebugMode() {
+        return this.debugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
     }
 
 }
