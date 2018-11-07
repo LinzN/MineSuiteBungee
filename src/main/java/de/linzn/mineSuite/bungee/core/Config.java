@@ -132,6 +132,11 @@ public class Config {
             config.set("broadcaster.messages.vote.click", "https://vote.minegaming.de");
             config.set("broadcaster.messages.vote.hover", "Jetzt auf MG Voten!");
 
+            final List<Integer> allowedVersions = new ArrayList<>();
+            allowedVersions.add(404);
+            config.set("login.allowedVersions", allowedVersions);
+            config.set("login.recommendedVersion", "1.13.2");
+
             saveConfig(config, Config.ConfigFile);
         }
     }

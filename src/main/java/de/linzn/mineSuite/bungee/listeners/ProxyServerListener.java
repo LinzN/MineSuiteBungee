@@ -28,12 +28,12 @@ import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class ProxyServerListener implements Listener {
 
-    private static int protocol_id = 315;
 
     @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOW)
@@ -65,11 +65,17 @@ public class ProxyServerListener implements Listener {
 
     @EventHandler(priority = 64)
     public void onLogin(final LoginEvent e) {
-        if (e.getConnection().getVersion() < this.protocol_id) {
-            e.setCancelReason(ChatColor.RED + "Leider ist deine Minecraft Version zu alt. Erforderlich ist " + ChatColor.GREEN + "1.11.X" + ChatColor.RED + " oder höher.");
+        if (!isProtocolAllowed(e.getConnection().getVersion())) {
             e.setCancelled(true);
-            return;
+            e.setCancelReason("Deine Minecraft Version wird nicht unterstützt. Bitte benutze Version " + Config.getString("login.recommendedVersion"));
+            MineSuiteBungeePlugin.getInstance().getLogger()
+                    .info("Connection " + e.getConnection().getName() + " is using wrong protocol version: " + e.getConnection().getVersion());
+
+        } else {
+            MineSuiteBungeePlugin.getInstance().getLogger()
+                    .info("Connection " + e.getConnection().getName() + " = Protocol version: " + e.getConnection().getVersion());
         }
+
         if (BanManager.isBanned(e.getConnection().getUniqueId())) {
             final Long current = System.currentTimeMillis();
             final Long end = BanManager.getEnd(e.getConnection().getUniqueId());
@@ -152,5 +158,12 @@ public class ProxyServerListener implements Listener {
             JServerBungeeOutput.cancelTeleport(event.getPlayer().getServer().getInfo().getName(), event.getPlayer().getUniqueId(), event.getKickedFrom().getName());
         }
     }
+
+    private boolean isProtocolAllowed(int version) {
+        List<Integer> list = Config.ConfigConfiguration.getIntList("login.allowedVersions");
+        return list.contains(version);
+    }
+
+
 
 }
