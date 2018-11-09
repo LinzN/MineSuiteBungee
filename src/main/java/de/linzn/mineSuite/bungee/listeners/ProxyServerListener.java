@@ -21,6 +21,7 @@ import de.linzn.mineSuite.bungee.module.core.socket.JServerBungeeOutput;
 import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;
@@ -164,6 +165,27 @@ public class ProxyServerListener implements Listener {
         return list.contains(version);
     }
 
+    private int getMaxSupportedVersion() {
+        List<Integer> list = Config.ConfigConfiguration.getIntList("login.allowedVersions");
+        int version = 0;
+        for (int v : list) {
+            if (v > version) {
+                version = v;
+            }
+        }
+        return version;
+    }
 
+    @EventHandler
+    public void proxyPingResponse(ProxyPingEvent ev) {
+        int clientVersion = ev.getConnection().getVersion();
+        ServerPing ping = ev.getResponse();
+        if (isProtocolAllowed(clientVersion)) {
+            ping.getVersion().setProtocol(clientVersion);
+        } else {
+            ping.getVersion().setProtocol(this.getMaxSupportedVersion());
+        }
+        ping.getVersion().setName("MG-" + Config.getString("login.recommendedVersion"));
+    }
 
 }
