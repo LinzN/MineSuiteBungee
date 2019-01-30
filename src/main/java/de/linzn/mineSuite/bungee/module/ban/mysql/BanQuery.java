@@ -318,7 +318,7 @@ public class BanQuery {
                         list.add(0, result.getString("Reason"));
                         list.add(1, result.getString("MutedBy"));
                         list.add(2, result.getString("ExpireTime"));
-                        list.add(3, result.getString("BannedAt"));
+                        list.add(3, result.getString("MutedAt"));
                     }
                 }
                 result.close();
