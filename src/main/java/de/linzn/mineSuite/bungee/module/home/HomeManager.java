@@ -71,7 +71,7 @@ public class HomeManager {
             ProxyServer.getInstance().getLogger().info("[MineSuite] Update Home N: " + homeName + " S: " + location.getServer() + " W:" + location.getWorld() + " X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
             BungeeManager.sendMessageToTarget(player, MessageDB.home_REFRESH_HOME.replace("{home}", homeName));
         } else {
-            if (HomeQuery.getHomes(homeOwner).size() >= limit) {
+            if (HomeQuery.getHomes(homeOwner).size() >= limit && limit != -1) {
                 BungeeManager.sendMessageToTarget(player, MessageDB.home_HOME_LIMIT);
             } else {
                 HomeQuery.setHome(homeOwner, homeName, location.getServer(), location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
