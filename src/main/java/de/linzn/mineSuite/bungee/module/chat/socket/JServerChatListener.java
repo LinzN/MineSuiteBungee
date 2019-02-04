@@ -103,6 +103,12 @@ public class JServerChatListener implements IncomingDataListener {
                     double value = in.readDouble();
                     VoteInformer.sendVoteInfoToUser(voter, value);
                     break;
+                case "client_data-title":
+                    String title = in.readUTF();
+                    String subTitle = in.readUTF();
+                    int time = in.readInt();
+                    ChatManager.sendTitle(title, subTitle, time);
+                    break;
             }
         } catch (IOException e1) {
             e1.printStackTrace();

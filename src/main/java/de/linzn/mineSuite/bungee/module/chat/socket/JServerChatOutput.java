@@ -22,7 +22,6 @@ public class JServerChatOutput {
 
 
     public static void staffChat(String formattedText) {
-        ProxyServer.getInstance().getServers();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
         try {
@@ -34,6 +33,22 @@ public class JServerChatOutput {
         }
         MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteChat", byteArrayOutputStream.toByteArray());
         ProxyServer.getInstance().getLogger().info("TC" + "-> " + formattedText);
+    }
+
+    public static void titleBroadcast(String title, String subTitle, int time) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+        try {
+            dataOutputStream.writeUTF("server_data-title");
+            dataOutputStream.writeUTF(title);
+            dataOutputStream.writeUTF(subTitle);
+            dataOutputStream.writeInt(time);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteChat", byteArrayOutputStream.toByteArray());
+        ProxyServer.getInstance().getLogger().info("Title" + "-> " + title + "->" + subTitle + "->" + time);
     }
 
 
