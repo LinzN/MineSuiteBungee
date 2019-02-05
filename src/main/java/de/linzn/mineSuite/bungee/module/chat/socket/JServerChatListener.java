@@ -98,17 +98,46 @@ public class JServerChatListener implements IncomingDataListener {
                     ChatManager.privateReplyChat(sender, text, prefix);
                     break;
                 }
-                case "client_chat-vote-informer":
+                case "client_chat-vote-informer": {
                     String voter = in.readUTF();
                     double value = in.readDouble();
                     VoteInformer.sendVoteInfoToUser(voter, value);
                     break;
-                case "client_data-title":
+                }
+                case "client_data-title": {
                     String title = in.readUTF();
                     String subTitle = in.readUTF();
                     int time = in.readInt();
                     ChatManager.sendTitle(title, subTitle, time);
                     break;
+                }
+                case "client_chat-mail-send": {
+                    UUID senderUUID = UUID.fromString(in.readUTF());
+                    String receiver = in.readUTF();
+                    String input = in.readUTF();
+                    ChatManager.sendMail(senderUUID, receiver, input);
+                    break;
+                }
+                case "client_chat-mail-delete": {
+                    UUID actorUUID = UUID.fromString(in.readUTF());
+                    int mailId = in.readInt();
+                    ChatManager.deleteMail(actorUUID, mailId);
+                    break;
+                }
+
+                case "client_chat-mail-show": {
+                    UUID actorUUID = UUID.fromString(in.readUTF());
+                    int mailId = in.readInt();
+                    ChatManager.showMail(actorUUID, mailId);
+                    break;
+                }
+
+                case "client_chat-mail-list": {
+                    UUID actorUUID = UUID.fromString(in.readUTF());
+                    int page = in.readInt();
+                    ChatManager.listMails(actorUUID, page);
+                    break;
+                }
             }
         } catch (IOException e1) {
             e1.printStackTrace();

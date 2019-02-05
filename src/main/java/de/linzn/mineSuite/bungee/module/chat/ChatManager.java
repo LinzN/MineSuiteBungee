@@ -168,6 +168,22 @@ public class ChatManager {
         JServerChatOutput.titleBroadcast(title, subTitel, time);
     }
 
+    public static void deleteMail(UUID actorUUID, int mailId) {
+
+    }
+
+    public static void showMail(UUID actorUUID, int mailId) {
+
+    }
+
+    public static void listMails(UUID actorUUID, int page) {
+
+    }
+
+    public static void sendMail(UUID senderUUID, String receiver, String input) {
+
+    }
+
     public static void registerChat(IChatChannel iChatChannel) {
         MineSuiteBungeePlugin.getInstance().getLogger().info("Register new Chat: " + iChatChannel.getChannelName());
         chatChannels.put(iChatChannel.getChannelName(), iChatChannel);
