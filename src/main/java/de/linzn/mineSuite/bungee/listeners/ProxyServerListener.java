@@ -22,6 +22,7 @@ import de.linzn.mineSuite.bungee.utils.MessageDB;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.ServerPing;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;
@@ -30,6 +31,7 @@ import net.md_5.bungee.event.EventPriority;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -136,22 +138,6 @@ public class ProxyServerListener implements Listener {
 
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onTabComplete(TabCompleteEvent ev) {
-        String partialPlayerName = ev.getCursor().toLowerCase();
-
-        int lastSpaceIndex = partialPlayerName.lastIndexOf(' ');
-        if (lastSpaceIndex >= 0) {
-            partialPlayerName = partialPlayerName.substring(lastSpaceIndex + 1);
-        }
-
-        for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-            if (p.getName().toLowerCase().startsWith(partialPlayerName)) {
-                ev.getSuggestions().add(p.getName());
-            }
-        }
-    }
-
     @EventHandler(priority = EventPriority.LOWEST)
     public void onServerKickLogin(ServerKickEvent event) {
         if (event.getState() == ServerKickEvent.State.CONNECTING && event.getPlayer().getServer() != null) {
@@ -180,6 +166,13 @@ public class ProxyServerListener implements Listener {
     public void proxyPingResponse(ProxyPingEvent ev) {
         int clientVersion = ev.getConnection().getVersion();
         ServerPing ping = ev.getResponse();
+        List<String> descs = Config.getStringList("ping.descriptions");
+        String desc = "§aThis server is running with MineSuite";
+        if (descs != null && descs.size() != 0) {
+            int index = new Random().nextInt(descs.size());
+            desc = descs.get(index);
+        }
+        ping.setDescriptionComponent(new TextComponent(desc));
         if (isProtocolAllowed(clientVersion)) {
             ping.getVersion().setProtocol(clientVersion);
         } else {

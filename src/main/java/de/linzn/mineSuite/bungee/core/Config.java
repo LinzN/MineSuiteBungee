@@ -137,6 +137,10 @@ public class Config {
             config.set("login.allowedVersions", allowedVersions);
             config.set("login.recommendedVersion", "1.13.2");
 
+            final List<String> descriptions = new ArrayList<>();
+            descriptions.add("§aThis server is running with MineSuite");
+
+            config.set("ping.descriptions", descriptions);
             saveConfig(config, Config.ConfigFile);
         }
     }
