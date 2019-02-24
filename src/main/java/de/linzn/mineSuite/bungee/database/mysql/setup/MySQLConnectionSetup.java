@@ -40,6 +40,8 @@ public class MySQLConnectionSetup {
         manager.getHandler("MineSuiteTeleport", factory);
         manager.getHandler("MineSuitePortal", factory);
         manager.getHandler("MineSuiteGuild", factory);
+        manager.getHandler("MineSuiteChat", factory);
+        manager.getHandler("mineSuiteEconomy", factory);
 
         try {
             Connection connection = handler.getConnection();
@@ -52,6 +54,8 @@ public class MySQLConnectionSetup {
             String teleport_module_1 = "CREATE TABLE IF NOT EXISTS module_teleport_spawns (Id int NOT NULL AUTO_INCREMENT, spawntype VARCHAR(100), server VARCHAR(100), world text, x double, y double, z double, yaw float, pitch float, visible int, PRIMARY KEY (Id));";
             String portal_module_1 = "CREATE TABLE IF NOT EXISTS module_portal_portals (portalname VARCHAR(100), server VARCHAR(100), type VARCHAR(20), destination VARCHAR(100), world VARCHAR(100), filltype VARCHAR(100) DEFAULT 'AIR', xmax INT(11), xmin INT(11), ymax INT(11), ymin INT(11), zmax INT(11), zmin INT(11), CONSTRAINT pk_portalname PRIMARY KEY (portalname));";
             String home_module_1 = "CREATE TABLE IF NOT EXISTS module_home_homes (player VARCHAR(100), home_name VARCHAR(100), server VARCHAR(100), world text, x double, y double, z double, yaw float, pitch float, PRIMARY KEY (`player`,`home_name`,`server`));";
+            String economy_module_1 = "CREATE TABLE IF NOT EXISTS module_economy_settings (id int(11) NOT NULL AUTO_INCREMENT, setting varchar(255) NOT NULL, value varchar(255) NOT NULL, PRIMARY KEY (`id`));";
+            String economy_module_2 = "CREATE TABLE IF NOT EXISTS module_economy_profiles ( id int(11) NOT NULL AUTO_INCREMENT, uuid varchar(255) NOT NULL, type varchar(255) NOT NULL, balance double DEFAULT NULL, PRIMARY KEY (`id`));";
 
             Statement action = connection.createStatement();
             action.executeUpdate(core);
@@ -61,6 +65,8 @@ public class MySQLConnectionSetup {
             action.executeUpdate(teleport_module_1);
             action.executeUpdate(portal_module_1);
             action.executeUpdate(home_module_1);
+            action.executeUpdate(economy_module_1);
+            action.executeUpdate(economy_module_2);
             action.close();
             handler.release(connection);
 

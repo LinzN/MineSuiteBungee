@@ -51,18 +51,4 @@ public class JServerBungeeOutput {
         MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteBungee", byteArrayOutputStream.toByteArray());
     }
 
-    public static void request_economy_balance(String server, String accountName) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
-
-        try {
-            dataOutputStream.writeUTF(server);
-            dataOutputStream.writeUTF("server_request-balance");
-            dataOutputStream.writeUTF(accountName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        MineSuiteBungeePlugin.getInstance().getMineJSocketServer().broadcastClients("mineSuiteBungee", byteArrayOutputStream.toByteArray());
-    }
-
 }

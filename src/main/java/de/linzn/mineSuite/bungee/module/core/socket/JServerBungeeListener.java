@@ -44,14 +44,6 @@ public class JServerBungeeListener implements IncomingDataListener {
                 }
             }
 
-            if (subChannel.equals("client_request-balance")) {
-                String accountName = in.readUTF();
-                double balance = in.readDouble();
-                if (DataHashTable.economyRequest.containsKey(accountName)) {
-                    DataHashTable.economyRequest.get(accountName).setValue(balance);
-                    DataHashTable.economyRequest.get(accountName).getLeft().set(true);
-                }
-            }
             if (subChannel.equals("client_compare-ip")) {
                 UUID actorUUID = UUID.fromString(in.readUTF());
                 String firstPlayer = in.readUTF();
