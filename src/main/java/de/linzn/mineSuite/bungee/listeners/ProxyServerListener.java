@@ -172,6 +172,7 @@ public class ProxyServerListener implements Listener {
             int index = new Random().nextInt(descs.size());
             desc = descs.get(index);
         }
+        desc = desc.replace("{player}", ev.getConnection().getName());
         ping.setDescriptionComponent(new TextComponent(desc));
         if (isProtocolAllowed(clientVersion)) {
             ping.getVersion().setProtocol(clientVersion);
