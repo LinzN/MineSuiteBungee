@@ -167,12 +167,12 @@ public class ProxyServerListener implements Listener {
         int clientVersion = ev.getConnection().getVersion();
         ServerPing ping = ev.getResponse();
         List<String> descs = Config.getStringList("ping.descriptions");
-        String desc = "§aWelcome back {player} \nThis server is running with MineSuite";
+        String desc = "§aWelcome back \nThis server is running with MineSuite";
         if (descs != null && descs.size() != 0) {
             int index = new Random().nextInt(descs.size());
             desc = descs.get(index);
         }
-        desc = desc.replace("{player}", ev.getConnection().getName());
+        //desc = desc.replace("{player}", ev.getConnection());
         ping.setDescriptionComponent(new TextComponent(desc));
         if (isProtocolAllowed(clientVersion)) {
             ping.getVersion().setProtocol(clientVersion);
