@@ -167,7 +167,7 @@ public class ProxyServerListener implements Listener {
         int clientVersion = ev.getConnection().getVersion();
         ServerPing ping = ev.getResponse();
         List<String> descs = Config.getStringList("ping.descriptions");
-        String desc = "§aThis server is running with MineSuite";
+        String desc = "§aWelcome back {player} \nThis server is running with MineSuite";
         if (descs != null && descs.size() != 0) {
             int index = new Random().nextInt(descs.size());
             desc = descs.get(index);
