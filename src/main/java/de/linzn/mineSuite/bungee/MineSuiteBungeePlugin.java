@@ -62,9 +62,9 @@ public class MineSuiteBungeePlugin extends Plugin {
             this.registerListeners();
             this.startScheduler();
             this.mineJSocketServer = new MineJSocketServer();
-            this.mineJSocketServer.openServer();
             PortalManager.loadPortalsToHash();
             this.registerChatChannels();
+            this.getProxy().getScheduler().schedule(this, () -> mineJSocketServer.openServer(), 1, TimeUnit.SECONDS);
         }
     }
 
